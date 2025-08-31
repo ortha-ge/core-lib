@@ -1,0 +1,72 @@
+module;
+
+#include <filesystem>
+#include <fstream>
+
+#include <entt/entt.hpp>
+
+module Core.FileLoadSystem;
+
+import Core.FileDescriptor;
+import Core.FileLoadRequest;
+import Core.ImageLoadSystem;
+import Core.RawDataResource;
+
+namespace Core {
+
+	void FileLoadSystem::initSystem(entt::registry& registry) {
+		ImageLoadSystem::initSystem(registry);
+	}
+
+	void FileLoadSystem::destroySystem(entt::registry& registry) {
+		ImageLoadSystem::destroySystem(registry);
+	}
+
+	void FileLoadSystem::tickSystem(entt::registry& registry) {
+		auto fileResourceRequestView = registry.view<FileDescriptor, FileLoadRequest>(entt::exclude<RawDataResource>);
+		fileResourceRequestView.each([&registry](entt::entity entity, FileDescriptor& fileDescriptor) {
+
+			if (fileDescriptor.filePath.empty()) {
+				printf("FileLoadRequest: Empty file path.\n");
+				registry.remove<FileLoadRequest>(entity);
+				return;
+			}
+
+			if (!std::filesystem::exists(fileDescriptor.filePath)) {
+				printf("FileLoadRequest: Path '%s' doesn't exist.\n", fileDescriptor.filePath.c_str());
+				registry.remove<FileLoadRequest>(entity);
+				return;
+			}
+
+			uintmax_t fileSize = std::filesystem::file_size(fileDescriptor.filePath);
+
+			std::vector<uint8_t> rawData;
+			rawData.reserve(fileSize);
+
+			registry.emplace<RawDataResource>(entity, std::move(rawData), fileSize);
+		});
+
+		auto fileResourceView = registry.view<FileDescriptor, RawDataResource, FileLoadRequest>();
+		fileResourceView.each([&registry](entt::entity entity, FileDescriptor& fileDescriptor, RawDataResource& resource) {
+			size_t remainingSize = resource.size - resource.rawData.size();
+			if (remainingSize == 0) {
+				registry.remove<FileLoadRequest>(entity);
+				return;
+			}
+
+			size_t currentWritePos = resource.rawData.size();
+
+			std::ifstream fileStream(fileDescriptor.filePath, std::ios::binary);
+			fileStream.seekg(currentWritePos);
+			
+			char* writeHead = reinterpret_cast<char*>(&resource.rawData.data()[currentWritePos]);
+
+			size_t readCount = std::min(1000zu, remainingSize);
+			resource.rawData.resize(currentWritePos + readCount);
+			fileStream.read(writeHead, readCount);
+		});
+
+		ImageLoadSystem::tickSystem(registry);
+	}
+
+} // Core

@@ -3,10 +3,8 @@ cmake_minimum_required(VERSION 3.31)
 
 find_package(EnTT CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
-find_package(imgui CONFIG REQUIRED)
 find_package(kangaru CONFIG REQUIRED)
 find_package(RapidJSON CONFIG REQUIRED)
-find_package(rxcpp CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 
 set (core-lib-src
@@ -17,8 +15,12 @@ set (core-lib-src
         src/core/reflection/ReflectionContext.cpp
         src/core/reflection/TypeId.cpp
         src/core/reflection/TypeReflection.cpp
+        src/core/resources/ResourceCache.cpp
+        src/core/resources/ResourceHandle.cpp
+        src/core/resources/ResourceLoadRequest.cpp
         src/core/resources/systems/FileLoadSystem.cpp
         src/core/resources/systems/ImageLoadSystem.cpp
+        src/core/resources/systems/ResourceLoadSystem.cpp
         src/core/serialization/JsonTypeLoaderAdapter.cpp
         src/core/serialization/JsonTypeSaverAdapter.cpp
         src/core/serialization/systems/TypeLoaderSystem.cpp
@@ -42,11 +44,15 @@ set (core-lib-modules
         src/core/resources/FileLoadRequest.cppm
         src/core/resources/ImageResource.cppm
         src/core/resources/RawDataResource.cppm
+        src/core/resources/ResourceCache.cppm
+        src/core/resources/ResourceHandle.cppm
+        src/core/resources/ResourceLoadRequest.cppm
         src/core/resources/SpriteResource.cppm
         src/core/resources/descriptors/FileDescriptor.cppm
         src/core/resources/descriptors/ImageDescriptor.cppm
         src/core/resources/systems/FileLoadSystem.cppm
         src/core/resources/systems/ImageLoadSystem.cppm
+        src/core/resources/systems/ResourceLoadSystem.cppm
         src/core/serialization/JsonTypeLoaderAdapter.cppm
         src/core/serialization/JsonTypeSaverAdapter.cppm
         src/core/serialization/TypeLoader.cppm

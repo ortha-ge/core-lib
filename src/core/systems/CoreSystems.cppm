@@ -7,6 +7,7 @@ export module Core.Systems;
 import Core.EnTTRegistry;
 import Core.Scheduler;
 import Core.TypeLoaderSystem;
+import Core.ResourceLoadSystem;
 
 export namespace Core {
 
@@ -27,6 +28,7 @@ export namespace Core {
 		entt::registry& mRegistry;
 		Scheduler& mScheduler;
 		TypeLoaderSystem mTypeLoaderSystem;
+		ResourceLoadSystem mResourceLoadSystem;
 		TaskHandle mTickHandle{};
 
 	};

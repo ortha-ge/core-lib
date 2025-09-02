@@ -19,7 +19,7 @@ export namespace Core {
     };
 
     struct TypeLoader {
-        std::unique_ptr<TypeLoaderAdapter> adapter;
+        std::shared_ptr<TypeLoaderAdapter> adapter;
     };
 
 } // Core

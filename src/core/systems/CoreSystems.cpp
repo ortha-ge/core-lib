@@ -17,7 +17,8 @@ namespace Core {
 	CoreSystems::CoreSystems(EnTTRegistry& registry, Scheduler& scheduler)
 		: mRegistry(registry)
 		, mScheduler{ scheduler }
-		, mTypeLoaderSystem{ registry, scheduler } {
+		, mTypeLoaderSystem{ registry, scheduler }
+		, mResourceLoadSystem{ registry, scheduler } {
 		GLFWSystem::initSystem(mRegistry);
 		FileLoadSystem::initSystem(mRegistry);
 

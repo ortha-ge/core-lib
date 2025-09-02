@@ -5,11 +5,11 @@ find_package(EnTT CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(kangaru CONFIG REQUIRED)
 find_package(RapidJSON CONFIG REQUIRED)
-find_package(SDL2 CONFIG REQUIRED)
 
 set (core-lib-src
         src/core/EnTTRegistry.cpp
         src/core/Scheduler.cpp
+        src/core/platform/systems/GLFWSystem.cpp
         src/core/reflection/Any.cpp
         src/core/reflection/ClassReflection.cpp
         src/core/reflection/ReflectionContext.cpp
@@ -25,7 +25,6 @@ set (core-lib-src
         src/core/serialization/JsonTypeSaverAdapter.cpp
         src/core/serialization/systems/TypeLoaderSystem.cpp
         src/core/systems/CoreSystems.cpp
-        src/core/systems/GLFWSystem.cpp
 )
 
 set (core-lib-modules
@@ -33,9 +32,11 @@ set (core-lib-modules
         src/core/QuitAppRequest.cppm
         src/core/Scheduler.cppm
         src/core/Spatial.cppm
-        src/core/Window.cppm
-        src/core/WindowInternal.cppm
         src/core/kangaru.cppm
+        src/core/platform/GLFWWindow.cppm
+        src/core/platform/NativeWindowHandles.cppm
+        src/core/platform/Window.cppm
+        src/core/platform/systems/GLFWSystem.cppm
         src/core/reflection/Any.cppm
         src/core/reflection/ClassReflection.cppm
         src/core/reflection/ReflectionContext.cppm
@@ -62,7 +63,6 @@ set (core-lib-modules
         src/core/services/EnTTRegistryService.cppm
         src/core/services/SchedulerService.cppm
         src/core/systems/CoreSystems.cppm
-        src/core/systems/GLFWSystem.cppm
 )
 
 add_library(core-lib STATIC ${core-lib-src} ${core-lib-modules})

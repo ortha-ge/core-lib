@@ -4,6 +4,8 @@ module;
 
 export module Core.GLFWSystem;
 
+import Core.Window;
+
 export namespace Core {
 	class GLFWSystem {
 	public:
@@ -14,6 +16,8 @@ export namespace Core {
 
 		static void tickCreateWindowView(entt::registry& registry);
 		static void tickCloseWindowView(entt::registry& registry);
+
+		static void tryCreateGLFWWindow(entt::registry&, entt::entity, const Window&);
 
 	};
 } // Core

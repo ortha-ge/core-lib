@@ -5,22 +5,33 @@
 
 import Core.GLFWSystem;
 import Core.QuitAppRequest;
+import Core.GLFWWindow;
+import Core.NativeWindowHandles;
 import Core.Window;
-import Core.WindowInternal;
 
-TEST_CASE("Window_GLFWSystemTickCreateWindowView_WindowInternalProduced", "GLFWSystem") {
+TEST_CASE("Window_GLFWSystemTickCreateWindowView_GLFWWindowProduced", "GLFWSystem") {
     using namespace Core;
+	const std::string_view expectedWindowTitle = "Test Window";
+	const uint32_t expectedWindowWidth = 640;
+	const uint32_t expectedWindowHeight = 480;
     entt::registry registry{};
     entt::entity windowEntity = registry.create();
-    registry.emplace<Window>(windowEntity, "Test Window", 640, 480);
+    registry.emplace<Window>(windowEntity, std::string{ expectedWindowTitle }, expectedWindowWidth, expectedWindowHeight);
     GLFWSystem::initSystem(registry);
 
     GLFWSystem::tickCreateWindowView(registry);
 
-    const bool hasWindowInternal = registry.all_of<WindowInternal>(windowEntity);
-    REQUIRE(hasWindowInternal);
-    const WindowInternal& windowInternal = registry.get<WindowInternal>(windowEntity);
-    REQUIRE(windowInternal.window != nullptr);
+    REQUIRE(registry.all_of<GLFWWindow>(windowEntity));
+    const auto& glfwWindow = registry.get<GLFWWindow>(windowEntity);
+    REQUIRE(glfwWindow.window != nullptr);
+	const char* actualWindowTitle = glfwGetWindowTitle(glfwWindow.window);
+	REQUIRE(actualWindowTitle != nullptr);
+	REQUIRE(expectedWindowTitle == actualWindowTitle);
+	int actualWindowWidth{};
+	int actualWindowHeight{};
+	glfwGetWindowSize(glfwWindow.window, &actualWindowWidth, &actualWindowHeight);
+	REQUIRE(expectedWindowWidth == actualWindowWidth);
+	REQUIRE(expectedWindowHeight == actualWindowHeight);
 }
 
 TEST_CASE("WindowInternal_GLFWSystemTickCloseWindowView_QuitAppRequestProduced", "GLFWSystem") {
@@ -31,7 +42,7 @@ TEST_CASE("WindowInternal_GLFWSystemTickCloseWindowView_QuitAppRequestProduced",
     entt::entity windowInternalEntity = registry.create();
     GLFWwindow* glfwWindow = glfwCreateWindow(640, 480, "Test Window", nullptr, nullptr);
     REQUIRE(glfwWindow != nullptr);
-    registry.emplace<WindowInternal>(windowInternalEntity, glfwWindow);
+    registry.emplace<GLFWWindow>(windowInternalEntity, glfwWindow);
     glfwSetWindowShouldClose(glfwWindow, true);
 
     GLFWSystem::tickCloseWindowView(registry);

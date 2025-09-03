@@ -122,11 +122,13 @@ TEST_CASE("JsonInput_LoadReflectedClass_LoadedClassMatchesInput", "JsonTypeLoade
     using namespace JsonTypeLoaderAdapterTests;
     using namespace Core;
     constexpr std::string_view jsonInput = R"({
-    "stringProperty": "testString",
-    "intProperty": 5,
-    "doubleProperty": 10.0,
-    "floatProperty": 15.0,
-    "boolProperty": true
+	"TestClass": {
+	    "stringProperty": "testString",
+	    "intProperty": 5,
+	    "doubleProperty": 10.0,
+	    "floatProperty": 15.0,
+	    "boolProperty": true
+	}
 })";
     reflect<TestClass>(getCurrentReflectionContext());
     TestClass testClass{};
@@ -145,13 +147,15 @@ TEST_CASE("JsonInput_LoadReflectedClassWithNestedClass_LoadedClassMatchesInput",
     using namespace JsonTypeLoaderAdapterTests;
     using namespace Core;
     constexpr std::string_view jsonInput = R"({
-    "nestedProperty": {
-        "stringProperty": "testString",
-        "intProperty": 5,
-        "doubleProperty": 10.0,
-        "floatProperty": 15.0,
-        "boolProperty": true
-    }
+	"TestClass2": {
+	    "nestedProperty": {
+	        "stringProperty": "testString",
+	        "intProperty": 5,
+	        "doubleProperty": 10.0,
+	        "floatProperty": 15.0,
+	        "boolProperty": true
+	    }
+	}
 })";
     auto& reflectionContext{ getCurrentReflectionContext() };
     reflect<TestClass>(reflectionContext);
@@ -172,7 +176,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithOptional_LoadedOptionalMatchesInput",
     using namespace JsonTypeLoaderAdapterTests;
     using namespace Core;
     constexpr std::string_view jsonInput = R"({
-    "optionalIntProperty": 5
+	"TestClass3": {
+	    "optionalIntProperty": 5
+	}
 })";
     reflect<TestClass3>(getCurrentReflectionContext());
     TestClass3 testClass{};
@@ -187,6 +193,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptional_LoadedOptionalIsNull"
     using namespace JsonTypeLoaderAdapterTests;
     using namespace Core;
     constexpr std::string_view jsonInput = R"({
+	"TestClass3": {}
 })";
     reflect<TestClass3>(getCurrentReflectionContext());
     TestClass3 testClass{};
@@ -202,13 +209,15 @@ TEST_CASE("JsonInput_LoadReflectedClassWithOptionalClass_LoadedOptionalMatchesIn
     using namespace JsonTypeLoaderAdapterTests;
     using namespace Core;
     constexpr std::string_view jsonInput = R"({
-    "optionalClassProperty": {
-        "stringProperty": "testString",
-        "intProperty": 5,
-        "doubleProperty": 10.0,
-        "floatProperty": 15.0,
-        "boolProperty": true
-    }
+	"TestClass4": {
+	    "optionalClassProperty": {
+	        "stringProperty": "testString",
+	        "intProperty": 5,
+	        "doubleProperty": 10.0,
+	        "floatProperty": 15.0,
+	        "boolProperty": true
+	    }
+	}
 })";
     reflect<TestClass4>(getCurrentReflectionContext());
     TestClass4 testClass{};
@@ -224,6 +233,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptionalClass_LoadedOptionalIs
     using namespace JsonTypeLoaderAdapterTests;
     using namespace Core;
     constexpr std::string_view jsonInput = R"({
+	"TestClass4": {}
 })";
     reflect<TestClass4>(getCurrentReflectionContext());
     TestClass4 testClass{};
@@ -238,11 +248,13 @@ TEST_CASE("JsonInput_LoadReflectedClassWithVector_LoadedVectorMatchesInput", "Js
     using namespace JsonTypeLoaderAdapterTests;
     using namespace Core;
     constexpr std::string_view jsonInput = R"({
-    "vectorProperty": [
-        5,
-        10,
-        15
-    ]
+	"VectorTestClass": {
+	    "vectorProperty": [
+	        5,
+	        10,
+	        15
+	    ]
+	}
 })";
     reflect<VectorTestClass>(getCurrentReflectionContext());
     VectorTestClass testClass{};
@@ -257,11 +269,13 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMap_LoadedMapMatchesInput", "JsonType
     using namespace JsonTypeLoaderAdapterTests;
     using namespace Core;
     constexpr std::string_view jsonInput = R"({
-    "mapProperty": {
-        "a": 5,
-        "b": 10,
-        "c": 15
-    }
+	"MapTestClass": {
+	    "mapProperty": {
+	        "a": 5,
+	        "b": 10,
+	        "c": 15
+	    }
+	}
 })";
     reflect<MapTestClass>(getCurrentReflectionContext());
     MapTestClass testClass{};

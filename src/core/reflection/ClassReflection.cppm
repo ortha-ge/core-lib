@@ -74,7 +74,7 @@ export namespace Core {
     class ClassReflection {
     public:
 
-        explicit ClassReflection(std::string_view className);
+        explicit ClassReflection(std::string_view name);
         ~ClassReflection() = default;
         ClassReflection(const ClassReflection&) = default;
         ClassReflection(ClassReflection&&) = default;
@@ -82,21 +82,19 @@ export namespace Core {
         ClassReflection& operator=(const ClassReflection&) = default;
         ClassReflection& operator=(ClassReflection&&) = default;
 
-        void setTypeId(TypeId typeId);
-        const TypeId& getTypeId() const;
-
         void addProperty(ClassProperty property);
         bool hasProperty(std::string_view propertyName) const;
         const ClassProperty& getProperty(std::string_view propertyName) const;
         void forEachProperty(std::function<void(const ClassProperty&)> visitor) const;
         void forEachProperty(std::function<void(ClassProperty&)> visitor);
 
+		const std::string& getName() const;
         const std::vector<ClassProperty>& getProperties() const;
 
     private:
 
         TypeId mTypeId{};
-        std::string mClassName;
+        std::string mName;
         std::vector<ClassProperty> mProperties;
 
     };
@@ -111,7 +109,6 @@ export namespace Core {
     protected:
 
         void property(ClassProperty property);
-        void method(std::string_view name);
 
     private:
 
@@ -136,12 +133,6 @@ export namespace Core {
             ClassReflectionBuilderBase::property(ClassProperty(typeId, name, offset, size));
             return *this;
         }
-
-        // template <typename Method>
-        // ClassReflectionBuilder& method(std::string_view name, Method&& method) {
-        //     ClassReflectionBuilderBase::method(name);
-        //     return *this;
-        // }
 
     };
 

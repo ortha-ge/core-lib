@@ -32,8 +32,8 @@ namespace Core {
         return mOffset;
     }
 
-    ClassReflection::ClassReflection(std::string_view className)
-        : mClassName(className) {
+    ClassReflection::ClassReflection(std::string_view name)
+        : mName(name) {
     }
 
     void ClassReflection::addProperty(ClassProperty property) {
@@ -69,6 +69,10 @@ namespace Core {
         }
     }
 
+	const std::string& ClassReflection::getName() const {
+	    return mName;
+    }
+
     const std::vector<ClassProperty>& ClassReflection::getProperties() const {
         return mProperties;
     }
@@ -84,10 +88,6 @@ namespace Core {
 
     void ClassReflectionBuilderBase::property(ClassProperty property) {
         mClassReflection.addProperty(std::move(property));
-    }
-
-    void ClassReflectionBuilderBase::method(std::string_view name) {
-
     }
 
 } // Core

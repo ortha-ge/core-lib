@@ -171,17 +171,32 @@ namespace Core {
         }, anyValue.getTypeId().getTypeIdInfo().getTypeTraits());
     }
 
-    std::string save(const Any& anyValue) {
-        rapidjson::Document doc;
-        rapidjson::Value& rootValue{ doc };
+	std::string save(const Any& anyValue) {
+		const auto& reflectionContext{getCurrentReflectionContext()};
+		if (!reflectionContext.hasClass(anyValue.getTypeId())) {
+			printf("Class not registered.\n");
+			return {};
+		}
 
-        save(rootValue, anyValue, doc.GetAllocator());
+		const auto& classReflection{reflectionContext.getClass(anyValue.getTypeId())};
+		const auto& className{classReflection.getName()};
 
-        rapidjson::StringBuffer buffer;
-        rapidjson::PrettyWriter writer(buffer);
-        doc.Accept(writer);
+		rapidjson::Document doc;
+		auto& allocator{doc.GetAllocator()};
 
-        return buffer.GetString();
-    }
+		rapidjson::Value classRootObject(rapidjson::kObjectType);
+		classRootObject.SetObject();
+		save(classRootObject, anyValue, allocator);
+
+		rapidjson::Value classRootObjectKey(className.c_str(), allocator);
+		doc.SetObject();
+		doc.AddMember(classRootObjectKey, classRootObject, allocator);
+
+		rapidjson::StringBuffer buffer;
+		rapidjson::PrettyWriter writer(buffer);
+		doc.Accept(writer);
+
+		return buffer.GetString();
+	}
 
 } // Core

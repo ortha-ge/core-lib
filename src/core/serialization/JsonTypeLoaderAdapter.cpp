@@ -196,12 +196,26 @@ namespace Core {
         }, anyValue.getTypeId().getTypeIdInfo().getTypeTraits());
     }
 
-    void load(std::string_view jsonInput, Any& anyValue) {
-        rapidjson::Document doc;
-        doc.Parse(jsonInput.data(), jsonInput.length());
+	void load(std::string_view jsonInput, Any& anyValue) {
+		const auto& reflectionContext{getCurrentReflectionContext()};
+		if (!reflectionContext.hasClass(anyValue.getTypeId())) {
+			printf("Class not registered.\n");
+			return;
+		}
 
-        const rapidjson::Value& rootValue{ doc };
-        load(rootValue, anyValue);
-    }
+		const auto& classReflection{reflectionContext.getClass(anyValue.getTypeId())};
+		const auto& className{classReflection.getName()};
+
+		rapidjson::Document doc;
+		doc.Parse(jsonInput.data(), jsonInput.length());
+
+		auto classRootObjectIt = doc.FindMember(className.c_str());
+		if (classRootObjectIt == doc.MemberEnd()) {
+			printf("Couldn't find matching class root '%s' object.\n", className.c_str());
+			return;
+		}
+
+		load(classRootObjectIt->value, anyValue);
+	}
 
 } // Core

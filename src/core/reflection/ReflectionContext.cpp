@@ -1,6 +1,7 @@
 module;
 
 #include <functional>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -22,13 +23,20 @@ namespace Core {
         mBasicTypeReflections.emplace(typeId, std::move(typeReflection));
     }
 
-    void ReflectionContext::addClass(TypeId typeId, ClassReflection classReflection) {
-        if (mClassReflections.contains(typeId)) {
-            return;
-        }
+	void ReflectionContext::addClass(TypeId typeId, ClassReflection classReflection) {
+		if (mClassReflections.contains(typeId)) {
+			return;
+		}
 
-        mClassReflections.emplace(typeId, std::move(classReflection));
-    }
+		const std::string& className{classReflection.getName()};
+		if (mTypeNameLookup.contains(className)) {
+			printf("Class with name '%s' already exists.\n", className.c_str());
+			return;
+		}
+
+		mTypeNameLookup.emplace(className, typeId);
+		mClassReflections.emplace(typeId, std::move(classReflection));
+	}
 
     bool ReflectionContext::hasClass(const TypeId& typeId) const {
         return mClassReflections.contains(typeId);
@@ -45,5 +53,13 @@ namespace Core {
     const ClassReflection& ReflectionContext::getClass(const TypeId& typeId) const {
         return mClassReflections.at(typeId);
     }
+
+	std::optional<TypeId> ReflectionContext::getTypeIdByName(const std::string& name) const {
+		if (auto it = mTypeNameLookup.find(name); it != mTypeNameLookup.end()) {
+			return it->second;
+		}
+
+		return std::nullopt;
+	}
 
 } // Core

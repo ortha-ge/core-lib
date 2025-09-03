@@ -7,11 +7,13 @@ module;
 export module Core.JsonTypeLoaderAdapter;
 
 import Core.Any;
+import Core.ReflectionContext;
 import Core.TypeLoader;
 
 export namespace Core {
 
-    void load(std::string_view jsonInput, Any& anyValue);
+	void load(const ReflectionContext&, std::string_view, Any&);
+	Any load(const ReflectionContext&, std::string_view);
 
     template <typename T>
     class JsonTypeLoaderAdapter : public TypeLoaderAdapter {
@@ -20,7 +22,7 @@ export namespace Core {
         T _load(std::string_view jsonInput) {
             T instance{};
             Any any(instance);
-            Core::load(jsonInput, any);
+            Core::load(getCurrentReflectionContext(), jsonInput, any);
             return instance;
         }
 

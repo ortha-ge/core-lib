@@ -25,6 +25,8 @@ export namespace Core {
         [[nodiscard]] bool hasClass(const TypeId& typeId) const;
         [[nodiscard]] const ClassReflection& getClass(const TypeId& typeId) const;
 
+		std::optional<TypeId> getTypeIdByName(const std::string& name) const;
+
         template <class T>
         [[nodiscard]] bool hasClass() const {
             return hasClass(TypeId::get<T>());
@@ -62,6 +64,7 @@ export namespace Core {
         size_t mNextTypeId{};
         std::unordered_map<TypeId, ClassReflection> mClassReflections;
         std::unordered_map<TypeId, TypeReflection> mBasicTypeReflections;
+		std::unordered_map<std::string, TypeId> mTypeNameLookup;
 
     };
 

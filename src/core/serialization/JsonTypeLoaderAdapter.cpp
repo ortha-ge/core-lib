@@ -103,19 +103,20 @@ namespace Core {
         bool
     >;
 
-    void load(const rapidjson::Value& inputValue, Any& anyValue);
+    void load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue);
 
     template <typename T>
-    void _load(const rapidjson::Value& inputValue, Any& anyValue, const T&) {
+    void _load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue, const T&) {
         static_assert(false, "Unhandled type traits.");
     }
 
-    void _load(const rapidjson::Value& inputValue, Any& anyValue, const TypeTraits& typeTraits) {
-        const auto& context{ getCurrentReflectionContext() };
+	void _load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue,
+			   const TypeTraits& typeTraits) {
+
         const auto& typeId{ anyValue.getTypeId() };
 
-        if (context.hasClass(typeId)) {
-            const ClassReflection& classReflection{ context.getClass(typeId) };
+        if (reflectionContext.hasClass(typeId)) {
+            const ClassReflection& classReflection{ reflectionContext.getClass(typeId) };
             void* classInstance = anyValue.getInstance();
             for (const auto& property : classReflection.getProperties()) {
                 const auto& propertyTypeId{ property.getTypeId() };
@@ -132,7 +133,7 @@ namespace Core {
                 }
 
                 Any propertyAny{ property.getTypeId(), property.getRawPointer(classInstance) };
-                load(it->value, propertyAny);
+                load(reflectionContext, it->value, propertyAny);
             }
         } else if (AnyLoaderMapperTypes::tryLoadAny(inputValue, anyValue)) {
 
@@ -141,13 +142,13 @@ namespace Core {
         }
     }
 
-    void _load(const rapidjson::Value& inputValue, Any& anyValue, const OptionalTypeTraits& typeTraits) {
+    void _load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue, const OptionalTypeTraits& typeTraits) {
         Any wrappedTypeAny(typeTraits.mWrappedType);
-        load(inputValue, wrappedTypeAny);
+        load(reflectionContext, inputValue, wrappedTypeAny);
         anyValue = wrappedTypeAny;
     }
 
-    void _load(const rapidjson::Value& inputValue, Any& anyValue, const VectorTypeTraits& typeTraits) {
+    void _load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue, const VectorTypeTraits& typeTraits) {
         if (!inputValue.IsArray()) {
             printf("Not an array.\n");
             return;
@@ -159,14 +160,14 @@ namespace Core {
 
         for (const auto& inputElement : inputValue.GetArray()) {
             Any wrappedTypeAny(typeTraits.mWrappedType);
-            load(inputElement, wrappedTypeAny);
+            load(reflectionContext, inputElement, wrappedTypeAny);
             wrappedVector.emplace_back(std::move(wrappedTypeAny));
         }
 
         anyValue = anyVector;
     }
 
-    void _load(const rapidjson::Value& inputValue, Any& anyValue, const MapTypeTraits& typeTraits) {
+    void _load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue, const MapTypeTraits& typeTraits) {
         if (!inputValue.IsObject()) {
             printf("Not an object.\n");
             return;
@@ -183,21 +184,20 @@ namespace Core {
 
             // Value
             Any wrappedValueAny(typeTraits.mValueType);
-            load(objectElement.value, wrappedValueAny);
+            load(reflectionContext, objectElement.value, wrappedValueAny);
             wrappedMap[wrappedKeyAny] = std::move(wrappedValueAny);
         }
 
         anyValue = anyMap;
     }
 
-    void load(const rapidjson::Value& inputValue, Any& anyValue) {
-        std::visit([&inputValue, &anyValue](auto&& typeTraits) {
-            _load(inputValue, anyValue, typeTraits);
+    void load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue) {
+        std::visit([&reflectionContext, &inputValue, &anyValue](auto&& typeTraits) {
+            _load(reflectionContext, inputValue, anyValue, typeTraits);
         }, anyValue.getTypeId().getTypeIdInfo().getTypeTraits());
     }
 
-	void load(std::string_view jsonInput, Any& anyValue) {
-		const auto& reflectionContext{getCurrentReflectionContext()};
+	void load(const ReflectionContext& reflectionContext, std::string_view jsonInput, Any& anyValue) {
 		if (!reflectionContext.hasClass(anyValue.getTypeId())) {
 			printf("Class not registered.\n");
 			return;
@@ -215,7 +215,36 @@ namespace Core {
 			return;
 		}
 
-		load(classRootObjectIt->value, anyValue);
+		load(reflectionContext, classRootObjectIt->value, anyValue);
+	}
+
+	Any load(const ReflectionContext& reflectionContext, std::string_view jsonInput) {
+		rapidjson::Document doc;
+		doc.Parse(jsonInput.data(), jsonInput.length());
+
+		if (doc.MemberCount() != 1) {
+			printf("Requires a single root object with the name of the type represented.\n");
+			return {};
+		}
+
+		auto rootClassObjectIt = doc.MemberBegin();
+		const auto& rootClassNameValue{rootClassObjectIt->name};
+		const char* rootClassName = rootClassNameValue.GetString();
+
+		auto typeId = reflectionContext.getTypeIdByName(rootClassName);
+		if (!typeId) {
+			printf("TypeId not found with name '%s'.\n", rootClassName);
+			return {};
+		}
+
+		if (!reflectionContext.hasClass(*typeId)) {
+			printf("TypeId is not a registered class.\n");
+			return {};
+		}
+
+		Any instance(*typeId);
+		load(reflectionContext, rootClassObjectIt->value, instance);
+		return instance;
 	}
 
 } // Core

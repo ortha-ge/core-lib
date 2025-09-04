@@ -129,7 +129,7 @@ export namespace Core {
         ClassReflectionBuilder& property(std::string_view name, Member&& member) {
             const auto offset = memberOffset(member);
             const auto size = memberSize(member);
-            const auto& typeId = memberTypeId(member);
+            const auto typeId = TypeId::get(member);
             ClassReflectionBuilderBase::property(ClassProperty(typeId, name, offset, size));
             return *this;
         }

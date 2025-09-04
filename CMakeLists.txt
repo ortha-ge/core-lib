@@ -11,10 +11,17 @@ set (core-lib-src
         src/core/Scheduler.cpp
         src/core/platform/systems/GLFWSystem.cpp
         src/core/reflection/Any.cpp
+        src/core/reflection/BasicTypeTraits.cpp
         src/core/reflection/ClassReflection.cpp
+        src/core/reflection/MapTypeTraits.cpp
+        src/core/reflection/OptionalTypeTraits.cpp
         src/core/reflection/ReflectionContext.cpp
         src/core/reflection/TypeId.cpp
+        src/core/reflection/TypeInfo.cpp
+        src/core/reflection/TypeInfoImpl.cpp
         src/core/reflection/TypeReflection.cpp
+        src/core/reflection/TypeTraits.cpp
+        src/core/reflection/VectorTypeTraits.cpp
         src/core/resources/ResourceCache.cpp
         src/core/resources/ResourceHandle.cpp
         src/core/resources/ResourceLoadRequest.cpp
@@ -38,10 +45,17 @@ set (core-lib-modules
         src/core/platform/Window.cppm
         src/core/platform/systems/GLFWSystem.cppm
         src/core/reflection/Any.cppm
+        src/core/reflection/BasicTypeTraits.cppm
         src/core/reflection/ClassReflection.cppm
+        src/core/reflection/MapTypeTraits.cppm
+        src/core/reflection/OptionalTypeTraits.cppm
         src/core/reflection/ReflectionContext.cppm
         src/core/reflection/TypeId.cppm
+        src/core/reflection/TypeInfo.cppm
+        src/core/reflection/TypeInfoImpl.cppm
         src/core/reflection/TypeReflection.cppm
+        src/core/reflection/TypeTraits.cppm
+        src/core/reflection/VectorTypeTraits.cppm
         src/core/resources/FileLoadRequest.cppm
         src/core/resources/ImageResource.cppm
         src/core/resources/RawDataResource.cppm

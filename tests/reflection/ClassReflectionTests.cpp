@@ -97,8 +97,8 @@ TEST_CASE("ClassBuilderWithProperties_BuildAndGetProperty_OffsetAndSizesMatch", 
     const auto& secondProperty = classReflection.getProperty("secondPublicProperty");
     REQUIRE(firstProperty.offset() == 0);
     REQUIRE(secondProperty.offset() == sizeof(uint32_t));
-    REQUIRE(firstProperty.getTypeId().getTypeIdInfo().getSize() == sizeof(uint32_t));
-    REQUIRE(secondProperty.getTypeId().getTypeIdInfo().getSize() == sizeof(uint32_t));
+    REQUIRE(firstProperty.getTypeId().getTypeInfo().getSize() == sizeof(uint32_t));
+    REQUIRE(secondProperty.getTypeId().getTypeInfo().getSize() == sizeof(uint32_t));
 }
 
 TEST_CASE("ClassBuilderWithProperties_BuildAndForEachProperties_EnumeratesProperties", "ClassReflection") {

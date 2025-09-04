@@ -10,9 +10,14 @@ module;
 module Core.JsonTypeSaverAdapter;
 
 import Core.Any;
+import Core.BasicTypeTraits;
 import Core.ClassReflection;
+import Core.MapTypeTraits;
+import Core.OptionalTypeTraits;
 import Core.ReflectionContext;
 import Core.TypeId;
+import Core.TypeTraits;
+import Core.VectorTypeTraits;
 
 namespace Core {
 
@@ -101,7 +106,11 @@ namespace Core {
         static_assert(false, "Unhandled type traits.");
     }
 
-    void _save(rapidjson::Value& outputValue, const Any& anyValue, const TypeTraits& typeTraits, rapidjson::Document::AllocatorType& allocator) {
+	void _save(rapidjson::Value& outputValue, const Any& anyValue, const VoidTypeTraits& typeTraits, rapidjson::Document::AllocatorType& allocator) {
+
+    }
+
+    void _save(rapidjson::Value& outputValue, const Any& anyValue, const BasicTypeTraits& typeTraits, rapidjson::Document::AllocatorType& allocator) {
         const auto& context{ getCurrentReflectionContext() };
         const auto& typeId{ anyValue.getTypeId() };
 
@@ -130,17 +139,17 @@ namespace Core {
         }
     }
 
-    void _save(rapidjson::Value& outputValue, const Any& anyValue, const OptionalTypeTraits& typeTraits, rapidjson::Document::AllocatorType& allocator) {
-        if (void* wrappedInstance = typeTraits.mGet(anyValue.getInstance())) {
-            Any wrappedAnyValue{ typeTraits.mWrappedType, wrappedInstance };
-            save(outputValue, wrappedAnyValue, allocator);
-        }
-    }
+	void _save(rapidjson::Value& outputValue, const Any& anyValue, const OptionalTypeTraits& typeTraits,
+			   rapidjson::Document::AllocatorType& allocator) {
+		if (Any innerValue{typeTraits.getFunc(anyValue)}; innerValue.getInstance() != nullptr) {
+			save(outputValue, innerValue, allocator);
+		}
+	}
 
     void _save(rapidjson::Value& outputValue, const Any& anyValue, const VectorTypeTraits& typeTraits, rapidjson::Document::AllocatorType& allocator) {
         outputValue.SetArray();
-        typeTraits.mForEach(anyValue.getInstance(), [&outputValue, &typeTraits, &allocator](const void* value) {
-            Any valueAny{ typeTraits.mWrappedType, const_cast<void*>(value) };
+        typeTraits.forEachFunc(anyValue, [&outputValue, &typeTraits, &allocator](const Any& valueAny) {
+            //Any valueAny{ typeTraits.mWrappedType, const_cast<void*>(value) };
 
             rapidjson::Value valueValue;
             save(valueValue, valueAny, allocator);
@@ -151,9 +160,9 @@ namespace Core {
 
     void _save(rapidjson::Value& outputValue, const Any& anyValue, const MapTypeTraits& typeTraits, rapidjson::Document::AllocatorType& allocator) {
         outputValue.SetObject();
-        typeTraits.mForEach(anyValue.getInstance(), [&outputValue, &typeTraits, &allocator](const void* key, const void* value) {
-            Any keyAny{ typeTraits.mKeyType, const_cast<void*>(key) };
-            Any valueAny{ typeTraits.mValueType, const_cast<void*>(value) };
+        typeTraits.forEachFunc(anyValue, [&outputValue, &typeTraits, &allocator](const Any& keyAny, const Any& valueAny) {
+            // Any keyAny{ typeTraits.mKeyType, const_cast<void*>(key) };
+            // Any valueAny{ typeTraits.mValueType, const_cast<void*>(value) };
 
             rapidjson::Value keyValue;
             save(keyValue, keyAny, allocator);
@@ -168,7 +177,7 @@ namespace Core {
     void save(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
         std::visit([&outputValue, &anyValue, &allocator](auto&& typeTraits) {
             _save(outputValue, anyValue, typeTraits, allocator);
-        }, anyValue.getTypeId().getTypeIdInfo().getTypeTraits());
+        }, getTypeTraits(anyValue.getTypeId()));
     }
 
 	std::string save(const Any& anyValue) {

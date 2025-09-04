@@ -8,9 +8,14 @@ module;
 
 module Core.JsonTypeLoaderAdapter;
 
+import Core.BasicTypeTraits;
 import Core.ClassReflection;
+import Core.MapTypeTraits;
+import Core.OptionalTypeTraits;
 import Core.ReflectionContext;
 import Core.TypeId;
+import Core.TypeTraits;
+import Core.VectorTypeTraits;
 
 namespace Core {
 
@@ -111,7 +116,12 @@ namespace Core {
     }
 
 	void _load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue,
-			   const TypeTraits& typeTraits) {
+				   const VoidTypeTraits& typeTraits) {
+
+    }
+
+	void _load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue,
+			   const BasicTypeTraits& typeTraits) {
 
         const auto& typeId{ anyValue.getTypeId() };
 
@@ -119,8 +129,7 @@ namespace Core {
             const ClassReflection& classReflection{ reflectionContext.getClass(typeId) };
             void* classInstance = anyValue.getInstance();
             for (const auto& property : classReflection.getProperties()) {
-                const auto& propertyTypeId{ property.getTypeId() };
-                const auto& propertyTypeTraits{ propertyTypeId.getTypeIdInfo().getTypeTraits() };
+                const auto& propertyTypeTraits{ getTypeTraits(property.getTypeId()) };
                 const bool isOptionalProperty = std::holds_alternative<OptionalTypeTraits>(propertyTypeTraits);
 
                 auto it = inputValue.FindMember(property.getName().c_str());
@@ -143,7 +152,7 @@ namespace Core {
     }
 
     void _load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue, const OptionalTypeTraits& typeTraits) {
-        Any wrappedTypeAny(typeTraits.mWrappedType);
+        Any wrappedTypeAny(typeTraits.elementType);
         load(reflectionContext, inputValue, wrappedTypeAny);
         anyValue = wrappedTypeAny;
     }
@@ -159,7 +168,7 @@ namespace Core {
         wrappedVector.reserve(inputValue.Size());
 
         for (const auto& inputElement : inputValue.GetArray()) {
-            Any wrappedTypeAny(typeTraits.mWrappedType);
+            Any wrappedTypeAny(typeTraits.elementType);
             load(reflectionContext, inputElement, wrappedTypeAny);
             wrappedVector.emplace_back(std::move(wrappedTypeAny));
         }
@@ -183,7 +192,7 @@ namespace Core {
             wrappedKey = objectElement.name.GetString();
 
             // Value
-            Any wrappedValueAny(typeTraits.mValueType);
+            Any wrappedValueAny(typeTraits.valueType);
             load(reflectionContext, objectElement.value, wrappedValueAny);
             wrappedMap[wrappedKeyAny] = std::move(wrappedValueAny);
         }
@@ -194,7 +203,7 @@ namespace Core {
     void load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue) {
         std::visit([&reflectionContext, &inputValue, &anyValue](auto&& typeTraits) {
             _load(reflectionContext, inputValue, anyValue, typeTraits);
-        }, anyValue.getTypeId().getTypeIdInfo().getTypeTraits());
+        }, getTypeTraits(anyValue.getTypeId()));
     }
 
 	void load(const ReflectionContext& reflectionContext, std::string_view jsonInput, Any& anyValue) {

@@ -11,17 +11,18 @@ export namespace Core {
 
     class Any {
     public:
+		Any();
+		Any(TypeId typeId, void* instance);
+		Any(TypeId typeId, const void* instance);
+		~Any();
 
-        Any();
-        explicit Any(TypeId typeId);
-        Any(TypeId typeId, void* instance);
-        ~Any();
+		explicit Any(TypeId typeId);
 
-        Any(const Any&);
-        Any& operator=(const Any& other);
+		Any(const Any&);
+		Any(Any&&) noexcept;
 
-        Any(Any&&) noexcept;
-        Any& operator=(Any&&) noexcept;
+		Any& operator=(const Any& other);
+		Any& operator=(Any&&) noexcept;
 
         template <typename T>
         explicit Any(T& instance)

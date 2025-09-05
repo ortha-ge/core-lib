@@ -1,8 +1,10 @@
 module;
 
+#include <map>
 #include <optional>
 #include <string_view>
 #include <unordered_map>
+#include <vector>
 
 export module Core.ReflectionContext;
 
@@ -50,6 +52,44 @@ export namespace Core {
 
 	class ReflectionContext;
 
+	template <typename T>
+	void reflect(ReflectionContext&) {
+		static_assert(false, "Undefined reflect call for type");
+	}
+
+	template <typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext) {
+		if constexpr (
+			std::is_enum_v<ValueType> ||
+			(std::is_class_v<ValueType> &&
+			!std::is_same_v<ValueType, std::string> &&
+			!std::is_same_v<ValueType, TypeId>)) {
+
+			reflect<ValueType>(reflectionContext);
+		}
+	}
+
+	template <class T, typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext, ValueType T::*) {
+		reflectIfValidType<ValueType>(reflectionContext);
+	}
+
+	template <class T, typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext, std::vector<ValueType> T::*) {
+		reflectIfValidType<ValueType>(reflectionContext);
+	}
+
+	template <class T, typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext, std::optional<ValueType> T::*) {
+		reflectIfValidType<ValueType>(reflectionContext);
+	}
+
+	template <class T, typename KeyType, typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext, std::map<KeyType, ValueType> T::*) {
+		reflectIfValidType<KeyType>(reflectionContext);
+		reflectIfValidType<ValueType>(reflectionContext);
+	}
+
 	template <class T>
 	class ClassReflectionBuilder : public ClassReflectionBuilderBase {
 	public:
@@ -61,6 +101,8 @@ export namespace Core {
 
 		template <typename Member>
 		ClassReflectionBuilder& property(std::string_view name, Member&& member) {
+			reflectIfValidType(mContext, member);
+
 			const auto offset = memberOffset(member);
 			const auto size = memberSize(member);
 			const auto typeId = TypeId::get(member);
@@ -171,11 +213,6 @@ export namespace Core {
 		std::unordered_map<TypeId, ClassReflection> mClassReflections;
 		std::unordered_map<TypeId, EnumReflection> mEnumReflections;
     };
-
-    template <typename T>
-    void reflect(ReflectionContext&) {
-        static_assert(false, "Undefined reflect call for type");
-    }
 
     ReflectionContext& getCurrentReflectionContext() {
         static ReflectionContext reflectionContext;

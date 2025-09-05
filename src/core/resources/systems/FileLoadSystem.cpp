@@ -9,17 +9,14 @@ module Core.FileLoadSystem;
 
 import Core.FileDescriptor;
 import Core.FileLoadRequest;
-import Core.ImageLoadSystem;
 import Core.RawDataResource;
 
 namespace Core {
 
 	void FileLoadSystem::initSystem(entt::registry& registry) {
-		ImageLoadSystem::initSystem(registry);
 	}
 
 	void FileLoadSystem::destroySystem(entt::registry& registry) {
-		ImageLoadSystem::destroySystem(registry);
 	}
 
 	void FileLoadSystem::tickSystem(entt::registry& registry) {
@@ -65,8 +62,6 @@ namespace Core {
 			resource.rawData.resize(currentWritePos + readCount);
 			fileStream.read(writeHead, readCount);
 		});
-
-		ImageLoadSystem::tickSystem(registry);
 	}
 
 } // Core

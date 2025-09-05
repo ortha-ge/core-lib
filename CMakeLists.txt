@@ -27,7 +27,6 @@ set (core-lib-src
         src/core/resources/ResourceHandle.cpp
         src/core/resources/ResourceLoadRequest.cpp
         src/core/resources/systems/FileLoadSystem.cpp
-        src/core/resources/systems/ImageLoadSystem.cpp
         src/core/resources/systems/ResourceLoadSystem.cpp
         src/core/serialization/JsonTypeLoaderAdapter.cpp
         src/core/serialization/JsonTypeSaverAdapter.cpp
@@ -60,16 +59,12 @@ set (core-lib-modules
         src/core/reflection/TypeTraits.cppm
         src/core/reflection/VectorTypeTraits.cppm
         src/core/resources/FileLoadRequest.cppm
-        src/core/resources/ImageResource.cppm
         src/core/resources/RawDataResource.cppm
         src/core/resources/ResourceCache.cppm
         src/core/resources/ResourceHandle.cppm
         src/core/resources/ResourceLoadRequest.cppm
-        src/core/resources/SpriteResource.cppm
         src/core/resources/descriptors/FileDescriptor.cppm
-        src/core/resources/descriptors/ImageDescriptor.cppm
         src/core/resources/systems/FileLoadSystem.cppm
-        src/core/resources/systems/ImageLoadSystem.cppm
         src/core/resources/systems/ResourceLoadSystem.cppm
         src/core/serialization/JsonTypeLoaderAdapter.cppm
         src/core/serialization/JsonTypeSaverAdapter.cppm
@@ -83,7 +78,6 @@ set (core-lib-modules
 )
 
 set (core-lib-reflection-modules
-        src/core-reflection/ImageDescriptorReflection.cppm
 )
 
 add_library(core-lib STATIC ${core-lib-src} ${core-lib-modules} ${core-lib-reflection-modules})

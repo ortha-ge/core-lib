@@ -7,6 +7,9 @@ export namespace Core {
 		float x{};
 		float y{};
 		float z{};
+		float scaleX{ 1.0f };
+		float scaleY{ 1.0f };
+		float scaleZ{ 1.0f };
 	};
 
 } // Core

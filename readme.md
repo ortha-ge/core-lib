@@ -1,6 +1,4 @@
 # TODO
-- [ ] Cleanup TypeId/TypeIdInfo/TypeTraits and split into multiple files.
-- [ ] Investigate TypeTraits methods using Any instead of void*
 - [ ] Test coverage of Any.
 - [ ] Timer for calculating deltaT.
 - [ ] Enable 'reflect<T>' to resolve to the namespace of 'T'.

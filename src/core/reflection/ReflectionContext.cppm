@@ -7,6 +7,7 @@ module;
 export module Core.ReflectionContext;
 
 import Core.ClassReflection;
+import Core.EnumReflection;
 import Core.TypeId;
 import Core.TypeReflection;
 
@@ -24,6 +25,10 @@ export namespace Core {
         void addClass(TypeId typeId, ClassReflection classReflection);
         [[nodiscard]] bool hasClass(const TypeId& typeId) const;
         [[nodiscard]] const ClassReflection& getClass(const TypeId& typeId) const;
+
+		void addEnum(TypeId typeId, EnumReflection enumReflection);
+		[[nodiscard]] bool hasEnum(const TypeId& typeId) const;
+		[[nodiscard]] const EnumReflection& getEnum(const TypeId& typeId) const;
 
 		std::optional<TypeId> getTypeIdByName(const std::string& name) const;
 
@@ -61,11 +66,11 @@ export namespace Core {
 
         void initializeBasicTypes();
 
-        size_t mNextTypeId{};
-        std::unordered_map<TypeId, ClassReflection> mClassReflections;
-        std::unordered_map<TypeId, TypeReflection> mBasicTypeReflections;
+		size_t mNextTypeId{};
 		std::unordered_map<std::string, TypeId> mTypeNameLookup;
-
+		std::unordered_map<TypeId, TypeReflection> mBasicTypeReflections;
+		std::unordered_map<TypeId, ClassReflection> mClassReflections;
+		std::unordered_map<TypeId, EnumReflection> mEnumReflections;
     };
 
     template <typename T>

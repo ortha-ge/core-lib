@@ -9,28 +9,22 @@ import Core.TypeId;
 
 export namespace Core {
 
-    class TypeReflection {
-    public:
+	class TypeReflection {
+	public:
+		TypeReflection(std::string_view name, size_t size);
+		~TypeReflection() = default;
+		TypeReflection(const TypeReflection&) = default;
+		TypeReflection(TypeReflection&&) = default;
 
-        TypeReflection(std::string_view typeName, size_t size);
-        ~TypeReflection() = default;
-        TypeReflection(const TypeReflection&) = default;
-        TypeReflection(TypeReflection&&) = default;
+		TypeReflection& operator=(const TypeReflection&) = default;
+		TypeReflection& operator=(TypeReflection&&) = default;
 
-        TypeReflection& operator=(const TypeReflection&) = default;
-        TypeReflection& operator=(TypeReflection&&) = default;
+		[[nodiscard]] const std::string& getName() const;
+		[[nodiscard]] size_t getSize() const;
 
-        void setTypeId(TypeId typeId);
-        [[nodiscard]] const TypeId& getTypeId() const;
+	private:
+		std::string mName;
+		size_t mSize{};
+	};
 
-        [[nodiscard]] size_t getSize() const;
-
-    private:
-
-        TypeId mTypeId;
-        std::string mTypeName;
-        size_t mSize{};
-
-    };
-
-} // Core
+} // namespace Core

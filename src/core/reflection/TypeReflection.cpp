@@ -7,16 +7,12 @@ module Core.TypeReflection;
 namespace Core {
 
     TypeReflection::TypeReflection(std::string_view typeName, size_t size)
-            : mTypeName(typeName)
+            : mName(typeName)
             , mSize(size) {
     }
 
-    void TypeReflection::setTypeId(TypeId typeId) {
-        mTypeId = std::move(typeId);
-    }
-
-    const TypeId& TypeReflection::getTypeId() const {
-        return mTypeId;
+	const std::string& TypeReflection::getName() const {
+	    return mName;
     }
 
     size_t TypeReflection::getSize() const {

@@ -13,6 +13,7 @@ set (core-lib-src
         src/core/reflection/Any.cpp
         src/core/reflection/BasicTypeTraits.cpp
         src/core/reflection/ClassReflection.cpp
+        src/core/reflection/EnumReflection.cpp
         src/core/reflection/MapTypeTraits.cpp
         src/core/reflection/OptionalTypeTraits.cpp
         src/core/reflection/ReflectionContext.cpp
@@ -47,6 +48,7 @@ set (core-lib-modules
         src/core/reflection/Any.cppm
         src/core/reflection/BasicTypeTraits.cppm
         src/core/reflection/ClassReflection.cppm
+        src/core/reflection/EnumReflection.cppm
         src/core/reflection/MapTypeTraits.cppm
         src/core/reflection/OptionalTypeTraits.cppm
         src/core/reflection/ReflectionContext.cppm

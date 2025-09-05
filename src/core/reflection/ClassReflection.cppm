@@ -101,12 +101,10 @@ export namespace Core {
 
     class ClassReflectionBuilderBase {
     public:
+		ClassReflection build();
 
-        explicit ClassReflectionBuilderBase(TypeId typeId, std::string_view className);
-
-        ClassReflection build();
-
-    protected:
+	protected:
+		explicit ClassReflectionBuilderBase(TypeId typeId, std::string_view className);
 
         void property(ClassProperty property);
 

@@ -92,12 +92,12 @@ namespace Core {
     }
 
     void _assign(Any& lhs, const BasicTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
-        printf("Break\n");
-        // if (lhsTypeTraits.mWrappedType != otherTypeId) {
-        //     return *this;
-        // }
-        //
-        // optionalTraits->mApply(getInstance(), other.getInstance());
+		if (lhsTypeTraits.typeId != rhsTypeTraits.typeId) {
+			printf("Mismatched Any assignment.\n");
+			return;
+		}
+
+		lhsTypeTraits.applyFunc(lhs, rhs);
     }
 
     void _assign(Any& lhs, const OptionalTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {

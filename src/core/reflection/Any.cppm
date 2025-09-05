@@ -4,7 +4,6 @@ module;
 
 export module Core.Any;
 
-import Core.ReflectionContext;
 import Core.TypeId;
 
 export namespace Core {

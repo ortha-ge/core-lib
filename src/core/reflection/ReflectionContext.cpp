@@ -16,21 +16,28 @@ namespace Core {
     }
 
     void ReflectionContext::addBasicType(TypeId typeId, TypeReflection typeReflection) {
-        if (mBasicTypeReflections.contains(typeId)) {
-            return;
-        }
+		if (mBasicTypeReflections.contains(typeId)) {
+			return;
+		}
 
-        mBasicTypeReflections.emplace(typeId, std::move(typeReflection));
+		const std::string& typeName{typeReflection.getName()};
+		if (mTypeNameLookup.contains(typeName)) {
+			printf("Type with name '%s' already exists.\n", typeName.c_str());
+			return;
+		}
+
+		mTypeNameLookup.emplace(typeName, typeId);
+		mBasicTypeReflections.emplace(typeId, std::move(typeReflection));
     }
 
 	void ReflectionContext::addClass(TypeId typeId, ClassReflection classReflection) {
-		if (mClassReflections.contains(typeId)) {
+		if (hasClass(typeId)) {
 			return;
 		}
 
 		const std::string& className{classReflection.getName()};
 		if (mTypeNameLookup.contains(className)) {
-			printf("Class with name '%s' already exists.\n", className.c_str());
+			printf("Type with name '%s' already exists.\n", className.c_str());
 			return;
 		}
 
@@ -53,6 +60,30 @@ namespace Core {
     const ClassReflection& ReflectionContext::getClass(const TypeId& typeId) const {
         return mClassReflections.at(typeId);
     }
+
+	void ReflectionContext::addEnum(TypeId typeId, EnumReflection enumReflection) {
+		if (hasEnum(typeId)) {
+			printf("Enum already exists.\n");
+			return;
+		}
+
+		const std::string& enumName{enumReflection.getName()};
+		if (mTypeNameLookup.contains(enumName)) {
+			printf("Type with name '%s' already exists.\n", enumName.c_str());
+			return;
+		}
+
+		mTypeNameLookup.emplace(enumName, typeId);
+		mEnumReflections.emplace(std::move(typeId), std::move(enumReflection));
+	}
+
+	bool ReflectionContext::hasEnum(const TypeId& typeId) const {
+		return mEnumReflections.contains(typeId);
+	}
+
+	const EnumReflection& ReflectionContext::getEnum(const TypeId& typeId) const {
+		return mEnumReflections.at(typeId);
+	}
 
 	std::optional<TypeId> ReflectionContext::getTypeIdByName(const std::string& name) const {
 		if (auto it = mTypeNameLookup.find(name); it != mTypeNameLookup.end()) {

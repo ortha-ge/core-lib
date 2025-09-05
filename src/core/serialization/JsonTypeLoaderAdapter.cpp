@@ -10,6 +10,7 @@ module Core.JsonTypeLoaderAdapter;
 
 import Core.BasicTypeTraits;
 import Core.ClassReflection;
+import Core.EnumReflection;
 import Core.MapTypeTraits;
 import Core.OptionalTypeTraits;
 import Core.ReflectionContext;
@@ -52,11 +53,21 @@ namespace Core {
         }
 
         static bool _tryLoadAnyAsString(const rapidjson::Value& inputValue, Any& anyValue) {
-
             std::string& value{ *static_cast<std::string*>(anyValue.getInstance()) };
             value = inputValue.GetString();
             return true;
         }
+
+		static bool _tryLoadAnyAsTypeId(const rapidjson::Value& inputValue, Any& anyValue) {
+			const auto& reflectionContex{getCurrentReflectionContext()};
+			std::string typeName{inputValue.GetString()};
+			if (auto typeId = reflectionContex.getTypeIdByName(typeName)) {
+				TypeId& typeIdValue{*static_cast<TypeId*>(anyValue.getInstance())};
+				typeIdValue = *typeId;
+			}
+
+			return true;
+		}
 
         template <typename T>
         static bool _tryLoadAnyAs(const rapidjson::Value& inputValue, Any& anyValue) {
@@ -64,14 +75,16 @@ namespace Core {
                 return false;
             }
 
-            if constexpr (std::is_integral_v<T> && !std::is_same_v<T, bool>) {
-                return _tryLoadAnyAsIntegral<T>(inputValue, anyValue);
-            } else if constexpr (std::is_same_v<T, std::string>) {
-                return _tryLoadAnyAsString(inputValue, anyValue);
-            } else {
-                T& value{ *static_cast<T*>(anyValue.getInstance()) };
-                value = inputValue.Get<T>();
-            }
+			if constexpr (std::is_integral_v<T> && !std::is_same_v<T, bool>) {
+				return _tryLoadAnyAsIntegral<T>(inputValue, anyValue);
+			} else if constexpr (std::is_same_v<T, std::string>) {
+				return _tryLoadAnyAsString(inputValue, anyValue);
+			} else if constexpr (std::is_same_v<T, TypeId>) {
+				return _tryLoadAnyAsTypeId(inputValue, anyValue);
+			} else {
+				T& value{*static_cast<T*>(anyValue.getInstance())};
+				value = inputValue.Get<T>();
+			}
 
             return true;
         }
@@ -96,16 +109,17 @@ namespace Core {
     };
 
     using AnyLoaderMapperTypes = AnyLoaderMapper<
-        std::string,
-        int8_t,
-        uint8_t,
-        int16_t,
-        uint16_t,
-        int32_t,
-        uint32_t,
-        double,
-        float,
-        bool
+		TypeId,
+		std::string,
+		int8_t,
+		uint8_t,
+		int16_t,
+		uint16_t,
+		int32_t,
+		uint32_t,
+		double,
+		float,
+		bool
     >;
 
     void load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue);
@@ -144,7 +158,22 @@ namespace Core {
                 Any propertyAny{ property.getTypeId(), property.getRawPointer(classInstance) };
                 load(reflectionContext, it->value, propertyAny);
             }
-        } else if (AnyLoaderMapperTypes::tryLoadAny(inputValue, anyValue)) {
+        } else if (reflectionContext.hasEnum(typeId)) {
+			const EnumReflection& enumReflection{reflectionContext.getEnum(typeId)};
+			if (!inputValue.IsString()) {
+				printf("Enumerator requires string type.\n");
+				return;
+			}
+
+			const char* enumString = inputValue.GetString();
+			if (!enumReflection.hasEnumerator(enumString)) {
+				printf("Couldn't find enumerator with name '%s'.\n", enumString);
+				return;
+			}
+
+			Any enumValue{enumReflection.getEnumeratorValue(enumString)};
+			anyValue = enumValue;
+        }else if (AnyLoaderMapperTypes::tryLoadAny(inputValue, anyValue)) {
 
         } else {
             printf("Unhandled type\n");

@@ -44,16 +44,4 @@ namespace Core {
 		return mEnumerators;
 	}
 
-	EnumReflection EnumReflectionBuilderBase::build() {
-		return mReflection;
-	}
-
-	EnumReflectionBuilderBase::EnumReflectionBuilderBase(std::string_view name)
-		: mReflection(name) {
-	}
-
-	void EnumReflectionBuilderBase::enumerator(std::string_view name, Any value) {
-		mReflection.addEnumerator(name, std::move(value));
-	}
-
 } // namespace Core

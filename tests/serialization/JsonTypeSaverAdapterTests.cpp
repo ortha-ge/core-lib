@@ -10,116 +10,10 @@ import Core.ClassReflection;
 import Core.JsonTypeSaverAdapter;
 import Core.ReflectionContext;
 import Core.TypeId;
-
-namespace JsonTypeSaverAdapterTests {
-    class TestClass {
-    public:
-
-        std::string stringProperty;
-        int intProperty{};
-        double doubleProperty{};
-        float floatProperty{};
-        bool boolProperty{};
-
-    };
-
-    class TestClass2 {
-    public:
-
-        TestClass nestedProperty;
-
-    };
-
-    class TestClass3 {
-    public:
-
-        std::optional<int> optionalIntProperty{};
-
-    };
-
-    class TestClass4 {
-    public:
-
-        std::optional<TestClass> optionalClassProperty{};
-
-    };
-
-    class VectorTestClass {
-    public:
-
-        std::vector<int> vectorProperty{};
-
-    };
-
-    class MapTestClass {
-    public:
-
-        std::map<std::string, int> mapProperty{};
-
-    };
-
-}
-
-template <>
-void Core::reflect<JsonTypeSaverAdapterTests::TestClass>(ReflectionContext& context) {
-    using namespace JsonTypeSaverAdapterTests;
-    auto classReflection = ClassReflectionBuilder<TestClass>("TestClass")
-        .property("stringProperty", &TestClass::stringProperty)
-        .property("intProperty", &TestClass::intProperty)
-        .property("doubleProperty", &TestClass::doubleProperty)
-        .property("floatProperty", &TestClass::floatProperty)
-        .property("boolProperty", &TestClass::boolProperty)
-        .build();
-    context.addClass(TypeId::get<TestClass>(), std::move(classReflection));
-}
-
-template <>
-void Core::reflect<JsonTypeSaverAdapterTests::TestClass2>(ReflectionContext& context) {
-    using namespace JsonTypeSaverAdapterTests;
-    auto classReflection = ClassReflectionBuilder<TestClass2>("TestClass2")
-        .property("nestedProperty", &TestClass2::nestedProperty)
-        .build();
-    context.addClass(TypeId::get<TestClass2>(), std::move(classReflection));
-}
-
-template <>
-void Core::reflect<JsonTypeSaverAdapterTests::TestClass3>(ReflectionContext& context) {
-    using namespace JsonTypeSaverAdapterTests;
-    auto classReflection = ClassReflectionBuilder<TestClass3>("TestClass3")
-        .property("optionalIntProperty", &TestClass3::optionalIntProperty)
-        .build();
-    context.addClass(TypeId::get<TestClass3>(), std::move(classReflection));
-}
-
-template <>
-void Core::reflect<JsonTypeSaverAdapterTests::TestClass4>(ReflectionContext& context) {
-    using namespace JsonTypeSaverAdapterTests;
-    auto classReflection = ClassReflectionBuilder<TestClass4>("TestClass4")
-        .property("optionalClassProperty", &TestClass4::optionalClassProperty)
-        .build();
-    context.addClass(TypeId::get<TestClass4>(), std::move(classReflection));
-}
-
-template <>
-void Core::reflect<JsonTypeSaverAdapterTests::VectorTestClass>(ReflectionContext& context) {
-    using namespace JsonTypeSaverAdapterTests;
-    auto classReflection = ClassReflectionBuilder<VectorTestClass>("VectorTestClass")
-        .property("vectorProperty", &VectorTestClass::vectorProperty)
-        .build();
-    context.addClass(TypeId::get<VectorTestClass>(), std::move(classReflection));
-}
-
-template <>
-void Core::reflect<JsonTypeSaverAdapterTests::MapTestClass>(ReflectionContext& context) {
-    using namespace JsonTypeSaverAdapterTests;
-    auto classReflection = ClassReflectionBuilder<MapTestClass>("MapTestClass")
-        .property("mapProperty", &MapTestClass::mapProperty)
-        .build();
-    context.addClass(TypeId::get<MapTestClass>(), std::move(classReflection));
-}
+import JsonTypeAdapterTestClasses;
 
 TEST_CASE("ReflectedClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeSaverAdapterTests;
+    using namespace JsonTypeAdapterTestClasses;
     using namespace Core;
     constexpr std::string_view expectedOutput = R"({
     "TestClass": {
@@ -140,7 +34,7 @@ TEST_CASE("ReflectedClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterT
 
 
 TEST_CASE("ReflectedClassWithNestedClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeSaverAdapterTests;
+    using namespace JsonTypeAdapterTestClasses;
     using namespace Core;
     constexpr std::string_view expectedOutput = R"({
     "TestClass2": {
@@ -164,7 +58,7 @@ TEST_CASE("ReflectedClassWithNestedClass_Save_OutputMatchesSourceClass", "JsonTy
 }
 
 TEST_CASE("ReflectedClassWithOptional_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeSaverAdapterTests;
+    using namespace JsonTypeAdapterTestClasses;
     using namespace Core;
     constexpr std::string_view expectedOutput = R"({
     "TestClass3": {
@@ -182,7 +76,7 @@ TEST_CASE("ReflectedClassWithOptional_Save_OutputMatchesSourceClass", "JsonTypeS
 }
 
 TEST_CASE("ReflectedClassWithMissingOptional_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeSaverAdapterTests;
+    using namespace JsonTypeAdapterTestClasses;
     using namespace Core;
     constexpr std::string_view expectedOutput = R"({
     "TestClass3": {}
@@ -198,7 +92,7 @@ TEST_CASE("ReflectedClassWithMissingOptional_Save_OutputMatchesSourceClass", "Js
 
 
 TEST_CASE("ReflectedClassWithOptionalClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeSaverAdapterTests;
+    using namespace JsonTypeAdapterTestClasses;
     using namespace Core;
     constexpr std::string_view expectedOutput = R"({
     "TestClass4": {
@@ -228,7 +122,7 @@ TEST_CASE("ReflectedClassWithOptionalClass_Save_OutputMatchesSourceClass", "Json
 }
 
 TEST_CASE("ReflectedClassWithMissingOptionalClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeSaverAdapterTests;
+    using namespace JsonTypeAdapterTestClasses;
     using namespace Core;
     constexpr std::string_view expectedOutput = R"({
     "TestClass4": {}
@@ -243,7 +137,7 @@ TEST_CASE("ReflectedClassWithMissingOptionalClass_Save_OutputMatchesSourceClass"
 }
 
 TEST_CASE("ReflectedClassWithVector_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeSaverAdapterTests;
+    using namespace JsonTypeAdapterTestClasses;
     using namespace Core;
     constexpr std::string_view expectedOutput = R"({
     "VectorTestClass": {
@@ -269,7 +163,7 @@ TEST_CASE("ReflectedClassWithVector_Save_OutputMatchesSourceClass", "JsonTypeSav
 }
 
 TEST_CASE("ReflectedClassWithMap_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeSaverAdapterTests;
+    using namespace JsonTypeAdapterTestClasses;
     using namespace Core;
     constexpr std::string_view expectedOutput = R"({
     "MapTestClass": {

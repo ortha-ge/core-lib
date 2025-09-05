@@ -85,11 +85,12 @@ TEST_CASE("ClassWithNestedClassProperties_ApplyPropertyToInstance_AddressAndValu
 
 TEST_CASE("ClassBuilderWithProperties_BuildAndGetProperty_OffsetAndSizesMatch", "ClassReflection") {
     using namespace Core;
-    using namespace ClassReflectionTests;
-    const auto classReflection = ClassReflectionBuilder<TestClass>("TestClass")
+	using namespace ClassReflectionTests;
+	ReflectionContext reflectionContext;
+	const auto classReflection = reflectionContext.addClass<TestClass>("TestClass")
         .property("publicProperty", &TestClass::publicProperty)
         .property("secondPublicProperty", &TestClass::secondPublicProperty)
-        .build();
+        .getReflection();
 
     REQUIRE(classReflection.hasProperty("publicProperty"));
     REQUIRE(classReflection.hasProperty("secondPublicProperty"));
@@ -104,10 +105,11 @@ TEST_CASE("ClassBuilderWithProperties_BuildAndGetProperty_OffsetAndSizesMatch", 
 TEST_CASE("ClassBuilderWithProperties_BuildAndForEachProperties_EnumeratesProperties", "ClassReflection") {
     using namespace Core;
     using namespace ClassReflectionTests;
-    const auto classReflection = ClassReflectionBuilder<TestClass>("TestClass")
+	ReflectionContext reflectionContext;
+	const auto classReflection = reflectionContext.addClass<TestClass>("TestClass")
         .property("publicProperty", &TestClass::publicProperty)
         .property("secondPublicProperty", &TestClass::secondPublicProperty)
-        .build();
+        .getReflection();
 
     bool hasValidFirstProperty = false;
     bool hasValidSecondProperty = false;
@@ -126,13 +128,11 @@ TEST_CASE("ClassBuilderWithProperties_BuildAndForEachProperties_EnumeratesProper
 TEST_CASE("ReflectionContext_AddClass_HasMatchingClass", "ClassReflection") {
     using namespace Core;
     using namespace ClassReflectionTests;
-    const auto classReflection = ClassReflectionBuilder<TestClass>("TestClass")
+	ReflectionContext reflectionContext;
+	reflectionContext.addClass<TestClass>("TestClass")
         .property("publicProperty", &TestClass::publicProperty)
         .property("secondPublicProperty", &TestClass::secondPublicProperty)
         .build();
-    ReflectionContext reflectionContext;
-
-    reflectionContext.addClass(TypeId::get<TestClass>(), std::move(classReflection));
 
     const bool hasClass = reflectionContext.hasClass<TestClass>();
     REQUIRE(hasClass);

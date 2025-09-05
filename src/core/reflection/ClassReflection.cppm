@@ -99,39 +99,4 @@ export namespace Core {
 
     };
 
-    class ClassReflectionBuilderBase {
-    public:
-		ClassReflection build();
-
-	protected:
-		explicit ClassReflectionBuilderBase(TypeId typeId, std::string_view className);
-
-        void property(ClassProperty property);
-
-    private:
-
-        TypeId mTypeId;
-        ClassReflection mClassReflection;
-
-    };
-
-    template <class T>
-    class ClassReflectionBuilder : public ClassReflectionBuilderBase {
-    public:
-
-        explicit ClassReflectionBuilder(std::string_view className)
-            : ClassReflectionBuilderBase(TypeId::get<T>(), className) {
-        }
-
-        template <typename Member>
-        ClassReflectionBuilder& property(std::string_view name, Member&& member) {
-            const auto offset = memberOffset(member);
-            const auto size = memberSize(member);
-            const auto typeId = TypeId::get(member);
-            ClassReflectionBuilderBase::property(ClassProperty(typeId, name, offset, size));
-            return *this;
-        }
-
-    };
-
 } // Core

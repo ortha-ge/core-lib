@@ -77,17 +77,4 @@ namespace Core {
         return mProperties;
     }
 
-    ClassReflectionBuilderBase::ClassReflectionBuilderBase(TypeId typeId, std::string_view className)
-        : mTypeId{ std::move(typeId) }
-        , mClassReflection{ className } {
-    }
-
-    ClassReflection ClassReflectionBuilderBase::build() {
-        return mClassReflection;
-    }
-
-    void ClassReflectionBuilderBase::property(ClassProperty property) {
-        mClassReflection.addProperty(std::move(property));
-    }
-
 } // Core

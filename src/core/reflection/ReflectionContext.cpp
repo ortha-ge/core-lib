@@ -11,6 +11,31 @@ import Core.TypeId;
 
 namespace Core {
 
+	ClassReflectionBuilderBase::ClassReflectionBuilderBase(TypeId typeId, std::string_view className)
+		: mTypeId{ std::move(typeId) }
+		, mClassReflection{ className } {
+	}
+
+	ClassReflection ClassReflectionBuilderBase::getReflection() {
+		return std::move(mClassReflection);
+	}
+
+	void ClassReflectionBuilderBase::property(ClassProperty property) {
+		mClassReflection.addProperty(std::move(property));
+	}
+
+	EnumReflectionBuilderBase::EnumReflectionBuilderBase(std::string_view name)
+		: mReflection(name) {
+	}
+
+	EnumReflection EnumReflectionBuilderBase::getReflection() {
+		return std::move(mReflection);
+	}
+
+	void EnumReflectionBuilderBase::enumerator(std::string_view name, Any value) {
+		mReflection.addEnumerator(name, std::move(value));
+	}
+
     ReflectionContext::ReflectionContext() {
         initializeBasicTypes();
     }

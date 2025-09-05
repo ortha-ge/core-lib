@@ -1,10 +1,13 @@
+module;
+
+#include <string>
 
 export module Core.ImageDescriptor;
 
 export namespace Core {
 	
 	struct ImageDescriptor {
-		bool placeholder{};
+		std::string imageFilePath;
 	};
 
 } // Core

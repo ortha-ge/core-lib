@@ -51,6 +51,7 @@ set (core-lib-modules
         src/core/reflection/EnumReflection.cppm
         src/core/reflection/MapTypeTraits.cppm
         src/core/reflection/OptionalTypeTraits.cppm
+        src/core/reflection/Reflect.cppm
         src/core/reflection/ReflectionContext.cppm
         src/core/reflection/TypeId.cppm
         src/core/reflection/TypeInfo.cppm
@@ -81,10 +82,14 @@ set (core-lib-modules
         src/core/systems/CoreSystems.cppm
 )
 
-add_library(core-lib STATIC ${core-lib-src} ${core-lib-modules})
+set (core-lib-reflection-modules
+        src/core-reflection/ImageDescriptorReflection.cppm
+)
+
+add_library(core-lib STATIC ${core-lib-src} ${core-lib-modules} ${core-lib-reflection-modules})
 
 target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
-    ${core-lib-modules}
+    ${core-lib-modules} ${core-lib-reflection-modules}
 )
 target_compile_features(core-lib PUBLIC cxx_std_23)
 target_link_libraries(core-lib PUBLIC EnTT::EnTT glfw bx bimg bimg_decode)

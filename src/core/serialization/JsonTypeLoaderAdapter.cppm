@@ -20,10 +20,13 @@ export namespace Core {
     public:
 
         T _load(std::string_view jsonInput) {
-            T instance{};
-            Any any(instance);
-            Core::load(getCurrentReflectionContext(), jsonInput, any);
-            return instance;
+			auto& reflectionContext{getCurrentReflectionContext()};
+			Core::reflect<T>(reflectionContext);
+
+			T instance{};
+			Any any(instance);
+			Core::load(reflectionContext, jsonInput, any);
+			return instance;
         }
 
         template <typename Registry>

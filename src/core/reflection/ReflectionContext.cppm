@@ -6,12 +6,99 @@ module;
 
 export module Core.ReflectionContext;
 
+import Core.Any;
 import Core.ClassReflection;
 import Core.EnumReflection;
 import Core.TypeId;
 import Core.TypeReflection;
 
 export namespace Core {
+
+	class ClassReflectionBuilderBase {
+	public:
+
+		ClassReflection getReflection();
+
+	protected:
+		explicit ClassReflectionBuilderBase(TypeId typeId, std::string_view className);
+
+		void property(ClassProperty property);
+
+	private:
+
+		TypeId mTypeId;
+		ClassReflection mClassReflection;
+
+	};
+
+	class EnumReflectionBuilderBase {
+	public:
+
+		EnumReflection getReflection();
+
+	protected:
+
+		explicit EnumReflectionBuilderBase(std::string_view name);
+
+		void enumerator(std::string_view name, Any value);
+
+	private:
+
+		EnumReflection mReflection;
+
+	};
+
+	class ReflectionContext;
+
+	template <class T>
+	class ClassReflectionBuilder : public ClassReflectionBuilderBase {
+	public:
+
+		ClassReflectionBuilder(ReflectionContext& context, std::string_view className)
+			: ClassReflectionBuilderBase(TypeId::get<T>(), className)
+			, mContext(context) {
+		}
+
+		template <typename Member>
+		ClassReflectionBuilder& property(std::string_view name, Member&& member) {
+			const auto offset = memberOffset(member);
+			const auto size = memberSize(member);
+			const auto typeId = TypeId::get(member);
+			ClassReflectionBuilderBase::property(ClassProperty(typeId, name, offset, size));
+			return *this;
+		}
+
+		void build();
+
+	private:
+
+		ReflectionContext& mContext;
+
+	};
+
+	template <typename T>
+	class EnumReflectionBuilder : public EnumReflectionBuilderBase {
+	public:
+
+		EnumReflectionBuilder(ReflectionContext& context, std::string_view name)
+			: EnumReflectionBuilderBase(name)
+			, mContext(context) {
+		}
+
+		EnumReflectionBuilder& constant(std::string_view name, T value) {
+			Any valueAny(value);
+			Any valueCopy = valueAny;
+			enumerator(name, std::move(valueCopy));
+			return *this;
+		}
+
+		void build();
+
+	private:
+
+		ReflectionContext& mContext;
+
+	};
 
     class ReflectionContext {
     public:
@@ -62,6 +149,18 @@ export namespace Core {
             return null;
         }
 
+		template<class T>
+		ClassReflectionBuilder<T> addClass(std::string_view name) {
+			ClassReflectionBuilder<T> builder(*this, name);
+			return builder;
+		}
+
+		template<class T>
+		EnumReflectionBuilder<T> addEnum(std::string_view name) {
+			EnumReflectionBuilder<T> builder(*this, name);
+			return builder;
+		}
+
     private:
 
         void initializeBasicTypes();
@@ -82,5 +181,15 @@ export namespace Core {
         static ReflectionContext reflectionContext;
         return reflectionContext;
     }
+
+	template<class T>
+	void ClassReflectionBuilder<T>::build() {
+		mContext.addClass(TypeId::get<T>(), getReflection());
+	}
+
+	template<typename T>
+	void EnumReflectionBuilder<T>::build() {
+		mContext.addEnum(TypeId::get<T>(), getReflection());
+	}
 
 } // Core

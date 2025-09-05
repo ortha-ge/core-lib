@@ -7,12 +7,18 @@ set (core-lib-tests-src
         FileLoadSystemTests.cpp
         GLFWSystemTests.cpp
         reflection/ClassReflectionTests.cpp
-        reflection/JsonTypeLoaderAdapterTests.cpp
-        reflection/JsonTypeSaverAdapterTests.cpp
+        serialization/JsonTypeLoaderAdapterTests.cpp
+        serialization/JsonTypeSaverAdapterTests.cpp
+)
+
+set (core-lib-tests-modules
+        serialization/JsonTypeAdapterTestClasses.cppm
 )
 
 add_executable(core-lib-tests ${core-lib-tests-src})
 
+target_sources(core-lib-tests PUBLIC FILE_SET modules TYPE CXX_MODULES FILES ${core-lib-tests-modules})
+target_compile_features(core-lib-tests PUBLIC cxx_std_23)
 target_link_libraries(core-lib-tests PRIVATE core-lib Catch2::Catch2WithMain)
 
 add_custom_target(core-lib-tests-assets

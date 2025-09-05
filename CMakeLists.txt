@@ -6,7 +6,7 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(kangaru CONFIG REQUIRED)
 find_package(RapidJSON CONFIG REQUIRED)
 
-set (core-lib-src
+set(core-lib-src
         src/core/EnTTRegistry.cpp
         src/core/Scheduler.cpp
         src/core/platform/systems/GLFWSystem.cpp
@@ -34,7 +34,7 @@ set (core-lib-src
         src/core/systems/CoreSystems.cpp
 )
 
-set (core-lib-modules
+set(core-lib-modules
         src/core/EnTTRegistry.cppm
         src/core/QuitAppRequest.cppm
         src/core/Scheduler.cppm
@@ -77,13 +77,13 @@ set (core-lib-modules
         src/core/systems/CoreSystems.cppm
 )
 
-set (core-lib-reflection-modules
+set(core-lib-reflection-modules
 )
 
 add_library(core-lib STATIC ${core-lib-src} ${core-lib-modules} ${core-lib-reflection-modules})
 
 target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
-    ${core-lib-modules} ${core-lib-reflection-modules}
+        ${core-lib-modules} ${core-lib-reflection-modules}
 )
 target_compile_features(core-lib PUBLIC cxx_std_23)
 target_link_libraries(core-lib PUBLIC EnTT::EnTT glfw bx bimg bimg_decode)

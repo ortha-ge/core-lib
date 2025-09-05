@@ -10,10 +10,10 @@ import Core.TypeId;
 import Core.TypeTraits;
 
 namespace Core {
-	VectorTypeTraits::VectorTypeTraits(TypeId elementType,
-				   std::function<void(void*, const std::vector<void*>&)> applyFunc,
-				   std::function<void(void*, std::function<void(const void*)>)> forEachFunc)
-				: elementType(std::move(elementType)) {
+	VectorTypeTraits::VectorTypeTraits(
+		TypeId elementType, std::function<void(void*, const std::vector<void*>&)> applyFunc,
+		std::function<void(void*, std::function<void(const void*)>)> forEachFunc)
+		: elementType(std::move(elementType)) {
 
 		this->applyFunc = [applyFunc = std::move(applyFunc)](Any& dest, const std::vector<Any>& source) {
 			const auto& typeTraits{ getTypeTraits(dest.getTypeId()) };
@@ -36,10 +36,11 @@ namespace Core {
 
 			applyFunc(dest.getInstance(), voidVector);
 		};
-		this->forEachFunc = [elementType, forEachFunc = std::move(forEachFunc)](const Any& anyVector, std::function<void(const Any&)> visitor) {
+		this->forEachFunc = [elementType, forEachFunc = std::move(forEachFunc)](
+								const Any& anyVector, std::function<void(const Any&)> visitor) {
 			forEachFunc(anyVector.getInstance(), [elementType, visitor = std::move(visitor)](const void* instance) {
 				visitor(Any{ elementType, instance });
 			});
 		};
 	}
-}
+} // namespace Core

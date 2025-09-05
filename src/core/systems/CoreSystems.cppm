@@ -13,7 +13,6 @@ export namespace Core {
 
 	class CoreSystems {
 	public:
-
 		CoreSystems(EnTTRegistry&, Scheduler&);
 		~CoreSystems();
 
@@ -24,13 +23,11 @@ export namespace Core {
 		CoreSystems& operator=(const CoreSystems&) = delete;
 
 	private:
-
 		entt::registry& mRegistry;
 		Scheduler& mScheduler;
 		TypeLoaderSystem mTypeLoaderSystem;
 		ResourceLoadSystem mResourceLoadSystem;
 		TaskHandle mTickHandle{};
-
 	};
 
-} // Core
+} // namespace Core

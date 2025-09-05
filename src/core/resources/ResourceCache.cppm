@@ -5,8 +5,8 @@ module;
 #include <string>
 #include <unordered_map>
 
-#include <entt/fwd.hpp>
 #include <entt/entity/entity.hpp>
+#include <entt/fwd.hpp>
 
 export module Core.ResourceCache;
 
@@ -14,7 +14,6 @@ export namespace Core {
 
 	class ResourceCache {
 	public:
-
 		std::optional<entt::entity> getResource(const std::string& resourceFilePath) const;
 		void addResource(const std::string& resourceFilePath, entt::entity resourceEntity);
 
@@ -28,10 +27,8 @@ export namespace Core {
 		// Adapters could be mapped to TypeId with a register call for runtime resolution.
 
 	private:
-
 		std::unordered_map<std::string, entt::entity> mResourceLookup{};
 		std::list<entt::entity> mRecentlyUsedResources{};
-
 	};
 
 } // namespace Core

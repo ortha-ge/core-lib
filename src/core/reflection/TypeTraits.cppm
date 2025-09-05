@@ -14,7 +14,8 @@ export namespace Core {
 
 	struct VoidTypeTraits {};
 
-	using TypeTraits = std::variant<VoidTypeTraits, BasicTypeTraits, OptionalTypeTraits, VectorTypeTraits, MapTypeTraits>;
+	using TypeTraits =
+		std::variant<VoidTypeTraits, BasicTypeTraits, OptionalTypeTraits, VectorTypeTraits, MapTypeTraits>;
 
 	const TypeTraits& getTypeTraits(const TypeId&);
-}
+} // namespace Core

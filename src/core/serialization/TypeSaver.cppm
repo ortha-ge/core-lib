@@ -9,17 +9,15 @@ export module Core.TypeSaver;
 
 export namespace Core {
 
-    class TypeSaverAdapter {
-    public:
+	class TypeSaverAdapter {
+	public:
+		virtual ~TypeSaverAdapter() = default;
 
-        virtual ~TypeSaverAdapter() = default;
+		virtual void save(std::string_view, entt::registry&, entt::entity) = 0;
+	};
 
-        virtual void save(std::string_view, entt::registry&, entt::entity) = 0;
+	struct TypeSaver {
+		std::unique_ptr<TypeSaverAdapter> adapter;
+	};
 
-    };
-
-    struct TypeSaver {
-        std::unique_ptr<TypeSaverAdapter> adapter;
-    };
-
-} // Core
+} // namespace Core

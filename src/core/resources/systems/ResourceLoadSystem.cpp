@@ -22,14 +22,10 @@ namespace Core {
 		mResourceCacheEntity = registry.create();
 		registry.emplace<ResourceCache>(mResourceCacheEntity);
 
-		mTickHandle = mScheduler.schedule([this]() {
-			tick(mRegistry);
-		});
+		mTickHandle = mScheduler.schedule([this]() { tick(mRegistry); });
 	}
 
-	ResourceLoadSystem::~ResourceLoadSystem() {
-		mScheduler.unschedule(std::move(mTickHandle));
-	}
+	ResourceLoadSystem::~ResourceLoadSystem() { mScheduler.unschedule(std::move(mTickHandle)); }
 
 	void ResourceLoadSystem::tick(entt::registry& registry) {
 		auto& resourceCache{ registry.get<ResourceCache>(mResourceCacheEntity) };

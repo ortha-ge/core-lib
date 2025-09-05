@@ -16,162 +16,165 @@ import Core.VectorTypeTraits;
 
 namespace Core {
 
-    Any::Any()
-        : mTypeId{}
-        , mInstance{ nullptr }
-        , mOwnsInstance{ false } {
-    }
+	Any::Any()
+		: mTypeId{}
+		, mInstance{ nullptr }
+		, mOwnsInstance{ false } {}
 
-    Any::Any(TypeId typeId)
-        : mTypeId{ typeId }
-        , mInstance(nullptr)
-        , mOwnsInstance(true) {
+	Any::Any(TypeId typeId)
+		: mTypeId{ typeId }
+		, mInstance(nullptr)
+		, mOwnsInstance(true) {
 
-        if (const auto* typeTraits = std::get_if<BasicTypeTraits>(&getTypeTraits(mTypeId))) {
-            *this = typeTraits->constructFunc();
-        }
-    }
+		if (const auto* typeTraits = std::get_if<BasicTypeTraits>(&getTypeTraits(mTypeId))) {
+			*this = typeTraits->constructFunc();
+		}
+	}
 
-    Any::Any(TypeId typeId, void* instance)
-        : mTypeId(typeId)
-        , mInstance(instance)
-        , mOwnsInstance(false) {
-    }
+	Any::Any(TypeId typeId, void* instance)
+		: mTypeId(typeId)
+		, mInstance(instance)
+		, mOwnsInstance(false) {}
 
 	Any::Any(TypeId typeId, const void* instance)
-		: Any(typeId, const_cast<void*>(instance)) {
-    }
+		: Any(typeId, const_cast<void*>(instance)) {}
 
-    Any::~Any() {
-        if (mOwnsInstance) {
-            if (const auto* typeTraits = std::get_if<BasicTypeTraits>(&getTypeTraits(mTypeId))) {
-                typeTraits->destroyFunc(*this);
-                mInstance = nullptr;
-            }
-        }
-    }
+	Any::~Any() {
+		if (mOwnsInstance) {
+			if (const auto* typeTraits = std::get_if<BasicTypeTraits>(&getTypeTraits(mTypeId))) {
+				typeTraits->destroyFunc(*this);
+				mInstance = nullptr;
+			}
+		}
+	}
 
-    Any::Any(Any&& any) noexcept
-        : mTypeId{ std::move(any.mTypeId) }
-        , mInstance(any.mInstance)
-        , mOwnsInstance(any.mOwnsInstance) {
-        any.mInstance = nullptr;
-        any.mOwnsInstance = false;
-    }
+	Any::Any(Any&& any) noexcept
+		: mTypeId{ std::move(any.mTypeId) }
+		, mInstance(any.mInstance)
+		, mOwnsInstance(any.mOwnsInstance) {
+		any.mInstance = nullptr;
+		any.mOwnsInstance = false;
+	}
 
-    Any& Any::operator=(Any&& any) noexcept {
-        mTypeId = std::move(any.mTypeId);
-        mInstance = any.mInstance;
-        mOwnsInstance = any.mOwnsInstance;
+	Any& Any::operator=(Any&& any) noexcept {
+		mTypeId = std::move(any.mTypeId);
+		mInstance = any.mInstance;
+		mOwnsInstance = any.mOwnsInstance;
 
-        any.mInstance = nullptr;
-        any.mOwnsInstance = false;
+		any.mInstance = nullptr;
+		any.mOwnsInstance = false;
 
-        return *this;
-    }
+		return *this;
+	}
 
-    const TypeId& Any::getTypeId() const {
-        return mTypeId;
-    }
+	const TypeId& Any::getTypeId() const { return mTypeId; }
 
-    void* Any::getInstance() const {
-        return mInstance;
-    }
+	void* Any::getInstance() const { return mInstance; }
 
-    template <typename LhsTraits, typename RhsTraits>
-    void _assign(Any&, const LhsTraits& lhsTraits, const Any&, const RhsTraits& rhsTraits) {
-        printf("Unhandled Any assignment.\n");
-    }
+	template<typename LhsTraits, typename RhsTraits>
+	void _assign(Any&, const LhsTraits& lhsTraits, const Any&, const RhsTraits& rhsTraits) {
+		printf("Unhandled Any assignment.\n");
+	}
 
-    void _assign(Any& lhs, const Any& rhs) {
-        const auto& rhsTypeTraits{ getTypeTraits(rhs.getTypeId()) };
-        if (const auto* typeTraits = std::get_if<BasicTypeTraits>(&rhsTypeTraits)) {
-            lhs = Any(rhs.getTypeId());
-            typeTraits->applyFunc(lhs, rhs);
-        }
-    }
+	void _assign(Any& lhs, const Any& rhs) {
+		const auto& rhsTypeTraits{ getTypeTraits(rhs.getTypeId()) };
+		if (const auto* typeTraits = std::get_if<BasicTypeTraits>(&rhsTypeTraits)) {
+			lhs = Any(rhs.getTypeId());
+			typeTraits->applyFunc(lhs, rhs);
+		}
+	}
 
-    void _assign(Any& lhs, const BasicTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
+	void _assign(Any& lhs, const BasicTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
 		if (lhsTypeTraits.typeId != rhsTypeTraits.typeId) {
 			printf("Mismatched Any assignment.\n");
 			return;
 		}
 
 		lhsTypeTraits.applyFunc(lhs, rhs);
-    }
+	}
 
-    void _assign(Any& lhs, const OptionalTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
-        if (lhsTypeTraits.elementType != rhs.getTypeId()) {
-            printf("Mismatched Any assignment to Optional Any\n");
-            return;
-        }
+	void
+	_assign(Any& lhs, const OptionalTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
+		if (lhsTypeTraits.elementType != rhs.getTypeId()) {
+			printf("Mismatched Any assignment to Optional Any\n");
+			return;
+		}
 
-        lhsTypeTraits.applyFunc(lhs, rhs);
-    }
+		lhsTypeTraits.applyFunc(lhs, rhs);
+	}
 
-    void _assign(Any& lhs, const OptionalTypeTraits& lhsTypeTraits, const Any& rhs, const OptionalTypeTraits& rhsTypeTraits) {
-        // if (lhsTypeTraits.mWrappedType != otherTypeId) {
-        //     return *this;
-        // }
-        //
-        // optionalTraits->mApply(getInstance(), other.getInstance());
-    }
+	void _assign(
+		Any& lhs, const OptionalTypeTraits& lhsTypeTraits, const Any& rhs, const OptionalTypeTraits& rhsTypeTraits) {
+		// if (lhsTypeTraits.mWrappedType != otherTypeId) {
+		//     return *this;
+		// }
+		//
+		// optionalTraits->mApply(getInstance(), other.getInstance());
+	}
 
-    void _assign(Any& lhs, const VectorTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
-        // if (lhsTypeTraits.elementType != otherTypeId) {
-        //     return *this;
-        // }
+	void
+	_assign(Any& lhs, const VectorTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
+		// if (lhsTypeTraits.elementType != otherTypeId) {
+		//     return *this;
+		// }
 
-        if (rhs.getTypeId() != TypeId::get<std::vector<Any>>()) {
-            printf("Vector assignment requires rhs of std::vector<Any>.\n");
-            return;
-        }
+		if (rhs.getTypeId() != TypeId::get<std::vector<Any>>()) {
+			printf("Vector assignment requires rhs of std::vector<Any>.\n");
+			return;
+		}
 
-        const std::vector<Any>& anyVector{ *static_cast<const std::vector<Any>*>(rhs.getInstance()) };
-        lhsTypeTraits.applyFunc(lhs, anyVector);
-    }
+		const std::vector<Any>& anyVector{ *static_cast<const std::vector<Any>*>(rhs.getInstance()) };
+		lhsTypeTraits.applyFunc(lhs, anyVector);
+	}
 
-    void _assign(Any& lhs, const MapTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
-        if (rhs.getTypeId() != TypeId::get<std::map<Any, Any>>()) {
-            printf("Map assignment requires rhs of std::map<Any, Any>.\n");
-            return;
-        }
+	void _assign(Any& lhs, const MapTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
+		if (rhs.getTypeId() != TypeId::get<std::map<Any, Any>>()) {
+			printf("Map assignment requires rhs of std::map<Any, Any>.\n");
+			return;
+		}
 
-        const std::map<Any, Any>& anyMap{ *static_cast<const std::map<Any, Any>*>(rhs.getInstance()) };
-        lhsTypeTraits.applyFunc(lhs, anyMap);
-    }
+		const std::map<Any, Any>& anyMap{ *static_cast<const std::map<Any, Any>*>(rhs.getInstance()) };
+		lhsTypeTraits.applyFunc(lhs, anyMap);
+	}
 
-    Any::Any(const Any& other) {
-        if (getTypeId() == TypeId::get<void>()) {
-            _assign(*this, other);
-            return;
-        }
+	Any::Any(const Any& other) {
+		if (getTypeId() == TypeId::get<void>()) {
+			_assign(*this, other);
+			return;
+		}
 
-        std::visit([this, &other](auto&& lhsTypeTraits) {
-            std::visit([this, &lhsTypeTraits, &other](auto&& rhsTypeTraits) {
-               _assign(*this, lhsTypeTraits, other, rhsTypeTraits);
-            }, getTypeTraits(other.getTypeId()));
-        }, getTypeTraits(getTypeId()));
-    }
+		std::visit(
+			[this, &other](auto&& lhsTypeTraits) {
+				std::visit(
+					[this, &lhsTypeTraits, &other](auto&& rhsTypeTraits) {
+						_assign(*this, lhsTypeTraits, other, rhsTypeTraits);
+					},
+					getTypeTraits(other.getTypeId()));
+			},
+			getTypeTraits(getTypeId()));
+	}
 
-    Any& Any::operator=(const Any& other) {
-        if (this == &other) {
-            return *this;
-        }
+	Any& Any::operator=(const Any& other) {
+		if (this == &other) {
+			return *this;
+		}
 
-        if (getTypeId() == TypeId::get<void>()) {
-            _assign(*this, other);
-            return *this;
-        }
+		if (getTypeId() == TypeId::get<void>()) {
+			_assign(*this, other);
+			return *this;
+		}
 
-        std::visit([this, &other](auto&& lhsTypeTraits) {
-            std::visit([this, &lhsTypeTraits, &other](auto&& rhsTypeTraits) {
-               _assign(*this, lhsTypeTraits, other, rhsTypeTraits);
-            }, getTypeTraits(other.getTypeId()));
-        }, getTypeTraits(getTypeId()));
+		std::visit(
+			[this, &other](auto&& lhsTypeTraits) {
+				std::visit(
+					[this, &lhsTypeTraits, &other](auto&& rhsTypeTraits) {
+						_assign(*this, lhsTypeTraits, other, rhsTypeTraits);
+					},
+					getTypeTraits(other.getTypeId()));
+			},
+			getTypeTraits(getTypeId()));
 
-        return *this;
-    }
+		return *this;
+	}
 
-} // Core
-
+} // namespace Core

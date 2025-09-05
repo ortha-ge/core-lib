@@ -18,7 +18,6 @@ export namespace Core {
 
 	class ClassReflectionBuilderBase {
 	public:
-
 		ClassReflection getReflection();
 
 	protected:
@@ -27,79 +26,69 @@ export namespace Core {
 		void property(ClassProperty property);
 
 	private:
-
 		TypeId mTypeId;
 		ClassReflection mClassReflection;
-
 	};
 
 	class EnumReflectionBuilderBase {
 	public:
-
 		EnumReflection getReflection();
 
 	protected:
-
 		explicit EnumReflectionBuilderBase(std::string_view name);
 
 		void enumerator(std::string_view name, Any value);
 
 	private:
-
 		EnumReflection mReflection;
-
 	};
 
 	class ReflectionContext;
 
-	template <typename T>
+	template<typename T>
 	void reflect(ReflectionContext&) {
 		static_assert(false, "Undefined reflect call for type");
 	}
 
-	template <typename ValueType>
+	template<typename ValueType>
 	void reflectIfValidType(ReflectionContext& reflectionContext) {
 		if constexpr (
-			std::is_enum_v<ValueType> ||
-			(std::is_class_v<ValueType> &&
-			!std::is_same_v<ValueType, std::string> &&
-			!std::is_same_v<ValueType, TypeId>)) {
+			std::is_enum_v<ValueType> || (std::is_class_v<ValueType> && !std::is_same_v<ValueType, std::string> &&
+										  !std::is_same_v<ValueType, TypeId>) ) {
 
 			reflect<ValueType>(reflectionContext);
 		}
 	}
 
-	template <class T, typename ValueType>
+	template<class T, typename ValueType>
 	void reflectIfValidType(ReflectionContext& reflectionContext, ValueType T::*) {
 		reflectIfValidType<ValueType>(reflectionContext);
 	}
 
-	template <class T, typename ValueType>
+	template<class T, typename ValueType>
 	void reflectIfValidType(ReflectionContext& reflectionContext, std::vector<ValueType> T::*) {
 		reflectIfValidType<ValueType>(reflectionContext);
 	}
 
-	template <class T, typename ValueType>
+	template<class T, typename ValueType>
 	void reflectIfValidType(ReflectionContext& reflectionContext, std::optional<ValueType> T::*) {
 		reflectIfValidType<ValueType>(reflectionContext);
 	}
 
-	template <class T, typename KeyType, typename ValueType>
+	template<class T, typename KeyType, typename ValueType>
 	void reflectIfValidType(ReflectionContext& reflectionContext, std::map<KeyType, ValueType> T::*) {
 		reflectIfValidType<KeyType>(reflectionContext);
 		reflectIfValidType<ValueType>(reflectionContext);
 	}
 
-	template <class T>
+	template<class T>
 	class ClassReflectionBuilder : public ClassReflectionBuilderBase {
 	public:
-
 		ClassReflectionBuilder(ReflectionContext& context, std::string_view className)
 			: ClassReflectionBuilderBase(TypeId::get<T>(), className)
-			, mContext(context) {
-		}
+			, mContext(context) {}
 
-		template <typename Member>
+		template<typename Member>
 		ClassReflectionBuilder& property(std::string_view name, Member&& member) {
 			reflectIfValidType(mContext, member);
 
@@ -113,19 +102,15 @@ export namespace Core {
 		void build();
 
 	private:
-
 		ReflectionContext& mContext;
-
 	};
 
-	template <typename T>
+	template<typename T>
 	class EnumReflectionBuilder : public EnumReflectionBuilderBase {
 	public:
-
 		EnumReflectionBuilder(ReflectionContext& context, std::string_view name)
 			: EnumReflectionBuilderBase(name)
-			, mContext(context) {
-		}
+			, mContext(context) {}
 
 		EnumReflectionBuilder& constant(std::string_view name, T value) {
 			Any valueAny(value);
@@ -137,23 +122,20 @@ export namespace Core {
 		void build();
 
 	private:
-
 		ReflectionContext& mContext;
-
 	};
 
-    class ReflectionContext {
-    public:
+	class ReflectionContext {
+	public:
+		ReflectionContext();
 
-        ReflectionContext();
+		void addBasicType(TypeId typeId, TypeReflection typeReflection);
+		[[nodiscard]] bool hasBasicType(const TypeId& typeId) const;
+		[[nodiscard]] const TypeReflection& getBasicType(TypeId typeId) const;
 
-        void addBasicType(TypeId typeId, TypeReflection typeReflection);
-        [[nodiscard]] bool hasBasicType(const TypeId& typeId) const;
-        [[nodiscard]] const TypeReflection& getBasicType(TypeId typeId) const;
-
-        void addClass(TypeId typeId, ClassReflection classReflection);
-        [[nodiscard]] bool hasClass(const TypeId& typeId) const;
-        [[nodiscard]] const ClassReflection& getClass(const TypeId& typeId) const;
+		void addClass(TypeId typeId, ClassReflection classReflection);
+		[[nodiscard]] bool hasClass(const TypeId& typeId) const;
+		[[nodiscard]] const ClassReflection& getClass(const TypeId& typeId) const;
 
 		void addEnum(TypeId typeId, EnumReflection enumReflection);
 		[[nodiscard]] bool hasEnum(const TypeId& typeId) const;
@@ -161,35 +143,35 @@ export namespace Core {
 
 		std::optional<TypeId> getTypeIdByName(const std::string& name) const;
 
-        template <class T>
-        [[nodiscard]] bool hasClass() const {
-            return hasClass(TypeId::get<T>());
-        }
+		template<class T>
+		[[nodiscard]] bool hasClass() const {
+			return hasClass(TypeId::get<T>());
+		}
 
-        template <class T>
-        [[nodiscard]] const ClassReflection& getClass() const {
-            if (const TypeId typeId{ TypeId::get<T>() }; hasClass(typeId)) {
-                return getClass(typeId);
-            }
+		template<class T>
+		[[nodiscard]] const ClassReflection& getClass() const {
+			if (const TypeId typeId{ TypeId::get<T>() }; hasClass(typeId)) {
+				return getClass(typeId);
+			}
 
-            static ClassReflection null("Null");
-            return null;
-        }
+			static ClassReflection null("Null");
+			return null;
+		}
 
-        template <typename T>
-        [[nodiscard]] bool hasBasicType() const {
-            return hasBasicType(TypeId::get<T>());
-        }
+		template<typename T>
+		[[nodiscard]] bool hasBasicType() const {
+			return hasBasicType(TypeId::get<T>());
+		}
 
-        template <typename T>
-        [[nodiscard]] const TypeReflection& getBasicType() const {
-            if (const TypeId& typeId{ TypeId::get<T>() }; hasBasicType(typeId)) {
-                return getBasicType(typeId);
-            }
+		template<typename T>
+		[[nodiscard]] const TypeReflection& getBasicType() const {
+			if (const TypeId & typeId{ TypeId::get<T>() }; hasBasicType(typeId)) {
+				return getBasicType(typeId);
+			}
 
-            static TypeReflection null("Null", 0zu);
-            return null;
-        }
+			static TypeReflection null("Null", 0zu);
+			return null;
+		}
 
 		template<class T>
 		ClassReflectionBuilder<T> addClass(std::string_view name) {
@@ -203,21 +185,20 @@ export namespace Core {
 			return builder;
 		}
 
-    private:
-
-        void initializeBasicTypes();
+	private:
+		void initializeBasicTypes();
 
 		size_t mNextTypeId{};
 		std::unordered_map<std::string, TypeId> mTypeNameLookup;
 		std::unordered_map<TypeId, TypeReflection> mBasicTypeReflections;
 		std::unordered_map<TypeId, ClassReflection> mClassReflections;
 		std::unordered_map<TypeId, EnumReflection> mEnumReflections;
-    };
+	};
 
-    ReflectionContext& getCurrentReflectionContext() {
-        static ReflectionContext reflectionContext;
-        return reflectionContext;
-    }
+	ReflectionContext& getCurrentReflectionContext() {
+		static ReflectionContext reflectionContext;
+		return reflectionContext;
+	}
 
 	template<class T>
 	void ClassReflectionBuilder<T>::build() {
@@ -229,4 +210,4 @@ export namespace Core {
 		mContext.addEnum(TypeId::get<T>(), getReflection());
 	}
 
-} // Core
+} // namespace Core

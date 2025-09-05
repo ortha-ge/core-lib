@@ -9,17 +9,15 @@ export module Core.TypeLoader;
 
 export namespace Core {
 
-    class TypeLoaderAdapter {
-    public:
+	class TypeLoaderAdapter {
+	public:
+		virtual ~TypeLoaderAdapter() = default;
 
-        virtual ~TypeLoaderAdapter() = default;
+		virtual void load(std::string_view, entt::registry&, entt::entity) = 0;
+	};
 
-        virtual void load(std::string_view, entt::registry&, entt::entity) = 0;
+	struct TypeLoader {
+		std::shared_ptr<TypeLoaderAdapter> adapter;
+	};
 
-    };
-
-    struct TypeLoader {
-        std::shared_ptr<TypeLoaderAdapter> adapter;
-    };
-
-} // Core
+} // namespace Core

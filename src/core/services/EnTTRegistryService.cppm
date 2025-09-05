@@ -6,6 +6,6 @@ import kangaru;
 
 export namespace Core {
 
-	class EnTTRegistryService : public kgr::single_service<EnTTRegistry>{};
+	class EnTTRegistryService : public kgr::single_service<EnTTRegistry> {};
 
-} // Core
+} // namespace Core

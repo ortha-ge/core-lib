@@ -10,9 +10,8 @@ import Core.TypeId;
 export namespace Core {
 
 	struct BasicTypeTraits {
-		BasicTypeTraits(TypeId typeId,
-			std::function<void*()> constructFunc,
-			std::function<void(void*)> destroyFunc,
+		BasicTypeTraits(
+			TypeId typeId, std::function<void*()> constructFunc, std::function<void(void*)> destroyFunc,
 			std::function<void(void*, const void*)> applyFunc);
 
 		TypeId typeId;
@@ -20,4 +19,4 @@ export namespace Core {
 		std::function<void(Any&)> destroyFunc;
 		std::function<void(Any&, const Any&)> applyFunc;
 	};
-}
+} // namespace Core

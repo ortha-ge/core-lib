@@ -8,7 +8,6 @@ export namespace Core {
 
 	class ResourceHandle {
 	public:
-
 		ResourceHandle();
 		ResourceHandle(entt::entity resourceEntity);
 		~ResourceHandle();
@@ -20,11 +19,9 @@ export namespace Core {
 		ResourceHandle& operator=(ResourceHandle&& other) noexcept;
 
 
-
-	//private:
+		// private:
 
 		entt::entity mResourceEntity;
-
 	};
 
 } // namespace Core

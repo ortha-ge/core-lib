@@ -17,26 +17,27 @@ export namespace Core {
 namespace Core {
 	std::unique_ptr<TypeInfo> createVoidTypeInfo();
 
-	std::unique_ptr<TypeInfo> createBasicTypeInfo(size_t size, std::function<void*()> createFunc,
-												  std::function<void(void*)> destroyFunc,
-												  std::function<void(void*, const void*)> applyFunc);
+	std::unique_ptr<TypeInfo> createBasicTypeInfo(
+		size_t size, std::function<void*()> createFunc, std::function<void(void*)> destroyFunc,
+		std::function<void(void*, const void*)> applyFunc);
 
-	std::unique_ptr<TypeInfo> createOptionalTypeInfo(size_t size, TypeId valueType,
-													 std::function<void(void*, const void*)> applyFunc,
-													 std::function<void*(void*)> getFunc);
+	std::unique_ptr<TypeInfo> createOptionalTypeInfo(
+		size_t size, TypeId valueType, std::function<void(void*, const void*)> applyFunc,
+		std::function<void*(void*)> getFunc);
 
-	std::unique_ptr<TypeInfo> createVectorTypeInfo(size_t size, TypeId valueType,
-												   std::function<void(void*, const std::vector<void*>&)> applyFunc,
-												   std::function<void(void*, std::function<void(const void*)>)> forEachFunc);
+	std::unique_ptr<TypeInfo> createVectorTypeInfo(
+		size_t size, TypeId valueType, std::function<void(void*, const std::vector<void*>&)> applyFunc,
+		std::function<void(void*, std::function<void(const void*)>)> forEachFunc);
 
-	std::unique_ptr<TypeInfo> createMapTypeInfo(size_t size, TypeId keyType, TypeId valueType,
-												std::function<void(void*, const std::map<void*, void*>&)> applyFunc,
-												std::function<void(void*, std::function<void(const void*, const void*)>)> forEachFunc);
-}
+	std::unique_ptr<TypeInfo> createMapTypeInfo(
+		size_t size, TypeId keyType, TypeId valueType,
+		std::function<void(void*, const std::map<void*, void*>&)> applyFunc,
+		std::function<void(void*, std::function<void(const void*, const void*)>)> forEachFunc);
+} // namespace Core
 
-template <>
+template<>
 struct std::hash<Core::TypeId> {
-    size_t operator()(const Core::TypeId& typeId) const noexcept;
+	size_t operator()(const Core::TypeId& typeId) const noexcept;
 };
 
 export namespace Core {
@@ -61,8 +62,8 @@ export namespace Core {
 
 		template<typename T, std::enable_if_t<std::is_void_v<T>, bool> = true>
 		static TypeId get() {
-			static auto typeInfo{createVoidTypeInfo()};
-			return {*typeInfo};
+			static auto typeInfo{ createVoidTypeInfo() };
+			return { *typeInfo };
 		}
 
 		template<typename ValueType, std::enable_if_t<!std::is_void_v<ValueType>, bool> = true>
@@ -72,12 +73,12 @@ export namespace Core {
 			auto destroyFunc = [](void* instance) { delete static_cast<ValueType*>(instance); };
 
 			auto applyFunc = [](void* destInstance, const void* sourceInstance) {
-				ValueType& dest{*static_cast<ValueType*>(destInstance)};
+				ValueType& dest{ *static_cast<ValueType*>(destInstance) };
 				dest = *static_cast<const ValueType*>(sourceInstance);
 			};
 
-			static auto typeInfo{createBasicTypeInfo(sizeof(ValueType), createFunc, destroyFunc, applyFunc)};
-			return {*typeInfo};
+			static auto typeInfo{ createBasicTypeInfo(sizeof(ValueType), createFunc, destroyFunc, applyFunc) };
+			return { *typeInfo };
 		}
 
 		template<class Class, typename ValueType>
@@ -98,10 +99,10 @@ export namespace Core {
 				return optional.has_value() ? &optional.value() : nullptr;
 			};
 
-			static auto typeInfo{createOptionalTypeInfo(sizeof(std::optional<ValueType>), TypeId::get<ValueType>(),
-														applyFunc, getFunc)};
+			static auto typeInfo{ createOptionalTypeInfo(
+				sizeof(std::optional<ValueType>), TypeId::get<ValueType>(), applyFunc, getFunc) };
 
-			return {*typeInfo};
+			return { *typeInfo };
 		}
 
 		template<class Class, typename ValueType>
@@ -122,9 +123,9 @@ export namespace Core {
 					visitor(&outputElement);
 				}
 			};
-			static auto typeInfo{createVectorTypeInfo(sizeof(std::vector<ValueType>), TypeId::get<ValueType>(),
-													  applyFunc, forEachFunc)};
-			return {*typeInfo};
+			static auto typeInfo{ createVectorTypeInfo(
+				sizeof(std::vector<ValueType>), TypeId::get<ValueType>(), applyFunc, forEachFunc) };
+			return { *typeInfo };
 		}
 
 		template<class Class, typename KeyType, typename ValueType>
@@ -149,14 +150,14 @@ export namespace Core {
 				}
 			};
 
-			static auto typeInfo{createMapTypeInfo(sizeof(std::map<KeyType, ValueType>), TypeId::get<KeyType>(),
-												   TypeId::get<ValueType>(), applyFunc, forEachFunc)};
-			return {*typeInfo};
+			static auto typeInfo{ createMapTypeInfo(
+				sizeof(std::map<KeyType, ValueType>), TypeId::get<KeyType>(), TypeId::get<ValueType>(), applyFunc,
+				forEachFunc) };
+			return { *typeInfo };
 		}
 
 	private:
-		const TypeInfo* mTypeInfo{nullptr};
+		const TypeInfo* mTypeInfo{ nullptr };
+	};
 
-    };
-
-} // Core
+} // namespace Core

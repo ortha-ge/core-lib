@@ -1,7 +1,3 @@
 export module Core.Reflect;
 
-export namespace Core {
-
-
-
-} // namespace Core
+export namespace Core {} // namespace Core

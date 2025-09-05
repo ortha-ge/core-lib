@@ -9,20 +9,17 @@ import Core.Scheduler;
 
 export namespace Core {
 
-    class TypeLoaderSystem {
-    public:
+	class TypeLoaderSystem {
+	public:
+		TypeLoaderSystem(EnTTRegistry&, Scheduler&);
+		~TypeLoaderSystem();
 
-        TypeLoaderSystem(EnTTRegistry&, Scheduler&);
-        ~TypeLoaderSystem();
+		void tickSystem(entt::registry&);
 
-        void tickSystem(entt::registry&);
+	private:
+		EnTTRegistry& mRegistry;
+		Scheduler& mScheduler;
+		TaskHandle mTickHandle;
+	};
 
-    private:
-
-        EnTTRegistry& mRegistry;
-        Scheduler& mScheduler;
-        TaskHandle mTickHandle;
-
-    };
-
-} // Core
+} // namespace Core

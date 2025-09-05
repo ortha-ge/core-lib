@@ -8,15 +8,9 @@ import Core.TypeInfoImpl;
 
 namespace Core {
 	TypeInfo::TypeInfo(size_t size)
-		: mSize(size) {
+		: mSize(size) {}
 
-	}
+	TypeInfo::~TypeInfo() {}
 
-	TypeInfo::~TypeInfo() {
-
-	}
-
-	[[nodiscard]] size_t TypeInfo::getSize() const {
-		return mSize;
-	}
-}
+	[[nodiscard]] size_t TypeInfo::getSize() const { return mSize; }
+} // namespace Core

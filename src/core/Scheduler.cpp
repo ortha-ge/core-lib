@@ -9,12 +9,9 @@ module Core.Scheduler;
 namespace Core {
 
 	Task::Task(std::function<void()> onTick)
-		: mOnTick{ std::move(onTick) } {
-	}
+		: mOnTick{ std::move(onTick) } {}
 
-	void Task::tick() {
-		mOnTick();
-	}
+	void Task::tick() { mOnTick(); }
 
 	void Schedule::tick() {
 		for (auto&& task : mTasks) {
@@ -38,8 +35,7 @@ namespace Core {
 
 	TaskHandle::TaskHandle(std::weak_ptr<Schedule> schedule, std::weak_ptr<Task> task)
 		: mSchedule{ schedule }
-		, mTask{ task } {
-	}
+		, mTask{ task } {}
 
 	TaskHandle::~TaskHandle() {
 		auto schedule = mSchedule.lock();
@@ -52,25 +48,18 @@ namespace Core {
 	TaskHandle::TaskHandle(TaskHandle&&) noexcept = default;
 	TaskHandle& TaskHandle::operator=(TaskHandle&&) noexcept = default;
 
-	std::shared_ptr<Task> TaskHandle::getTask() const {
-		return mTask.lock();
-	}
+	std::shared_ptr<Task> TaskHandle::getTask() const { return mTask.lock(); }
 
 	Scheduler::Scheduler()
-		: mSchedule{ std::make_shared<Schedule>() } {
-	}
+		: mSchedule{ std::make_shared<Schedule>() } {}
 
-	void Scheduler::tick() {
-		mSchedule->tick();
-	}
+	void Scheduler::tick() { mSchedule->tick(); }
 
 	TaskHandle Scheduler::schedule(std::function<void()> onTick) {
 		auto task = mSchedule->schedule(std::move(onTick));
 		return { mSchedule, std::move(task) };
 	}
 
-	void Scheduler::unschedule(TaskHandle taskHandle) {
-		mSchedule->unschedule(taskHandle.getTask());
-	}
+	void Scheduler::unschedule(TaskHandle taskHandle) { mSchedule->unschedule(taskHandle.getTask()); }
 
-} // Core
+} // namespace Core

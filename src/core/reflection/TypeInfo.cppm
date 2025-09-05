@@ -7,7 +7,6 @@ export module Core.TypeInfo;
 export namespace Core {
 	class TypeInfo {
 	public:
-
 		~TypeInfo();
 
 		TypeInfo(const TypeInfo&) = delete;
@@ -18,10 +17,8 @@ export namespace Core {
 		[[nodiscard]] size_t getSize() const;
 
 	protected:
-
 		TypeInfo(size_t size);
 
 		size_t mSize;
-
 	};
-}
+} // namespace Core

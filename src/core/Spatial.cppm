@@ -12,4 +12,4 @@ export namespace Core {
 		float scaleZ{ 1.0f };
 	};
 
-} // Core
+} // namespace Core

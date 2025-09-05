@@ -6,8 +6,8 @@ export module kangaru;
 
 export namespace kgr {
 
-	using kgr::single_service;
-	using kgr::dependency;
 	using kgr::container;
+	using kgr::dependency;
+	using kgr::single_service;
 
-} // kgr
+} // namespace kgr

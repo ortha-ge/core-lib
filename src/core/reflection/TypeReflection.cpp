@@ -6,17 +6,12 @@ module Core.TypeReflection;
 
 namespace Core {
 
-    TypeReflection::TypeReflection(std::string_view typeName, size_t size)
-            : mName(typeName)
-            , mSize(size) {
-    }
+	TypeReflection::TypeReflection(std::string_view typeName, size_t size)
+		: mName(typeName)
+		, mSize(size) {}
 
-	const std::string& TypeReflection::getName() const {
-	    return mName;
-    }
+	const std::string& TypeReflection::getName() const { return mName; }
 
-    size_t TypeReflection::getSize() const {
-        return mSize;
-    }
+	size_t TypeReflection::getSize() const { return mSize; }
 
-} // Core
+} // namespace Core

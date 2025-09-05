@@ -6,14 +6,9 @@ module Core.TypeInfoImpl;
 
 namespace Core {
 	TypeInfoImpl::TypeInfoImpl(size_t size)
-		: TypeInfo(size) {
-	}
+		: TypeInfo(size) {}
 
-	TypeTraits& TypeInfoImpl::getTypeTraits() {
-		return mTypeTraits;
-	}
+	TypeTraits& TypeInfoImpl::getTypeTraits() { return mTypeTraits; }
 
-	const TypeTraits& TypeInfoImpl::getTypeTraits() const {
-		return mTypeTraits;
-	}
-}
+	const TypeTraits& TypeInfoImpl::getTypeTraits() const { return mTypeTraits; }
+} // namespace Core

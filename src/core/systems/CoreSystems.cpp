@@ -22,7 +22,7 @@ namespace Core {
 		GLFWSystem::initSystem(mRegistry);
 		FileLoadSystem::initSystem(mRegistry);
 
-		mTickHandle = mScheduler.schedule([this]{
+		mTickHandle = mScheduler.schedule([this] {
 			GLFWSystem::tickSystem(mRegistry);
 			FileLoadSystem::tickSystem(mRegistry);
 		});
@@ -34,5 +34,5 @@ namespace Core {
 		FileLoadSystem::destroySystem(mRegistry);
 		GLFWSystem::destroySystem(mRegistry);
 	}
-	
-} // Core
+
+} // namespace Core

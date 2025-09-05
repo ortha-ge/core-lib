@@ -13,9 +13,9 @@ import Core.TypeId;
 import JsonTypeAdapterTestClasses;
 
 TEST_CASE("ReflectedClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view expectedOutput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view expectedOutput = R"({
     "TestClass": {
         "stringProperty": "testString",
         "intProperty": 5,
@@ -24,19 +24,19 @@ TEST_CASE("ReflectedClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterT
         "boolProperty": true
     }
 })";
-    reflect<TestClass>(getCurrentReflectionContext());
-    TestClass testClass{ "testString", 5, 10.0, 15.0f, true };
+	reflect<TestClass>(getCurrentReflectionContext());
+	TestClass testClass{ "testString", 5, 10.0, 15.0f, true };
 
-    const std::string output = save(Any{ testClass });
+	const std::string output = save(Any{ testClass });
 
-    REQUIRE(output == expectedOutput);
+	REQUIRE(output == expectedOutput);
 }
 
 
 TEST_CASE("ReflectedClassWithNestedClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view expectedOutput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view expectedOutput = R"({
     "TestClass2": {
         "nestedProperty": {
             "stringProperty": "testString",
@@ -47,54 +47,54 @@ TEST_CASE("ReflectedClassWithNestedClass_Save_OutputMatchesSourceClass", "JsonTy
         }
     }
 })";
-    auto& reflectionContext{ getCurrentReflectionContext() };
-    reflect<TestClass>(reflectionContext);
-    reflect<TestClass2>(reflectionContext);
-    TestClass2 testClass{ "testString", 5, 10.0, 15.0f, true };
+	auto& reflectionContext{ getCurrentReflectionContext() };
+	reflect<TestClass>(reflectionContext);
+	reflect<TestClass2>(reflectionContext);
+	TestClass2 testClass{ "testString", 5, 10.0, 15.0f, true };
 
-    const std::string output = save(Any{ testClass });
+	const std::string output = save(Any{ testClass });
 
-    REQUIRE(output == expectedOutput);
+	REQUIRE(output == expectedOutput);
 }
 
 TEST_CASE("ReflectedClassWithOptional_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view expectedOutput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view expectedOutput = R"({
     "TestClass3": {
         "optionalIntProperty": 5
     }
 })";
-    reflect<TestClass3>(getCurrentReflectionContext());
-    TestClass3 testClass{};
-    testClass.optionalIntProperty = 5;
-    Any anyValue(testClass);
+	reflect<TestClass3>(getCurrentReflectionContext());
+	TestClass3 testClass{};
+	testClass.optionalIntProperty = 5;
+	Any anyValue(testClass);
 
-    const std::string output = save(anyValue);
+	const std::string output = save(anyValue);
 
-    REQUIRE(output == expectedOutput);
+	REQUIRE(output == expectedOutput);
 }
 
 TEST_CASE("ReflectedClassWithMissingOptional_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view expectedOutput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view expectedOutput = R"({
     "TestClass3": {}
 })";
-    reflect<TestClass3>(getCurrentReflectionContext());
-    TestClass3 testClass{};
-    Any anyValue(testClass);
+	reflect<TestClass3>(getCurrentReflectionContext());
+	TestClass3 testClass{};
+	Any anyValue(testClass);
 
-    const std::string output = save(anyValue);
+	const std::string output = save(anyValue);
 
-    REQUIRE(output == expectedOutput);
+	REQUIRE(output == expectedOutput);
 }
 
 
 TEST_CASE("ReflectedClassWithOptionalClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view expectedOutput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view expectedOutput = R"({
     "TestClass4": {
         "optionalClassProperty": {
             "stringProperty": "testString",
@@ -105,41 +105,35 @@ TEST_CASE("ReflectedClassWithOptionalClass_Save_OutputMatchesSourceClass", "Json
         }
     }
 })";
-    reflect<TestClass4>(getCurrentReflectionContext());
-    TestClass4 testClass{};
-    testClass.optionalClassProperty = {
-        "testString",
-        5,
-        10.0,
-        15.0,
-        true
-    };
-    Any anyValue(testClass);
+	reflect<TestClass4>(getCurrentReflectionContext());
+	TestClass4 testClass{};
+	testClass.optionalClassProperty = { "testString", 5, 10.0, 15.0, true };
+	Any anyValue(testClass);
 
-    const std::string output = save(anyValue);
+	const std::string output = save(anyValue);
 
-    REQUIRE(output == expectedOutput);
+	REQUIRE(output == expectedOutput);
 }
 
 TEST_CASE("ReflectedClassWithMissingOptionalClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view expectedOutput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view expectedOutput = R"({
     "TestClass4": {}
 })";
-    reflect<TestClass4>(getCurrentReflectionContext());
-    TestClass4 testClass{};
-    Any anyValue(testClass);
+	reflect<TestClass4>(getCurrentReflectionContext());
+	TestClass4 testClass{};
+	Any anyValue(testClass);
 
-    const std::string output = save(anyValue);
+	const std::string output = save(anyValue);
 
-    REQUIRE(output == expectedOutput);
+	REQUIRE(output == expectedOutput);
 }
 
 TEST_CASE("ReflectedClassWithVector_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view expectedOutput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view expectedOutput = R"({
     "VectorTestClass": {
         "vectorProperty": [
             5,
@@ -148,24 +142,20 @@ TEST_CASE("ReflectedClassWithVector_Save_OutputMatchesSourceClass", "JsonTypeSav
         ]
     }
 })";
-    reflect<VectorTestClass>(getCurrentReflectionContext());
-    VectorTestClass testClass{};
-    testClass.vectorProperty = {
-        5,
-        10,
-        15
-    };
-    Any anyValue(testClass);
+	reflect<VectorTestClass>(getCurrentReflectionContext());
+	VectorTestClass testClass{};
+	testClass.vectorProperty = { 5, 10, 15 };
+	Any anyValue(testClass);
 
-    const std::string output = save(anyValue);
+	const std::string output = save(anyValue);
 
-    REQUIRE(output == expectedOutput);
+	REQUIRE(output == expectedOutput);
 }
 
 TEST_CASE("ReflectedClassWithMap_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view expectedOutput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view expectedOutput = R"({
     "MapTestClass": {
         "mapProperty": {
             "a": 5,
@@ -174,16 +164,12 @@ TEST_CASE("ReflectedClassWithMap_Save_OutputMatchesSourceClass", "JsonTypeSaverA
         }
     }
 })";
-    reflect<MapTestClass>(getCurrentReflectionContext());
-    MapTestClass testClass{};
-    testClass.mapProperty = {
-        { "a", 5 },
-        { "b", 10 },
-        { "c", 15 }
-    };
-    Any anyValue(testClass);
+	reflect<MapTestClass>(getCurrentReflectionContext());
+	MapTestClass testClass{};
+	testClass.mapProperty = { { "a", 5 }, { "b", 10 }, { "c", 15 } };
+	Any anyValue(testClass);
 
-    const std::string output = save(anyValue);
+	const std::string output = save(anyValue);
 
-    REQUIRE(output == expectedOutput);
+	REQUIRE(output == expectedOutput);
 }

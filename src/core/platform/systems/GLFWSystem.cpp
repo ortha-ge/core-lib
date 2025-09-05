@@ -3,8 +3,8 @@ module;
 
 #include <chrono>
 
-#include <entt/entt.hpp>
 #include <GLFW/glfw3.h>
+#include <entt/entt.hpp>
 
 #if GLFW_VERSION_MINOR < 2
 #error "GLFW 3.2 or later is required"
@@ -81,14 +81,14 @@ namespace Core {
 		if (glfwInit() != GLFW_TRUE) {
 			return;
 		}
-		
+
 		int monitorCount{ 0 };
 		GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
 		if (monitorCount <= 0) {
 			return;
 		}
 	}
-	
+
 	void GLFWSystem::destroySystem(entt::registry& registry) {
 		auto internalWindowView = registry.view<GLFWWindow>();
 		internalWindowView.each([&registry](entt::entity windowEntity, GLFWWindow& window) {
@@ -106,36 +106,32 @@ namespace Core {
 	}
 
 	void GLFWSystem::tickCreateWindowView(entt::registry& registry) {
-		registry.view<Window>(entt::exclude<GLFWWindow>)
-			.each([&registry](entt::entity entity, const Window& window) {
-				tryCreateGLFWWindow(registry, entity, window);
-			});
+		registry.view<Window>(entt::exclude<GLFWWindow>).each([&registry](entt::entity entity, const Window& window) {
+			tryCreateGLFWWindow(registry, entity, window);
+		});
 	}
 
 	void GLFWSystem::tickCloseWindowView(entt::registry& registry) {
-		registry.view<const GLFWWindow>()
-			.each([&registry](const GLFWWindow& window) {
-				if (glfwWindowShouldClose(window.window) != 0) {
-					if (registry.view<const QuitAppRequest>().empty()) {
-						const entt::entity requestEntity = registry.create();
-						registry.emplace<QuitAppRequest>(requestEntity, std::chrono::steady_clock::now());
-					}
+		registry.view<const GLFWWindow>().each([&registry](const GLFWWindow& window) {
+			if (glfwWindowShouldClose(window.window) != 0) {
+				if (registry.view<const QuitAppRequest>().empty()) {
+					const entt::entity requestEntity = registry.create();
+					registry.emplace<QuitAppRequest>(requestEntity, std::chrono::steady_clock::now());
 				}
-			});
+			}
+		});
 	}
 
 	void GLFWSystem::tryCreateGLFWWindow(entt::registry& registry, entt::entity entity, const Window& window) {
-		GLFWwindow* internalWindow = glfwCreateWindow(window.width, window.height, window.title.c_str(), nullptr, nullptr);
+		GLFWwindow* internalWindow =
+			glfwCreateWindow(window.width, window.height, window.title.c_str(), nullptr, nullptr);
 		if (!internalWindow) {
 			return;
 		}
 
 		registry.emplace<GLFWWindow>(entity, internalWindow);
 
-		NativeWindowHandles nativeWindowHandles{
-			glfwNativeWindowHandle(internalWindow),
-			getNativeDisplayHandle()
-		};
+		NativeWindowHandles nativeWindowHandles{ glfwNativeWindowHandle(internalWindow), getNativeDisplayHandle() };
 
 		if (!nativeWindowHandles.windowHandle) {
 			return;
@@ -144,4 +140,4 @@ namespace Core {
 		registry.emplace<NativeWindowHandles>(entity, std::move(nativeWindowHandles));
 	}
 
-} // Core
+} // namespace Core

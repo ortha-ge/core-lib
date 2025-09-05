@@ -12,4 +12,4 @@ export namespace Core {
 		uintmax_t size{};
 	};
 
-} // Core
+} // namespace Core

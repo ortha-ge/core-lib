@@ -11,8 +11,7 @@ import Core.Any;
 namespace Core {
 
 	EnumReflection::EnumReflection(std::string_view name)
-		: mName(name) {
-	}
+		: mName(name) {}
 
 	void EnumReflection::addEnumerator(std::string_view name, Any value) {
 		if (hasEnumerator(name)) {
@@ -25,23 +24,18 @@ namespace Core {
 
 	bool EnumReflection::hasEnumerator(std::string_view name) const {
 		return std::ranges::find_if(mEnumerators, [name](const Enumerator& enumerator) {
-			return enumerator.first == name;
-		}) != mEnumerators.end();
+				   return enumerator.first == name;
+			   }) != mEnumerators.end();
 	}
 
 	Any EnumReflection::getEnumeratorValue(std::string_view name) const {
-		auto it = std::ranges::find_if(mEnumerators, [name](const Enumerator& enumerator) {
-			return enumerator.first == name;
-		});
+		auto it = std::ranges::find_if(
+			mEnumerators, [name](const Enumerator& enumerator) { return enumerator.first == name; });
 		return it != mEnumerators.end() ? it->second : Any{};
 	}
 
-	const std::string& EnumReflection::getName() const {
-		return mName;
-	}
+	const std::string& EnumReflection::getName() const { return mName; }
 
-	const std::vector<EnumReflection::Enumerator>& EnumReflection::getEnumerators() const {
-		return mEnumerators;
-	}
+	const std::vector<EnumReflection::Enumerator>& EnumReflection::getEnumerators() const { return mEnumerators; }
 
 } // namespace Core

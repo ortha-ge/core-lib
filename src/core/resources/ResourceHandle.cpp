@@ -8,8 +8,7 @@ namespace Core {
 
 	ResourceHandle::ResourceHandle() = default;
 	ResourceHandle::ResourceHandle(entt::entity resourceEntity)
-		: mResourceEntity(resourceEntity) {
-	}
+		: mResourceEntity(resourceEntity) {}
 
 	ResourceHandle::~ResourceHandle() = default;
 

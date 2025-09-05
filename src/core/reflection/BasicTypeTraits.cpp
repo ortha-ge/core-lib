@@ -7,11 +7,10 @@ module Core.BasicTypeTraits;
 
 namespace Core {
 
-	BasicTypeTraits::BasicTypeTraits(TypeId typeId,
-			std::function<void*()> constructFunc,
-			std::function<void(void*)> destroyFunc,
-			std::function<void(void*, const void*)> applyFunc)
-			: typeId(std::move(typeId)) {
+	BasicTypeTraits::BasicTypeTraits(
+		TypeId typeId, std::function<void*()> constructFunc, std::function<void(void*)> destroyFunc,
+		std::function<void(void*, const void*)> applyFunc)
+		: typeId(std::move(typeId)) {
 
 		this->constructFunc = [typeId, constructFunc = std::move(constructFunc)]() {
 			return Any(typeId, constructFunc());
@@ -23,4 +22,4 @@ namespace Core {
 			applyFunc(destAny.getInstance(), srcAny.getInstance());
 		};
 	}
-}
+} // namespace Core

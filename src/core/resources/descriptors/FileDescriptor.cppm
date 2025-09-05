@@ -10,4 +10,4 @@ export namespace Core {
 		std::string filePath;
 	};
 
-} // Core
+} // namespace Core

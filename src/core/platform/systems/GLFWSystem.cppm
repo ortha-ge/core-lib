@@ -9,7 +9,6 @@ import Core.Window;
 export namespace Core {
 	class GLFWSystem {
 	public:
-
 		static void initSystem(entt::registry& registry);
 		static void destroySystem(entt::registry& registry);
 		static void tickSystem(entt::registry& registry);
@@ -18,6 +17,5 @@ export namespace Core {
 		static void tickCloseWindowView(entt::registry& registry);
 
 		static void tryCreateGLFWWindow(entt::registry&, entt::entity, const Window&);
-
 	};
-} // Core
+} // namespace Core

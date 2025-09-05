@@ -7,6 +7,6 @@ export import Core.Scheduler;
 
 export namespace Core {
 
-	class SchedulerService : public kgr::single_service<Scheduler>{};
+	class SchedulerService : public kgr::single_service<Scheduler> {};
 
-} // Core
+} // namespace Core

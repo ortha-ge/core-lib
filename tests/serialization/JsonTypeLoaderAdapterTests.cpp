@@ -13,9 +13,9 @@ import Core.TypeId;
 import JsonTypeAdapterTestClasses;
 
 TEST_CASE("JsonInput_LoadReflectedClass_LoadedClassMatchesInput", "JsonTypeLoaderAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view jsonInput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view jsonInput = R"({
 	"TestClass": {
 	    "stringProperty": "testString",
 	    "intProperty": 5,
@@ -65,9 +65,9 @@ TEST_CASE("JsonInput_LoadReflectedClassByName_InstanceIsCorrectType", "JsonTypeL
 }
 
 TEST_CASE("JsonInput_LoadReflectedClassWithNestedClass_LoadedClassMatchesInput", "JsonTypeLoaderAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view jsonInput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view jsonInput = R"({
 	"TestClass2": {
 	    "nestedProperty": {
 	        "stringProperty": "testString",
@@ -94,9 +94,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithNestedClass_LoadedClassMatchesInput",
 }
 
 TEST_CASE("JsonInput_LoadReflectedClassWithOptional_LoadedOptionalMatchesInput", "JsonTypeLoaderAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view jsonInput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view jsonInput = R"({
 	"TestClass3": {
 	    "optionalIntProperty": 5
 	}
@@ -112,9 +112,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithOptional_LoadedOptionalMatchesInput",
 }
 
 TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptional_LoadedOptionalIsNull", "JsonTypeLoaderAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view jsonInput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view jsonInput = R"({
 	"TestClass3": {}
 })";
 	ReflectionContext reflectionContext{};
@@ -129,9 +129,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptional_LoadedOptionalIsNull"
 
 
 TEST_CASE("JsonInput_LoadReflectedClassWithOptionalClass_LoadedOptionalMatchesInput", "JsonTypeLoaderAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view jsonInput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view jsonInput = R"({
 	"TestClass4": {
 	    "optionalClassProperty": {
 	        "stringProperty": "testString",
@@ -151,14 +151,14 @@ TEST_CASE("JsonInput_LoadReflectedClassWithOptionalClass_LoadedOptionalMatchesIn
 	load(reflectionContext, jsonInput, anyValue);
 
 	REQUIRE(testClass.optionalClassProperty);
-	const auto& innerProperty{*testClass.optionalClassProperty};
+	const auto& innerProperty{ *testClass.optionalClassProperty };
 	REQUIRE(testClass.optionalClassProperty->intProperty == 5);
 }
 
 TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptionalClass_LoadedOptionalIsNull", "JsonTypeLoaderAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view jsonInput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view jsonInput = R"({
 	"TestClass4": {}
 })";
 	ReflectionContext reflectionContext{};
@@ -172,9 +172,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptionalClass_LoadedOptionalIs
 }
 
 TEST_CASE("JsonInput_LoadReflectedClassWithVector_LoadedVectorMatchesInput", "JsonTypeLoaderAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view jsonInput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view jsonInput = R"({
 	"VectorTestClass": {
 	    "vectorProperty": [
 	        5,
@@ -194,9 +194,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithVector_LoadedVectorMatchesInput", "Js
 }
 
 TEST_CASE("JsonInput_LoadReflectedClassWithMap_LoadedMapMatchesInput", "JsonTypeLoaderAdapterTests") {
-    using namespace JsonTypeAdapterTestClasses;
-    using namespace Core;
-    constexpr std::string_view jsonInput = R"({
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view jsonInput = R"({
 	"MapTestClass": {
 	    "mapProperty": {
 	        "a": 5,

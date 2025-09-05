@@ -21,9 +21,7 @@ namespace Core {
 		mResourceLookup[resourceFilePath] = resourceEntity;
 	}
 
-	void ResourceCache::cleanupLeastUsedResources() {
-
-	}
+	void ResourceCache::cleanupLeastUsedResources() {}
 
 	void ResourceCache::updateRecentlyUsedResources(entt::entity resourceEntity) {
 		std::ranges::remove(mRecentlyUsedResources, resourceEntity);

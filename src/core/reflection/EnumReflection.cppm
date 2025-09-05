@@ -12,7 +12,6 @@ export namespace Core {
 
 	class EnumReflection {
 	public:
-
 		using Enumerator = std::pair<std::string, Any>;
 
 		explicit EnumReflection(std::string_view name);
@@ -32,10 +31,8 @@ export namespace Core {
 		const std::vector<Enumerator>& getEnumerators() const;
 
 	private:
-
 		std::string mName;
 		std::vector<Enumerator> mEnumerators;
-
 	};
 
 } // namespace Core

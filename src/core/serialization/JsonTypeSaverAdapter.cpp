@@ -4,8 +4,8 @@ module;
 #include <variant>
 
 #include <rapidjson/document.h>
-#include <rapidjson/stringbuffer.h>
 #include <rapidjson/prettywriter.h>
+#include <rapidjson/stringbuffer.h>
 
 module Core.JsonTypeSaverAdapter;
 
@@ -21,177 +21,181 @@ import Core.VectorTypeTraits;
 
 namespace Core {
 
-    template <typename... AllTypes>
-    class AnySaverMapper {
+	template<typename... AllTypes>
+	class AnySaverMapper {
 
-        template <typename T>
-        static bool _trySaveAnyAsIntegral(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
+		template<typename T>
+		static bool _trySaveAnyAsIntegral(
+			rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
 
-            constexpr auto min = std::numeric_limits<T>::min();
-            constexpr auto max = std::numeric_limits<T>::max();
+			constexpr auto min = std::numeric_limits<T>::min();
+			constexpr auto max = std::numeric_limits<T>::max();
 
-            const T& value{ *static_cast<const T*>(anyValue.getInstance()) };
-            if constexpr (std::is_signed_v<T>) {
-                outputValue.Set(static_cast<int32_t>(value));
-            } else {
-                outputValue.Set(static_cast<uint32_t>(value));
-            }
+			const T& value{ *static_cast<const T*>(anyValue.getInstance()) };
+			if constexpr (std::is_signed_v<T>) {
+				outputValue.Set(static_cast<int32_t>(value));
+			} else {
+				outputValue.Set(static_cast<uint32_t>(value));
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        static bool _trySaveAnyAsString(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
+		static bool _trySaveAnyAsString(
+			rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
 
-            const std::string& value{ *static_cast<const std::string*>(anyValue.getInstance()) };
-            outputValue = rapidjson::Value(value.c_str(), allocator);
+			const std::string& value{ *static_cast<const std::string*>(anyValue.getInstance()) };
+			outputValue = rapidjson::Value(value.c_str(), allocator);
 
-            return true;
-        }
+			return true;
+		}
 
-        template <typename T>
-        static bool _trySaveAnyAs(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
-            if (anyValue.getTypeId() != TypeId::get<T>()) {
-                return false;
-            }
+		template<typename T>
+		static bool _trySaveAnyAs(
+			rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
+			if (anyValue.getTypeId() != TypeId::get<T>()) {
+				return false;
+			}
 
-            if constexpr (std::is_integral_v<T> && !std::is_same_v<T, bool>) {
-                return _trySaveAnyAsIntegral<T>(outputValue, anyValue, allocator);
-            } else if constexpr (std::is_same_v<T, std::string>) {
-                return _trySaveAnyAsString(outputValue, anyValue, allocator);
-            } else {
-                const T& value{ *static_cast<const T*>(anyValue.getInstance()) };
-                outputValue.Set(value);
-            }
+			if constexpr (std::is_integral_v<T> && !std::is_same_v<T, bool>) {
+				return _trySaveAnyAsIntegral<T>(outputValue, anyValue, allocator);
+			} else if constexpr (std::is_same_v<T, std::string>) {
+				return _trySaveAnyAsString(outputValue, anyValue, allocator);
+			} else {
+				const T& value{ *static_cast<const T*>(anyValue.getInstance()) };
+				outputValue.Set(value);
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        // Output is a template as a tail for empty Types...
-        template <typename Tail>
-        static bool _trySaveAny(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
-            return false;
-        }
+		// Output is a template as a tail for empty Types...
+		template<typename Tail>
+		static bool
+		_trySaveAny(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
+			return false;
+		}
 
-        template <typename Tail, typename T, typename ... Types>
-        static bool _trySaveAny(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
-            return _trySaveAnyAs<T>(outputValue, anyValue, allocator)
-                || _trySaveAny<Tail, Types...>(outputValue, anyValue, allocator);
-        }
+		template<typename Tail, typename T, typename... Types>
+		static bool
+		_trySaveAny(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
+			return _trySaveAnyAs<T>(outputValue, anyValue, allocator) ||
+				   _trySaveAny<Tail, Types...>(outputValue, anyValue, allocator);
+		}
 
-    public:
+	public:
+		static bool
+		trySaveAny(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
+			return _trySaveAny<void, AllTypes...>(outputValue, anyValue, allocator);
+		}
+	};
 
-        static bool trySaveAny(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
-            return _trySaveAny<void, AllTypes...>(outputValue, anyValue, allocator);
-        }
+	using AnySaverMapperTypes =
+		AnySaverMapper<std::string, int8_t, uint8_t, int16_t, uint16_t, int32_t, uint32_t, double, float, bool>;
 
-    };
+	void save(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator);
 
-    using AnySaverMapperTypes = AnySaverMapper<
-        std::string,
-        int8_t,
-        uint8_t,
-        int16_t,
-        uint16_t,
-        int32_t,
-        uint32_t,
-        double,
-        float,
-        bool
-    >;
+	template<typename T>
+	void _save(rapidjson::Value&, const Any&, const T&, rapidjson::Document::AllocatorType&) {
+		static_assert(false, "Unhandled type traits.");
+	}
 
-    void save(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator);
+	void _save(
+		rapidjson::Value& outputValue, const Any& anyValue, const VoidTypeTraits& typeTraits,
+		rapidjson::Document::AllocatorType& allocator) {}
 
-    template <typename T>
-    void _save(rapidjson::Value&, const Any&, const T&, rapidjson::Document::AllocatorType&) {
-        static_assert(false, "Unhandled type traits.");
-    }
+	void _save(
+		rapidjson::Value& outputValue, const Any& anyValue, const BasicTypeTraits& typeTraits,
+		rapidjson::Document::AllocatorType& allocator) {
+		const auto& context{ getCurrentReflectionContext() };
+		const auto& typeId{ anyValue.getTypeId() };
 
-	void _save(rapidjson::Value& outputValue, const Any& anyValue, const VoidTypeTraits& typeTraits, rapidjson::Document::AllocatorType& allocator) {
+		if (context.hasClass(typeId)) {
+			outputValue.SetObject();
 
-    }
+			const ClassReflection& classReflection{ context.getClass(typeId) };
+			void* classInstance = anyValue.getInstance();
+			for (const auto& property : classReflection.getProperties()) {
+				Any propertyAny{ property.getTypeId(), property.getRawPointer(classInstance) };
+				rapidjson::Value propertyValue;
 
-    void _save(rapidjson::Value& outputValue, const Any& anyValue, const BasicTypeTraits& typeTraits, rapidjson::Document::AllocatorType& allocator) {
-        const auto& context{ getCurrentReflectionContext() };
-        const auto& typeId{ anyValue.getTypeId() };
+				save(propertyValue, propertyAny, allocator);
 
-        if (context.hasClass(typeId)) {
-            outputValue.SetObject();
+				if (propertyValue.IsNull()) {
+					continue;
+				}
 
-            const ClassReflection& classReflection{ context.getClass(typeId) };
-            void* classInstance = anyValue.getInstance();
-            for (const auto& property : classReflection.getProperties()) {
-                Any propertyAny{ property.getTypeId(), property.getRawPointer(classInstance) };
-                rapidjson::Value propertyValue;
+				rapidjson::Value propertyKey(property.getName().c_str(), allocator);
+				outputValue.AddMember(std::move(propertyKey), std::move(propertyValue), allocator);
+			}
+		} else if (AnySaverMapperTypes::trySaveAny(outputValue, anyValue, allocator)) {
+			// outputValue.SetBool(true);
+		} else {
+			printf("Unhandled type\n");
+		}
+	}
 
-                save(propertyValue, propertyAny, allocator);
-
-                if (propertyValue.IsNull()) {
-                    continue;
-                }
-
-                rapidjson::Value propertyKey(property.getName().c_str(), allocator);
-                outputValue.AddMember(std::move(propertyKey), std::move(propertyValue), allocator);
-            }
-        } else if (AnySaverMapperTypes::trySaveAny(outputValue, anyValue, allocator)) {
-            //outputValue.SetBool(true);
-        } else {
-            printf("Unhandled type\n");
-        }
-    }
-
-	void _save(rapidjson::Value& outputValue, const Any& anyValue, const OptionalTypeTraits& typeTraits,
-			   rapidjson::Document::AllocatorType& allocator) {
-		if (Any innerValue{typeTraits.getFunc(anyValue)}; innerValue.getInstance() != nullptr) {
+	void _save(
+		rapidjson::Value& outputValue, const Any& anyValue, const OptionalTypeTraits& typeTraits,
+		rapidjson::Document::AllocatorType& allocator) {
+		if (Any innerValue{ typeTraits.getFunc(anyValue) }; innerValue.getInstance() != nullptr) {
 			save(outputValue, innerValue, allocator);
 		}
 	}
 
-    void _save(rapidjson::Value& outputValue, const Any& anyValue, const VectorTypeTraits& typeTraits, rapidjson::Document::AllocatorType& allocator) {
-        outputValue.SetArray();
-        typeTraits.forEachFunc(anyValue, [&outputValue, &typeTraits, &allocator](const Any& valueAny) {
-            //Any valueAny{ typeTraits.mWrappedType, const_cast<void*>(value) };
+	void _save(
+		rapidjson::Value& outputValue, const Any& anyValue, const VectorTypeTraits& typeTraits,
+		rapidjson::Document::AllocatorType& allocator) {
+		outputValue.SetArray();
+		typeTraits.forEachFunc(anyValue, [&outputValue, &typeTraits, &allocator](const Any& valueAny) {
+			// Any valueAny{ typeTraits.mWrappedType, const_cast<void*>(value) };
 
-            rapidjson::Value valueValue;
-            save(valueValue, valueAny, allocator);
+			rapidjson::Value valueValue;
+			save(valueValue, valueAny, allocator);
 
-            outputValue.PushBack(std::move(valueValue), allocator);
-        });
-    }
+			outputValue.PushBack(std::move(valueValue), allocator);
+		});
+	}
 
-    void _save(rapidjson::Value& outputValue, const Any& anyValue, const MapTypeTraits& typeTraits, rapidjson::Document::AllocatorType& allocator) {
-        outputValue.SetObject();
-        typeTraits.forEachFunc(anyValue, [&outputValue, &typeTraits, &allocator](const Any& keyAny, const Any& valueAny) {
-            // Any keyAny{ typeTraits.mKeyType, const_cast<void*>(key) };
-            // Any valueAny{ typeTraits.mValueType, const_cast<void*>(value) };
+	void _save(
+		rapidjson::Value& outputValue, const Any& anyValue, const MapTypeTraits& typeTraits,
+		rapidjson::Document::AllocatorType& allocator) {
+		outputValue.SetObject();
+		typeTraits.forEachFunc(
+			anyValue, [&outputValue, &typeTraits, &allocator](const Any& keyAny, const Any& valueAny) {
+				// Any keyAny{ typeTraits.mKeyType, const_cast<void*>(key) };
+				// Any valueAny{ typeTraits.mValueType, const_cast<void*>(value) };
 
-            rapidjson::Value keyValue;
-            save(keyValue, keyAny, allocator);
+				rapidjson::Value keyValue;
+				save(keyValue, keyAny, allocator);
 
-            rapidjson::Value valueValue;
-            save(valueValue, valueAny, allocator);
+				rapidjson::Value valueValue;
+				save(valueValue, valueAny, allocator);
 
-            outputValue.AddMember(keyValue, valueValue, allocator);
-        });
-    }
+				outputValue.AddMember(keyValue, valueValue, allocator);
+			});
+	}
 
-    void save(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
-        std::visit([&outputValue, &anyValue, &allocator](auto&& typeTraits) {
-            _save(outputValue, anyValue, typeTraits, allocator);
-        }, getTypeTraits(anyValue.getTypeId()));
-    }
+	void save(rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
+		std::visit(
+			[&outputValue, &anyValue, &allocator](auto&& typeTraits) {
+				_save(outputValue, anyValue, typeTraits, allocator);
+			},
+			getTypeTraits(anyValue.getTypeId()));
+	}
 
 	std::string save(const Any& anyValue) {
-		const auto& reflectionContext{getCurrentReflectionContext()};
+		const auto& reflectionContext{ getCurrentReflectionContext() };
 		if (!reflectionContext.hasClass(anyValue.getTypeId())) {
 			printf("Class not registered.\n");
 			return {};
 		}
 
-		const auto& classReflection{reflectionContext.getClass(anyValue.getTypeId())};
-		const auto& className{classReflection.getName()};
+		const auto& classReflection{ reflectionContext.getClass(anyValue.getTypeId()) };
+		const auto& className{ classReflection.getName() };
 
 		rapidjson::Document doc;
-		auto& allocator{doc.GetAllocator()};
+		auto& allocator{ doc.GetAllocator() };
 
 		rapidjson::Value classRootObject(rapidjson::kObjectType);
 		classRootObject.SetObject();
@@ -208,4 +212,4 @@ namespace Core {
 		return buffer.GetString();
 	}
 
-} // Core
+} // namespace Core

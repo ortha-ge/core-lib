@@ -2,6 +2,7 @@ module;
 
 #include <algorithm>
 #include <optional>
+#include <string>
 
 #include <entt/entity/entity.hpp>
 
@@ -24,7 +25,8 @@ namespace Core {
 	void ResourceCache::cleanupLeastUsedResources() {}
 
 	void ResourceCache::updateRecentlyUsedResources(entt::entity resourceEntity) {
-		std::ranges::remove(mRecentlyUsedResources, resourceEntity);
+		auto it = std::ranges::remove(mRecentlyUsedResources, resourceEntity);
+		mRecentlyUsedResources.erase(it.begin(), it.end());
 		mRecentlyUsedResources.push_back(resourceEntity);
 	}
 

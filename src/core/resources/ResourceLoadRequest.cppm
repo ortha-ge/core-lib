@@ -29,8 +29,10 @@ export namespace Core {
 
 	template<typename T, typename... Args>
 	ResourceLoadRequest ResourceLoadRequest::create(std::string resourceFilePath, Args&&... args) {
-		auto typeLoader = [... args = std::move(args)](entt::registry& registry, entt::entity entity) {
-			registry.emplace<T>(entity, std::move(args)...);
+		auto argTuple = std::make_tuple(std::forward<Args>(args)...);
+		auto typeLoader = [args = std::move(argTuple)](entt::registry& registry, entt::entity entity) {
+			T instance{ std::make_from_tuple<T>(std::move(args)) };
+			registry.emplace<T>(entity, std::move(instance));
 		};
 		ResourceLoadRequest loadRequest(std::move(resourceFilePath), std::move(typeLoader));
 		return loadRequest;

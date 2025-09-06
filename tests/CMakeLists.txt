@@ -29,3 +29,7 @@ add_custom_target(core-lib-tests-assets
 )
 
 add_dependencies(core-lib-tests core-lib-tests-assets)
+
+include(CTest)
+include(Catch)
+catch_discover_tests(core-lib-tests)

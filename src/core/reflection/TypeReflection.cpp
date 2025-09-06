@@ -1,5 +1,6 @@
 module;
 
+#include <string>
 #include <string_view>
 
 module Core.TypeReflection;

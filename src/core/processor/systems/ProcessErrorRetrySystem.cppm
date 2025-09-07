@@ -5,6 +5,7 @@ module;
 export module Core.ProcessErrorRetrySystem;
 
 import Core.EnTTRegistry;
+import Core.ProcessError;
 import Core.Scheduler;
 
 export namespace Core {
@@ -15,6 +16,7 @@ export namespace Core {
 		ProcessErrorRetrySystem(EnTTRegistry&, Scheduler&);
 		~ProcessErrorRetrySystem();
 
+		void tickProcessError(entt::registry&, entt::entity, ProcessError&);
 		void tickSystem(entt::registry&);
 
 	private:

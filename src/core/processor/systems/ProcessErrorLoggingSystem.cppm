@@ -5,6 +5,7 @@ module;
 export module Core.ProcessErrorLoggingSystem;
 
 import Core.EnTTRegistry;
+import Core.ProcessError;
 import Core.Scheduler;
 
 export namespace Core {
@@ -15,7 +16,8 @@ export namespace Core {
 		ProcessErrorLoggingSystem(EnTTRegistry&, Scheduler&);
 		~ProcessErrorLoggingSystem();
 
-		void tickSystem(entt::registry&);
+		static void tickSystem(entt::registry&);
+		static void tickProcessError(entt::registry&, entt::entity, const ProcessError&);
 
 	private:
 

@@ -6,6 +6,8 @@ export module Core.Systems;
 
 import Core.EnTTRegistry;
 import Core.LogReportingSystem;
+import Core.ProcessErrorLoggingSystem;
+import Core.ProcessErrorRetrySystem;
 import Core.ResourceLoadSystem;
 import Core.Scheduler;
 import Core.TypeLoaderSystem;
@@ -27,6 +29,8 @@ export namespace Core {
 		entt::registry& mRegistry;
 		Scheduler& mScheduler;
 		LogReportingSystem mLogReportingSystem;
+		ProcessErrorLoggingSystem mProcessErrorLoggingSystem;
+		ProcessErrorRetrySystem mProcessErrorRetrySystem;
 		TypeLoaderSystem mTypeLoaderSystem;
 		ResourceLoadSystem mResourceLoadSystem;
 		TaskHandle mTickHandle{};

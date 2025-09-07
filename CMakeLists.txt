@@ -13,6 +13,7 @@ set(core-lib-src
         src/core/logging/Log.cpp
         src/core/logging/systems/LogReportingSystem.cpp
         src/core/platform/systems/GLFWSystem.cpp
+        src/core/processor/ProcessError.cpp
         src/core/processor/systems/ProcessErrorLoggingSystem.cpp
         src/core/processor/systems/ProcessErrorRetrySystem.cpp
         src/core/reflection/Any.cpp
@@ -55,6 +56,7 @@ set(core-lib-modules
         src/core/platform/systems/GLFWSystem.cppm
         src/core/processor/Process.cppm
         src/core/processor/ProcessError.cppm
+        src/core/processor/ProcessErrorLoggedFlag.cppm
         src/core/processor/systems/ProcessErrorLoggingSystem.cppm
         src/core/processor/systems/ProcessErrorRetrySystem.cppm
         src/core/reflection/Any.cppm

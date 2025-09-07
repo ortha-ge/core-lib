@@ -18,6 +18,8 @@ namespace Core {
 		: mRegistry(registry)
 		, mScheduler{ scheduler }
 		, mLogReportingSystem{ registry, scheduler }
+		, mProcessErrorLoggingSystem{ registry, scheduler }
+		, mProcessErrorRetrySystem{ registry, scheduler }
 		, mTypeLoaderSystem{ registry, scheduler }
 		, mResourceLoadSystem{ registry, scheduler } {
 		GLFWSystem::initSystem(mRegistry);

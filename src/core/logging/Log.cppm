@@ -19,7 +19,7 @@ export namespace Core {
 
 	struct Log {
 		std::vector<LogMessage> messages;
-		bool clearMessagesWhenReported{ true };
+		bool clearMessagesWhenReported{ false };
 		bool removeEntityWhenReported{ false };
 	};
 

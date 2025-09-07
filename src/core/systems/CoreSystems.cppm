@@ -6,9 +6,9 @@ export module Core.Systems;
 
 import Core.EnTTRegistry;
 import Core.LogReportingSystem;
+import Core.ResourceLoadSystem;
 import Core.Scheduler;
 import Core.TypeLoaderSystem;
-import Core.ResourceLoadSystem;
 
 export namespace Core {
 

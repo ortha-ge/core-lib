@@ -9,6 +9,7 @@ find_package(RapidJSON CONFIG REQUIRED)
 set(core-lib-src
         src/core/EnTTRegistry.cpp
         src/core/Scheduler.cpp
+        src/core/Timer.cpp
         src/core/logging/Log.cpp
         src/core/logging/systems/LogReportingSystem.cpp
         src/core/platform/systems/GLFWSystem.cpp
@@ -42,6 +43,7 @@ set(core-lib-modules
         src/core/EnTTRegistry.cppm
         src/core/Scheduler.cppm
         src/core/Spatial.cppm
+        src/core/Timer.cppm
         src/core/kangaru.cppm
         src/core/logging/Log.cppm
         src/core/logging/LogReportedFlag.cppm
@@ -85,6 +87,7 @@ set(core-lib-modules
         src/core/services/CoreSystemsService.cppm
         src/core/services/EnTTRegistryService.cppm
         src/core/services/SchedulerService.cppm
+        src/core/services/TimerService.cppm
         src/core/systems/CoreSystems.cppm
 )
 

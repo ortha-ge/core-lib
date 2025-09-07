@@ -12,14 +12,14 @@ import Core.TypeSaver;
 
 export namespace Core {
 
-	std::string save(const Any& anyValue);
+	std::string save(entt::registry&, const Any& anyValue);
 
 	template<typename T>
 	class JsonTypeSaverAdapter : public TypeSaverAdapter {
 	public:
-		std::string _save(const T& instance) {
+		std::string _save(entt::registry& registry, const T& instance) {
 			Any any(instance);
-			return Core::save(any);
+			return Core::save(registry, any);
 		}
 
 		template<typename Registry>

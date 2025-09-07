@@ -7,34 +7,38 @@ module;
 export module Core.JsonTypeLoaderAdapter;
 
 import Core.Any;
+import Core.Log;
 import Core.ReflectionContext;
 import Core.TypeLoader;
 
 export namespace Core {
 
-	void load(const ReflectionContext&, std::string_view, Any&);
-	Any load(const ReflectionContext&, std::string_view);
+	void load(entt::registry&, const ReflectionContext&, std::string_view, Any&);
+	Any load(entt::registry&, const ReflectionContext&, std::string_view);
 
 	template<typename T>
 	class JsonTypeLoaderAdapter : public TypeLoaderAdapter {
 	public:
-		T _load(std::string_view jsonInput) {
+		T _loadComponent(entt::registry& registry, entt::entity entity, std::string_view jsonInput) {
 			auto& reflectionContext{ getCurrentReflectionContext() };
-			Core::reflect<T>(reflectionContext);
+			Core::reflectIfNotExisting<T>(reflectionContext);
 
 			T instance{};
 			Any any(instance);
-			Core::load(reflectionContext, jsonInput, any);
+			Core::load(registry, reflectionContext, jsonInput, any);
+
+			logEntries(registry, entity, reflectionContext.moveLog());
+
 			return instance;
 		}
 
 		template<typename Registry>
-		void _load(std::string_view jsonInput, Registry& registry, entt::entity entity) {
-			registry.template emplace<T>(entity, _load(jsonInput));
+		void _load(Registry& registry, entt::entity entity, std::string_view jsonInput) {
+			registry.template emplace<T>(entity, _loadComponent(registry, entity, jsonInput));
 		}
 
-		void load(std::string_view jsonInput, entt::registry& registry, entt::entity entity) override {
-			_load(jsonInput, registry, entity);
+		void load(entt::registry& registry, entt::entity entity, std::string_view jsonInput) override {
+			_load(registry, entity, jsonInput);
 		}
 	};
 

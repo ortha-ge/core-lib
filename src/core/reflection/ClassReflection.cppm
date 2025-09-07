@@ -8,6 +8,7 @@ module;
 
 export module Core.ClassReflection;
 
+import Core.Log;
 import Core.TypeId;
 
 export namespace Core {
@@ -85,10 +86,13 @@ export namespace Core {
 		const std::string& getName() const;
 		const std::vector<ClassProperty>& getProperties() const;
 
+		Log moveLog();
+
 	private:
 		TypeId mTypeId{};
 		std::string mName;
 		std::vector<ClassProperty> mProperties;
+		Log mLog;
 	};
 
 } // namespace Core

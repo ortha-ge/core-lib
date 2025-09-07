@@ -6,6 +6,7 @@ module;
 export module Core.EnumReflection;
 
 import Core.Any;
+import Core.Log;
 import Core.TypeId;
 
 export namespace Core {
@@ -30,9 +31,12 @@ export namespace Core {
 		const std::string& getName() const;
 		const std::vector<Enumerator>& getEnumerators() const;
 
+		Log moveLog();
+
 	private:
 		std::string mName;
 		std::vector<Enumerator> mEnumerators;
+		Log mLog;
 	};
 
 } // namespace Core

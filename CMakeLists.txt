@@ -9,7 +9,11 @@ find_package(RapidJSON CONFIG REQUIRED)
 set(core-lib-src
         src/core/EnTTRegistry.cpp
         src/core/Scheduler.cpp
+        src/core/logging/Log.cpp
+        src/core/logging/systems/LogReportingSystem.cpp
         src/core/platform/systems/GLFWSystem.cpp
+        src/core/processor/systems/ProcessErrorLoggingSystem.cpp
+        src/core/processor/systems/ProcessErrorRetrySystem.cpp
         src/core/reflection/Any.cpp
         src/core/reflection/BasicTypeTraits.cpp
         src/core/reflection/ClassReflection.cpp
@@ -36,14 +40,21 @@ set(core-lib-src
 
 set(core-lib-modules
         src/core/EnTTRegistry.cppm
-        src/core/QuitAppRequest.cppm
         src/core/Scheduler.cppm
         src/core/Spatial.cppm
         src/core/kangaru.cppm
+        src/core/logging/Log.cppm
+        src/core/logging/LogReportedFlag.cppm
+        src/core/logging/systems/LogReportingSystem.cppm
         src/core/platform/GLFWWindow.cppm
         src/core/platform/NativeWindowHandles.cppm
         src/core/platform/Window.cppm
+        src/core/platform/QuitAppRequest.cppm
         src/core/platform/systems/GLFWSystem.cppm
+        src/core/processor/Process.cppm
+        src/core/processor/ProcessError.cppm
+        src/core/processor/systems/ProcessErrorLoggingSystem.cppm
+        src/core/processor/systems/ProcessErrorRetrySystem.cppm
         src/core/reflection/Any.cppm
         src/core/reflection/BasicTypeTraits.cppm
         src/core/reflection/ClassReflection.cppm

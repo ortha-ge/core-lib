@@ -1,6 +1,6 @@
 module;
 
-#include <cstdio>
+#include <cassert>
 #include <functional>
 #include <map>
 #include <utility>
@@ -27,15 +27,8 @@ namespace Core {
 
 			std::map<void*, void*> voidMap;
 			for (const auto& [inputKey, inputValue] : source) {
-				if (inputKey.getTypeId() != mapTypeTraits.keyType) {
-					printf("Input key type must match output key type.\n");
-					return;
-				}
-
-				if (inputValue.getTypeId() != mapTypeTraits.valueType) {
-					printf("Input value type must match output value type.\n");
-					return;
-				}
+				assert(inputKey.getTypeId() == mapTypeTraits.keyType);
+				assert(inputValue.getTypeId() == mapTypeTraits.valueType);
 
 				voidMap[inputKey.getInstance()] = inputValue.getInstance();
 			}

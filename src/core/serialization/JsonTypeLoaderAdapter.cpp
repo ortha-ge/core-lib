@@ -4,6 +4,8 @@ module;
 #include <print>
 #include <variant>
 
+#include <entt/entt.hpp>
+
 #include <rapidjson/document.h>
 
 module Core.JsonTypeLoaderAdapter;
@@ -11,6 +13,7 @@ module Core.JsonTypeLoaderAdapter;
 import Core.BasicTypeTraits;
 import Core.ClassReflection;
 import Core.EnumReflection;
+import Core.Log;
 import Core.MapTypeTraits;
 import Core.OptionalTypeTraits;
 import Core.ReflectionContext;
@@ -24,7 +27,7 @@ namespace Core {
 	class AnyLoaderMapper {
 
 		template<typename T>
-		static bool _tryLoadAnyAsIntegral(const rapidjson::Value& inputValue, Any& anyValue) {
+		static bool _tryLoadAnyAsIntegral(Log& log, const rapidjson::Value& inputValue, Any& anyValue) {
 
 			constexpr auto min = std::numeric_limits<T>::min();
 			constexpr auto max = std::numeric_limits<T>::max();
@@ -34,7 +37,7 @@ namespace Core {
 			if constexpr (std::is_signed_v<T>) {
 				auto intValue = inputValue.Get<int32_t>();
 				if (intValue < min || intValue > max) {
-					printf("Exceeded range\n");
+					logEntry(log, "Exceeded range.");
 					return true;
 				}
 
@@ -42,7 +45,7 @@ namespace Core {
 			} else {
 				auto uintValue = inputValue.Get<uint32_t>();
 				if (uintValue < min || uintValue > max) {
-					printf("Exceeded range\n");
+					logEntry(log, "Exceeded range.");
 					return true;
 				}
 
@@ -52,13 +55,13 @@ namespace Core {
 			return true;
 		}
 
-		static bool _tryLoadAnyAsString(const rapidjson::Value& inputValue, Any& anyValue) {
+		static bool _tryLoadAnyAsString(Log& log, const rapidjson::Value& inputValue, Any& anyValue) {
 			std::string& value{ *static_cast<std::string*>(anyValue.getInstance()) };
 			value = inputValue.GetString();
 			return true;
 		}
 
-		static bool _tryLoadAnyAsTypeId(const rapidjson::Value& inputValue, Any& anyValue) {
+		static bool _tryLoadAnyAsTypeId(Log& log, const rapidjson::Value& inputValue, Any& anyValue) {
 			const auto& reflectionContex{ getCurrentReflectionContext() };
 			std::string typeName{ inputValue.GetString() };
 			if (auto typeId = reflectionContex.getTypeIdByName(typeName)) {
@@ -70,17 +73,17 @@ namespace Core {
 		}
 
 		template<typename T>
-		static bool _tryLoadAnyAs(const rapidjson::Value& inputValue, Any& anyValue) {
+		static bool _tryLoadAnyAs(Log& log, const rapidjson::Value& inputValue, Any& anyValue) {
 			if (anyValue.getTypeId() != TypeId::get<T>()) {
 				return false;
 			}
 
 			if constexpr (std::is_integral_v<T> && !std::is_same_v<T, bool>) {
-				return _tryLoadAnyAsIntegral<T>(inputValue, anyValue);
+				return _tryLoadAnyAsIntegral<T>(log, inputValue, anyValue);
 			} else if constexpr (std::is_same_v<T, std::string>) {
-				return _tryLoadAnyAsString(inputValue, anyValue);
+				return _tryLoadAnyAsString(log, inputValue, anyValue);
 			} else if constexpr (std::is_same_v<T, TypeId>) {
-				return _tryLoadAnyAsTypeId(inputValue, anyValue);
+				return _tryLoadAnyAsTypeId(log, inputValue, anyValue);
 			} else {
 				T& value{ *static_cast<T*>(anyValue.getInstance()) };
 				value = inputValue.Get<T>();
@@ -90,37 +93,37 @@ namespace Core {
 		}
 
 		template<typename Tail>
-		static bool _tryLoadAny(const rapidjson::Value& inputValue, Any& anyValue) {
+		static bool _tryLoadAny(Log&, const rapidjson::Value&, Any&) {
 			return false;
 		}
 
 		template<typename Tail, typename T, typename... Types>
-		static bool _tryLoadAny(const rapidjson::Value& inputValue, Any& anyValue) {
-			return _tryLoadAnyAs<T>(inputValue, anyValue) || _tryLoadAny<Tail, Types...>(inputValue, anyValue);
+		static bool _tryLoadAny(Log& log, const rapidjson::Value& inputValue, Any& anyValue) {
+			return _tryLoadAnyAs<T>(log, inputValue, anyValue) || _tryLoadAny<Tail, Types...>(log, inputValue, anyValue);
 		}
 
 	public:
-		static bool tryLoadAny(const rapidjson::Value& inputValue, Any& anyValue) {
-			return _tryLoadAny<void, AllTypes...>(inputValue, anyValue);
+		static bool tryLoadAny(Log& log, const rapidjson::Value& inputValue, Any& anyValue) {
+			return _tryLoadAny<void, AllTypes...>(log, inputValue, anyValue);
 		}
 	};
 
 	using AnyLoaderMapperTypes = AnyLoaderMapper<
 		TypeId, std::string, int8_t, uint8_t, int16_t, uint16_t, int32_t, uint32_t, double, float, bool>;
 
-	void load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue);
+	void load(Log&, const ReflectionContext&, const rapidjson::Value&, Any&);
 
 	template<typename T>
 	void
-	_load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue, const T&) {
+	_load(Log&, const ReflectionContext&, const rapidjson::Value&, Any&, const T&) {
 		static_assert(false, "Unhandled type traits.");
 	}
 
-	void _load(
-		const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue,
-		const VoidTypeTraits& typeTraits) {}
+	void _load(Log&,
+		const ReflectionContext&, const rapidjson::Value&, Any&,
+		const VoidTypeTraits&) {}
 
-	void _load(
+	void _load(Log& log,
 		const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue,
 		const BasicTypeTraits& typeTraits) {
 
@@ -136,50 +139,50 @@ namespace Core {
 				auto it = inputValue.FindMember(property.getName().c_str());
 				if (it == inputValue.MemberEnd()) {
 					if (!isOptionalProperty) {
-						printf("Missing required property\n");
+						logEntry(log, "Missing required property: {}", property.getName());
 					}
 
 					continue;
 				}
 
 				Any propertyAny{ property.getTypeId(), property.getRawPointer(classInstance) };
-				load(reflectionContext, it->value, propertyAny);
+				load(log, reflectionContext, it->value, propertyAny);
 			}
 		} else if (reflectionContext.hasEnum(typeId)) {
 			const EnumReflection& enumReflection{ reflectionContext.getEnum(typeId) };
 			if (!inputValue.IsString()) {
-				printf("Enumerator requires string type.\n");
+				logEntry(log, "Enumerator requires string type.");
 				return;
 			}
 
 			const char* enumString = inputValue.GetString();
 			if (!enumReflection.hasEnumerator(enumString)) {
-				printf("Couldn't find enumerator with name '%s'.\n", enumString);
+				logEntry(log, "Couldn't find enumerator with name '{}'.", enumString);
 				return;
 			}
 
 			Any enumValue{ enumReflection.getEnumeratorValue(enumString) };
 			anyValue = enumValue;
-		} else if (AnyLoaderMapperTypes::tryLoadAny(inputValue, anyValue)) {
+		} else if (AnyLoaderMapperTypes::tryLoadAny(log, inputValue, anyValue)) {
 
 		} else {
-			printf("Unhandled type\n");
+			logEntry(log, "Unhandled type.");
 		}
 	}
 
-	void _load(
+	void _load(Log& log,
 		const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue,
 		const OptionalTypeTraits& typeTraits) {
 		Any wrappedTypeAny(typeTraits.elementType);
-		load(reflectionContext, inputValue, wrappedTypeAny);
+		load(log, reflectionContext, inputValue, wrappedTypeAny);
 		anyValue = wrappedTypeAny;
 	}
 
-	void _load(
+	void _load(Log& log,
 		const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue,
 		const VectorTypeTraits& typeTraits) {
 		if (!inputValue.IsArray()) {
-			printf("Not an array.\n");
+			logEntry(log, "Not an array.");
 			return;
 		}
 
@@ -189,18 +192,18 @@ namespace Core {
 
 		for (const auto& inputElement : inputValue.GetArray()) {
 			Any wrappedTypeAny(typeTraits.elementType);
-			load(reflectionContext, inputElement, wrappedTypeAny);
+			load(log, reflectionContext, inputElement, wrappedTypeAny);
 			wrappedVector.emplace_back(std::move(wrappedTypeAny));
 		}
 
 		anyValue = anyVector;
 	}
 
-	void _load(
+	void _load(Log& log,
 		const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue,
 		const MapTypeTraits& typeTraits) {
 		if (!inputValue.IsObject()) {
-			printf("Not an object.\n");
+			logEntry(log, "Not an object.");
 			return;
 		}
 
@@ -215,24 +218,25 @@ namespace Core {
 
 			// Value
 			Any wrappedValueAny(typeTraits.valueType);
-			load(reflectionContext, objectElement.value, wrappedValueAny);
+			load(log, reflectionContext, objectElement.value, wrappedValueAny);
 			wrappedMap[wrappedKeyAny] = std::move(wrappedValueAny);
 		}
 
 		anyValue = anyMap;
 	}
 
-	void load(const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue) {
+	void load(Log& log, const ReflectionContext& reflectionContext, const rapidjson::Value& inputValue, Any& anyValue) {
 		std::visit(
-			[&reflectionContext, &inputValue, &anyValue](auto&& typeTraits) {
-				_load(reflectionContext, inputValue, anyValue, typeTraits);
+			[&log, &reflectionContext, &inputValue, &anyValue](auto&& typeTraits) {
+				_load(log, reflectionContext, inputValue, anyValue, typeTraits);
 			},
 			getTypeTraits(anyValue.getTypeId()));
 	}
 
-	void load(const ReflectionContext& reflectionContext, std::string_view jsonInput, Any& anyValue) {
+	void load(entt::registry& registry, const ReflectionContext& reflectionContext, std::string_view jsonInput, Any& anyValue) {
+		Log log;
 		if (!reflectionContext.hasClass(anyValue.getTypeId())) {
-			printf("Class not registered.\n");
+			logEntry(log, "Class not registered.");
 			return;
 		}
 
@@ -244,19 +248,21 @@ namespace Core {
 
 		auto classRootObjectIt = doc.FindMember(className.c_str());
 		if (classRootObjectIt == doc.MemberEnd()) {
-			printf("Couldn't find matching class root '%s' object.\n", className.c_str());
+			logEntry(log, "Couldn't find matching class root '{}' object.", className);
 			return;
 		}
 
-		load(reflectionContext, classRootObjectIt->value, anyValue);
+		load(log, reflectionContext, classRootObjectIt->value, anyValue);
+		logEntries(registry, std::move(log));
 	}
 
-	Any load(const ReflectionContext& reflectionContext, std::string_view jsonInput) {
+	Any load(entt::registry& registry, const ReflectionContext& reflectionContext, std::string_view jsonInput) {
+		Log log;
 		rapidjson::Document doc;
 		doc.Parse(jsonInput.data(), jsonInput.length());
 
 		if (doc.MemberCount() != 1) {
-			printf("Requires a single root object with the name of the type represented.\n");
+			logEntry(log, "Requires a single root object with the name of the type represented.");
 			return {};
 		}
 
@@ -266,17 +272,18 @@ namespace Core {
 
 		auto typeId = reflectionContext.getTypeIdByName(rootClassName);
 		if (!typeId) {
-			printf("TypeId not found with name '%s'.\n", rootClassName);
+			logEntry(log, "TypeId not found with name '{}'.", rootClassName);
 			return {};
 		}
 
 		if (!reflectionContext.hasClass(*typeId)) {
-			printf("TypeId is not a registered class.\n");
+			logEntry(log, "TypeId is not a registered class.");
 			return {};
 		}
 
 		Any instance(*typeId);
-		load(reflectionContext, rootClassObjectIt->value, instance);
+		load(log, reflectionContext, rootClassObjectIt->value, instance);
+		logEntries(registry, std::move(log));
 		return instance;
 	}
 

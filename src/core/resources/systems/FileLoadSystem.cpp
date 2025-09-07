@@ -9,6 +9,7 @@ module Core.FileLoadSystem;
 
 import Core.FileDescriptor;
 import Core.FileLoadRequest;
+import Core.Log;
 import Core.RawDataResource;
 
 namespace Core {
@@ -21,13 +22,13 @@ namespace Core {
 		auto fileResourceRequestView = registry.view<FileDescriptor, FileLoadRequest>(entt::exclude<RawDataResource>);
 		fileResourceRequestView.each([&registry](entt::entity entity, FileDescriptor& fileDescriptor) {
 			if (fileDescriptor.filePath.empty()) {
-				printf("FileLoadRequest: Empty file path.\n");
+				logEntry(registry, entity, "FileLoadRequest: Empty file path.");
 				registry.remove<FileLoadRequest>(entity);
 				return;
 			}
 
 			if (!std::filesystem::exists(fileDescriptor.filePath)) {
-				printf("FileLoadRequest: Path '%s' doesn't exist.\n", fileDescriptor.filePath.c_str());
+				logEntry(registry, entity, "FileLoadRequest: Path '{}' doesn't exist.", fileDescriptor.filePath);
 				registry.remove<FileLoadRequest>(entity);
 				return;
 			}

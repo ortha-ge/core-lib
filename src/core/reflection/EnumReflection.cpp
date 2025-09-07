@@ -16,7 +16,7 @@ namespace Core {
 
 	void EnumReflection::addEnumerator(std::string_view name, Any value) {
 		if (hasEnumerator(name)) {
-			printf("Duplicate enumerator found.");
+			logEntry(mLog, "Duplicate enumerator '{}' found.", name);
 			return;
 		}
 
@@ -38,5 +38,9 @@ namespace Core {
 	const std::string& EnumReflection::getName() const { return mName; }
 
 	const std::vector<EnumReflection::Enumerator>& EnumReflection::getEnumerators() const { return mEnumerators; }
+
+	Log EnumReflection::moveLog() {
+		return std::move(mLog);
+	}
 
 } // namespace Core

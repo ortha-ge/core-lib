@@ -5,6 +5,7 @@ module;
 export module Core.Systems;
 
 import Core.EnTTRegistry;
+import Core.LogReportingSystem;
 import Core.Scheduler;
 import Core.TypeLoaderSystem;
 import Core.ResourceLoadSystem;
@@ -25,6 +26,7 @@ export namespace Core {
 	private:
 		entt::registry& mRegistry;
 		Scheduler& mScheduler;
+		LogReportingSystem mLogReportingSystem;
 		TypeLoaderSystem mTypeLoaderSystem;
 		ResourceLoadSystem mResourceLoadSystem;
 		TaskHandle mTickHandle{};

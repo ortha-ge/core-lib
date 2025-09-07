@@ -1,7 +1,9 @@
 module;
 
+#include <format>
 #include <chrono>
 #include <utility>
+#include <string_view>
 
 #include <entt/entt.hpp>
 
@@ -9,6 +11,7 @@ module Core.ResourceLoadSystem;
 
 import Core.FileDescriptor;
 import Core.FileLoadRequest;
+import Core.Log;
 import Core.ResourceCache;
 import Core.ResourceHandle;
 import Core.ResourceLoadRequest;
@@ -37,7 +40,7 @@ namespace Core {
 			const std::string& resourceFilePath{ loadRequest.getResourceFilePath() };
 			auto resource{ resourceCache.getResource(resourceFilePath) };
 			if (!resource) {
-				printf("Resource not already loaded: %s\n", resourceFilePath.c_str());
+				//logEntry(registry, entity, "Resource not already loaded: {}", resourceFilePath);
 
 				entt::entity _resourceEntity{ loadRequest.createResource(registry) };
 				registry.emplace<FileDescriptor>(_resourceEntity, resourceFilePath);
@@ -45,7 +48,7 @@ namespace Core {
 
 				resource = resourceCache.addResource(resourceFilePath, _resourceEntity);
 			} else {
-				printf("Resource already loaded: %s\n", resourceFilePath.c_str());
+				//logEntry(registry, entity, "Resource already loaded: {}", resourceFilePath);
 			}
 
 			registry.emplace<ResourceHandle>(entity, resource);

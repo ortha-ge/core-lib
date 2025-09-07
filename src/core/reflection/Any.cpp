@@ -1,5 +1,6 @@
 module;
 
+#include <cassert>
 #include <cstdio>
 #include <map>
 #include <variant>
@@ -73,7 +74,7 @@ namespace Core {
 
 	template<typename LhsTraits, typename RhsTraits>
 	void _assign(Any&, const LhsTraits& lhsTraits, const Any&, const RhsTraits& rhsTraits) {
-		printf("Unhandled Any assignment.\n");
+		assert(false);
 	}
 
 	void _assign(Any& lhs, const Any& rhs) {
@@ -85,20 +86,14 @@ namespace Core {
 	}
 
 	void _assign(Any& lhs, const BasicTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
-		if (lhsTypeTraits.typeId != rhsTypeTraits.typeId) {
-			printf("Mismatched Any assignment.\n");
-			return;
-		}
+		assert(lhsTypeTraits.typeId == rhsTypeTraits.typeId);
 
 		lhsTypeTraits.applyFunc(lhs, rhs);
 	}
 
 	void
 	_assign(Any& lhs, const OptionalTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
-		if (lhsTypeTraits.elementType != rhs.getTypeId()) {
-			printf("Mismatched Any assignment to Optional Any\n");
-			return;
-		}
+		assert(lhsTypeTraits.elementType == rhs.getTypeId());
 
 		lhsTypeTraits.applyFunc(lhs, rhs);
 	}
@@ -118,20 +113,14 @@ namespace Core {
 		//     return *this;
 		// }
 
-		if (rhs.getTypeId() != TypeId::get<std::vector<Any>>()) {
-			printf("Vector assignment requires rhs of std::vector<Any>.\n");
-			return;
-		}
+		assert(rhs.getTypeId() == TypeId::get<std::vector<Any>>());
 
 		const std::vector<Any>& anyVector{ *static_cast<const std::vector<Any>*>(rhs.getInstance()) };
 		lhsTypeTraits.applyFunc(lhs, anyVector);
 	}
 
 	void _assign(Any& lhs, const MapTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
-		if (rhs.getTypeId() != TypeId::get<std::map<Any, Any>>()) {
-			printf("Map assignment requires rhs of std::map<Any, Any>.\n");
-			return;
-		}
+		assert((rhs.getTypeId() == TypeId::get<std::map<Any, Any>>()));
 
 		const std::map<Any, Any>& anyMap{ *static_cast<const std::map<Any, Any>*>(rhs.getInstance()) };
 		lhsTypeTraits.applyFunc(lhs, anyMap);

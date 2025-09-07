@@ -26,7 +26,14 @@ namespace Core {
 	ClassReflection::ClassReflection(std::string_view name)
 		: mName(name) {}
 
-	void ClassReflection::addProperty(ClassProperty property) { mProperties.emplace_back(std::move(property)); }
+	void ClassReflection::addProperty(ClassProperty property) {
+		if (hasProperty(property.getName())) {
+			logEntry(mLog, "Duplicate property '{}' found.", property.getName());
+			return;
+		}
+
+		mProperties.emplace_back(std::move(property));
+	}
 
 	bool ClassReflection::hasProperty(std::string_view propertyName) const {
 		return std::ranges::find_if(mProperties, [&](const auto& property) {
@@ -60,5 +67,9 @@ namespace Core {
 	const std::string& ClassReflection::getName() const { return mName; }
 
 	const std::vector<ClassProperty>& ClassReflection::getProperties() const { return mProperties; }
+
+	Log ClassReflection::moveLog() {
+		return std::move(mLog);
+	}
 
 } // namespace Core

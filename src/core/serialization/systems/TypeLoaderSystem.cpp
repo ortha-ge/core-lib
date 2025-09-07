@@ -30,7 +30,7 @@ namespace Core {
 				std::string_view rawDataView{ reinterpret_cast<const char*>(rawDataResource.rawData.data()),
 											  static_cast<size_t>(rawDataResource.size) };
 
-				typeLoader.adapter->load(rawDataView, registry, entity);
+				typeLoader.adapter->load(registry, entity, rawDataView);
 
 				registry.remove<Core::TypeLoader>(entity);
 			});

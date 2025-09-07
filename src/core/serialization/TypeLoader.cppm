@@ -13,7 +13,7 @@ export namespace Core {
 	public:
 		virtual ~TypeLoaderAdapter() = default;
 
-		virtual void load(std::string_view, entt::registry&, entt::entity) = 0;
+		virtual void load(entt::registry&, entt::entity, std::string_view) = 0;
 	};
 
 	struct TypeLoader {

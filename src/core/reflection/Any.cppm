@@ -24,10 +24,22 @@ export namespace Core {
 		Any& operator=(Any&&) noexcept;
 
 		template<typename T>
-		explicit Any(T& instance)
-			: mTypeId{ TypeId::get<T>() }
-			, mInstance(&instance)
+		Any(T&& instance, std::true_type)
+			: mTypeId{ TypeId::get<std::remove_const_t<std::remove_reference_t<T>>>() }
+			, mInstance(&const_cast<std::add_lvalue_reference_t<std::remove_const_t<std::remove_reference_t<T>>>>(instance))
 			, mOwnsInstance(false) {}
+
+		template <typename T>
+		Any(T&& instance, std::false_type)
+			: Any(TypeId::get<std::remove_const_t<std::remove_reference_t<T>>>()) {
+
+			*static_cast<T*>(mInstance) = std::forward<T>(instance);
+		}
+
+		template<typename T>
+		explicit Any(T&& instance)
+			: Any(std::forward<T>(instance), std::is_lvalue_reference<T>()) {
+		}
 
 		const TypeId& getTypeId() const;
 		void* getInstance() const;

@@ -1,5 +1,7 @@
 module;
 
+#include <chrono>
+
 #include <entt/entity/entity.hpp>
 #include <entt/fwd.hpp>
 
@@ -23,6 +25,7 @@ export namespace Core {
 		TaskHandle mTickHandle{};
 
 		entt::entity mResourceCacheEntity{ entt::null };
+		std::chrono::steady_clock::time_point mNextCleanupTime{};
 	};
 
 } // namespace Core

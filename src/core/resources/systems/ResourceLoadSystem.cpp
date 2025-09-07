@@ -1,5 +1,6 @@
 module;
 
+#include <chrono>
 #include <utility>
 
 #include <entt/entt.hpp>
@@ -22,6 +23,7 @@ namespace Core {
 		mResourceCacheEntity = registry.create();
 		registry.emplace<ResourceCache>(mResourceCacheEntity);
 
+		mNextCleanupTime = std::chrono::steady_clock::now() + std::chrono::seconds(5);
 		mTickHandle = mScheduler.schedule([this]() { tick(mRegistry); });
 	}
 
@@ -33,29 +35,29 @@ namespace Core {
 		auto resourceLoadRequestView = registry.view<ResourceLoadRequest>();
 		resourceLoadRequestView.each([&](entt::entity entity, const ResourceLoadRequest& loadRequest) {
 			const std::string& resourceFilePath{ loadRequest.getResourceFilePath() };
-			auto resourceEntity{ resourceCache.getResource(resourceFilePath) };
-			if (!resourceEntity) {
+			auto resource{ resourceCache.getResource(resourceFilePath) };
+			if (!resource) {
 				printf("Resource not already loaded: %s\n", resourceFilePath.c_str());
 
 				entt::entity _resourceEntity{ loadRequest.createResource(registry) };
 				registry.emplace<FileDescriptor>(_resourceEntity, resourceFilePath);
 				registry.emplace<FileLoadRequest>(_resourceEntity);
 
-				resourceEntity = _resourceEntity;
-				resourceCache.addResource(resourceFilePath, _resourceEntity);
+				resource = resourceCache.addResource(resourceFilePath, _resourceEntity);
 			} else {
 				printf("Resource already loaded: %s\n", resourceFilePath.c_str());
 			}
 
-			registry.emplace<ResourceHandle>(entity, *resourceEntity);
+			registry.emplace<ResourceHandle>(entity, resource);
 
-			resourceCache.updateRecentlyUsedResources(*resourceEntity);
+			resourceCache.updateRecentlyUsedResources(resource);
 			registry.remove<ResourceLoadRequest>(entity);
 		});
 
-		const bool shouldFreeLRU{ false };
+		const bool shouldFreeLRU{ std::chrono::steady_clock::now() >= mNextCleanupTime };
 		if (shouldFreeLRU) {
-			resourceCache.cleanupLeastUsedResources();
+			resourceCache.cleanupLeastUsedResources(registry);
+			mNextCleanupTime = std::chrono::steady_clock::now() + std::chrono::seconds(5);
 		}
 	}
 

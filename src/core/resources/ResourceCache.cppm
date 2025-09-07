@@ -1,24 +1,25 @@
 module;
 
 #include <list>
-#include <optional>
+#include <memory>
 #include <string>
 #include <unordered_map>
 
-#include <entt/entity/entity.hpp>
 #include <entt/fwd.hpp>
 
 export module Core.ResourceCache;
+
+import Core.ResourceHandle;
 
 export namespace Core {
 
 	class ResourceCache {
 	public:
-		std::optional<entt::entity> getResource(const std::string& resourceFilePath) const;
-		void addResource(const std::string& resourceFilePath, entt::entity resourceEntity);
+		std::shared_ptr<Resource> getResource(const std::string&) const;
+		std::shared_ptr<Resource> addResource(const std::string&, entt::entity);
 
-		void cleanupLeastUsedResources();
-		void updateRecentlyUsedResources(entt::entity resourceEntity);
+		void cleanupLeastUsedResources(entt::registry&);
+		void updateRecentlyUsedResources(std::shared_ptr<Resource> resource);
 
 		// LRU for determining resources based on how recently a resource has been requested.
 		// Resources use a shared handle so they don't get released unless all handles are dropped.
@@ -27,8 +28,8 @@ export namespace Core {
 		// Adapters could be mapped to TypeId with a register call for runtime resolution.
 
 	private:
-		std::unordered_map<std::string, entt::entity> mResourceLookup{};
-		std::list<entt::entity> mRecentlyUsedResources{};
+		std::unordered_map<std::string, std::weak_ptr<Resource>> mResourceLookup{};
+		std::list<std::shared_ptr<Resource>> mRecentlyUsedResources{};
 	};
 
 } // namespace Core

@@ -24,7 +24,9 @@ namespace Core {
 	}
 
 	void ProcessErrorLoggingSystem::tickProcessError(entt::registry& registry, const entt::entity entity, const ProcessError& processError) {
-		logEntry(registry, entity, processError.errorMessage);
+		if (processError.errorMessage) {
+			logEntry(registry, entity, *processError.errorMessage);
+		}
 		registry.emplace<ProcessErrorLoggedFlag>(entity);
 	}
 

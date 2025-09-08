@@ -52,7 +52,7 @@ export namespace Core {
 		const auto& resourceHandle{ registry.get<ResourceHandle>(entity) };
 		const entt::entity resourceEntity{ resourceHandle.getResourceEntity() };
 		if (!registry.all_of<T>(resourceEntity)) {
-			return { entt::null, nullptr };
+			return { resourceEntity, nullptr };
 		}
 
 		return { resourceEntity, &registry.get<T>(resourceEntity) };

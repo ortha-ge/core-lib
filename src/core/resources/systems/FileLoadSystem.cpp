@@ -10,6 +10,7 @@ module Core.FileLoadSystem;
 import Core.FileDescriptor;
 import Core.FileLoadRequest;
 import Core.Log;
+import Core.ProcessError;
 import Core.RawDataResource;
 
 namespace Core {
@@ -19,17 +20,15 @@ namespace Core {
 	void FileLoadSystem::destroySystem(entt::registry& registry) {}
 
 	void FileLoadSystem::tickSystem(entt::registry& registry) {
-		auto fileResourceRequestView = registry.view<FileDescriptor, FileLoadRequest>(entt::exclude<RawDataResource>);
+		auto fileResourceRequestView = registry.view<FileDescriptor, FileLoadRequest>(entt::exclude<RawDataResource, ProcessError>);
 		fileResourceRequestView.each([&registry](entt::entity entity, FileDescriptor& fileDescriptor) {
 			if (fileDescriptor.filePath.empty()) {
-				logEntry(registry, entity, "FileLoadRequest: Empty file path.");
-				registry.remove<FileLoadRequest>(entity);
+				addProcessError(registry, entity, "FileLoadRequest: Empty file path.");
 				return;
 			}
 
 			if (!std::filesystem::exists(fileDescriptor.filePath)) {
-				logEntry(registry, entity, "FileLoadRequest: Path '{}' doesn't exist.", fileDescriptor.filePath);
-				registry.remove<FileLoadRequest>(entity);
+				addProcessError(registry, entity, "FileLoadRequest: Path '{}' doesn't exist.", fileDescriptor.filePath);
 				return;
 			}
 

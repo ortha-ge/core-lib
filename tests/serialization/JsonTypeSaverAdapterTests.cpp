@@ -8,6 +8,7 @@
 import Core.Any;
 import Core.ClassReflection;
 import Core.JsonTypeSaverAdapter;
+import Core.Log;
 import Core.ReflectionContext;
 import Core.TypeId;
 import JsonTypeAdapterTestClasses;
@@ -24,10 +25,11 @@ TEST_CASE("ReflectedClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterT
         "boolProperty": true
     }
 })";
-	reflect<TestClass>(getCurrentReflectionContext());
+	Core::reflect<TestClass>(getCurrentReflectionContext());
 	TestClass testClass{ "testString", 5, 10.0, 15.0f, true };
+	Log log;
 
-	const std::string output = save(Any{ testClass });
+	const std::string output = save(log, Any{ testClass });
 
 	REQUIRE(output == expectedOutput);
 }
@@ -51,8 +53,9 @@ TEST_CASE("ReflectedClassWithNestedClass_Save_OutputMatchesSourceClass", "JsonTy
 	reflect<TestClass>(reflectionContext);
 	reflect<TestClass2>(reflectionContext);
 	TestClass2 testClass{ "testString", 5, 10.0, 15.0f, true };
+	Log log;
 
-	const std::string output = save(Any{ testClass });
+	const std::string output = save(log, Any{ testClass });
 
 	REQUIRE(output == expectedOutput);
 }
@@ -69,8 +72,9 @@ TEST_CASE("ReflectedClassWithOptional_Save_OutputMatchesSourceClass", "JsonTypeS
 	TestClass3 testClass{};
 	testClass.optionalIntProperty = 5;
 	Any anyValue(testClass);
+	Log log;
 
-	const std::string output = save(anyValue);
+	const std::string output = save(log, anyValue);
 
 	REQUIRE(output == expectedOutput);
 }
@@ -84,8 +88,9 @@ TEST_CASE("ReflectedClassWithMissingOptional_Save_OutputMatchesSourceClass", "Js
 	reflect<TestClass3>(getCurrentReflectionContext());
 	TestClass3 testClass{};
 	Any anyValue(testClass);
+	Log log;
 
-	const std::string output = save(anyValue);
+	const std::string output = save(log, anyValue);
 
 	REQUIRE(output == expectedOutput);
 }
@@ -109,8 +114,9 @@ TEST_CASE("ReflectedClassWithOptionalClass_Save_OutputMatchesSourceClass", "Json
 	TestClass4 testClass{};
 	testClass.optionalClassProperty = { "testString", 5, 10.0, 15.0, true };
 	Any anyValue(testClass);
+	Log log;
 
-	const std::string output = save(anyValue);
+	const std::string output = save(log, anyValue);
 
 	REQUIRE(output == expectedOutput);
 }
@@ -124,8 +130,9 @@ TEST_CASE("ReflectedClassWithMissingOptionalClass_Save_OutputMatchesSourceClass"
 	reflect<TestClass4>(getCurrentReflectionContext());
 	TestClass4 testClass{};
 	Any anyValue(testClass);
+	Log log;
 
-	const std::string output = save(anyValue);
+	const std::string output = save(log, anyValue);
 
 	REQUIRE(output == expectedOutput);
 }
@@ -146,8 +153,9 @@ TEST_CASE("ReflectedClassWithVector_Save_OutputMatchesSourceClass", "JsonTypeSav
 	VectorTestClass testClass{};
 	testClass.vectorProperty = { 5, 10, 15 };
 	Any anyValue(testClass);
+	Log log;
 
-	const std::string output = save(anyValue);
+	const std::string output = save(log, anyValue);
 
 	REQUIRE(output == expectedOutput);
 }
@@ -168,8 +176,9 @@ TEST_CASE("ReflectedClassWithMap_Save_OutputMatchesSourceClass", "JsonTypeSaverA
 	MapTestClass testClass{};
 	testClass.mapProperty = { { "a", 5 }, { "b", 10 }, { "c", 15 } };
 	Any anyValue(testClass);
+	Log log;
 
-	const std::string output = save(anyValue);
+	const std::string output = save(log, anyValue);
 
 	REQUIRE(output == expectedOutput);
 }

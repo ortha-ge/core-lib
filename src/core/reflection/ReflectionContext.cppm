@@ -136,9 +136,9 @@ export namespace Core {
 		Log mLog;
 		size_t mNextTypeId{};
 		std::unordered_map<std::string, TypeId> mTypeNameLookup;
-		std::unordered_map<TypeId, TypeReflection> mBasicTypeReflections;
-		std::unordered_map<TypeId, ClassReflection> mClassReflections;
-		std::unordered_map<TypeId, EnumReflection> mEnumReflections;
+		std::unordered_map<TypeId, TypeReflection, TypeIdHasher> mBasicTypeReflections;
+		std::unordered_map<TypeId, ClassReflection, TypeIdHasher> mClassReflections;
+		std::unordered_map<TypeId, EnumReflection, TypeIdHasher> mEnumReflections;
 	};
 
 	ReflectionContext& getCurrentReflectionContext() {

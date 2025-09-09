@@ -14,7 +14,9 @@ import Core.TypeLoader;
 export namespace Core {
 
 	void load(entt::registry&, const ReflectionContext&, std::string_view, Any&);
+	void load(Log&, const ReflectionContext&, std::string_view, Any&);
 	Any load(entt::registry&, const ReflectionContext&, std::string_view);
+	Any load(Log&, const ReflectionContext&, std::string_view);
 
 	template<typename T>
 	class JsonTypeLoaderAdapter : public TypeLoaderAdapter {

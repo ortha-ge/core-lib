@@ -86,8 +86,8 @@ namespace Core {
 		return invalidTypeInfo;
 	}
 
-} // namespace Core
+	std::size_t TypeIdHasher::operator()(const TypeId& typeId) const noexcept {
+		return reinterpret_cast<size_t>(&typeId.getTypeInfo());
+	}
 
-size_t std::hash<Core::TypeId>::operator()(const Core::TypeId& typeId) const noexcept {
-	return reinterpret_cast<size_t>(&typeId.getTypeInfo());
-}
+} // namespace Core

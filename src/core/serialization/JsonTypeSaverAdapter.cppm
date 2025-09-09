@@ -8,11 +8,13 @@ module;
 export module Core.JsonTypeSaverAdapter;
 
 import Core.Any;
+import Core.Log;
 import Core.TypeSaver;
 
 export namespace Core {
 
 	std::string save(entt::registry&, const Any& anyValue);
+	std::string save(Log&, const Any& anyValue);
 
 	template<typename T>
 	class JsonTypeSaverAdapter : public TypeSaverAdapter {

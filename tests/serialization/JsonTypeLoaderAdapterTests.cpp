@@ -8,6 +8,7 @@
 import Core.Any;
 import Core.ClassReflection;
 import Core.JsonTypeLoaderAdapter;
+import Core.Log;
 import Core.ReflectionContext;
 import Core.TypeId;
 import JsonTypeAdapterTestClasses;
@@ -28,8 +29,9 @@ TEST_CASE("JsonInput_LoadReflectedClass_LoadedClassMatchesInput", "JsonTypeLoade
 	reflect<TestClass>(reflectionContext);
 	TestClass testClass{};
 	Any anyValue(testClass);
+	Log log;
 
-	load(reflectionContext, jsonInput, anyValue);
+	load(log, reflectionContext, jsonInput, anyValue);
 
 	REQUIRE(testClass.stringProperty == "testString");
 	REQUIRE(testClass.intProperty == 5);
@@ -52,8 +54,9 @@ TEST_CASE("JsonInput_LoadReflectedClassByName_InstanceIsCorrectType", "JsonTypeL
 })";
 	ReflectionContext reflectionContext{};
 	reflect<TestClass>(reflectionContext);
+	Log log;
 
-	Any anyValue = load(reflectionContext, jsonInput);
+	Any anyValue = load(log, reflectionContext, jsonInput);
 
 	REQUIRE(TypeId::get<TestClass>() == anyValue.getTypeId());
 	TestClass* testClass = static_cast<TestClass*>(anyValue.getInstance());
@@ -83,8 +86,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithNestedClass_LoadedClassMatchesInput",
 	reflect<TestClass2>(reflectionContext);
 	TestClass2 testClass{};
 	Any anyValue(testClass);
+	Log log;
 
-	load(reflectionContext, jsonInput, anyValue);
+	load(log, reflectionContext, jsonInput, anyValue);
 
 	REQUIRE(testClass.nestedProperty.stringProperty == "testString");
 	REQUIRE(testClass.nestedProperty.intProperty == 5);
@@ -105,8 +109,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithOptional_LoadedOptionalMatchesInput",
 	reflect<TestClass3>(reflectionContext);
 	TestClass3 testClass{};
 	Any anyValue(testClass);
+	Log log;
 
-	load(reflectionContext, jsonInput, anyValue);
+	load(log, reflectionContext, jsonInput, anyValue);
 
 	REQUIRE(testClass.optionalIntProperty == 5);
 }
@@ -121,8 +126,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptional_LoadedOptionalIsNull"
 	reflect<TestClass3>(reflectionContext);
 	TestClass3 testClass{};
 	Any anyValue(testClass);
+	Log log;
 
-	load(reflectionContext, jsonInput, anyValue);
+	load(log, reflectionContext, jsonInput, anyValue);
 
 	REQUIRE(!testClass.optionalIntProperty.has_value());
 }
@@ -147,8 +153,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithOptionalClass_LoadedOptionalMatchesIn
 	reflect<TestClass4>(reflectionContext);
 	TestClass4 testClass{};
 	Any anyValue(testClass);
+	Log log;
 
-	load(reflectionContext, jsonInput, anyValue);
+	load(log, reflectionContext, jsonInput, anyValue);
 
 	REQUIRE(testClass.optionalClassProperty);
 	const auto& innerProperty{ *testClass.optionalClassProperty };
@@ -165,8 +172,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptionalClass_LoadedOptionalIs
 	reflect<TestClass4>(reflectionContext);
 	TestClass4 testClass{};
 	Any anyValue(testClass);
+	Log log;
 
-	load(reflectionContext, jsonInput, anyValue);
+	load(log, reflectionContext, jsonInput, anyValue);
 
 	REQUIRE(!testClass.optionalClassProperty);
 }
@@ -187,8 +195,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithVector_LoadedVectorMatchesInput", "Js
 	reflect<VectorTestClass>(reflectionContext);
 	VectorTestClass testClass{};
 	Any anyValue(testClass);
+	Log log;
 
-	load(reflectionContext, jsonInput, anyValue);
+	load(log, reflectionContext, jsonInput, anyValue);
 
 	REQUIRE(testClass.vectorProperty.size() == 3);
 }
@@ -209,8 +218,9 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMap_LoadedMapMatchesInput", "JsonType
 	reflect<MapTestClass>(reflectionContext);
 	MapTestClass testClass{};
 	Any anyValue(testClass);
+	Log log;
 
-	load(reflectionContext, jsonInput, anyValue);
+	load(log, reflectionContext, jsonInput, anyValue);
 
 	REQUIRE(testClass.mapProperty.size() == 3);
 }

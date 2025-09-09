@@ -184,6 +184,10 @@ namespace Core {
 
 	std::string save(entt::registry& registry, const Any& anyValue) {
 		Log log;
+		return save(log, anyValue);
+	}
+
+	std::string save(Log& log, const Any& anyValue) {
 		const auto& reflectionContext{ getCurrentReflectionContext() };
 		if (!reflectionContext.hasClass(anyValue.getTypeId())) {
 			logEntry(log, "Class not registered.");

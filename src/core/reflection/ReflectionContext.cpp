@@ -4,6 +4,7 @@ module;
 #include <functional>
 #include <optional>
 #include <string>
+#include <unordered_map>
 #include <utility>
 
 module Core.ReflectionContext;
@@ -13,8 +14,8 @@ import Core.TypeId;
 namespace Core {
 
 	ClassReflectionBuilderBase::ClassReflectionBuilderBase(TypeId typeId, std::string_view className)
-		: mTypeId{ std::move(typeId) }
-		, mClassReflection{ className } {}
+		: mTypeId(std::move(typeId))
+		, mClassReflection(className) {}
 
 	ClassReflection ClassReflectionBuilderBase::getReflection() { return std::move(mClassReflection); }
 
@@ -34,7 +35,7 @@ namespace Core {
 	ReflectionContext::ReflectionContext() { initializeBasicTypes(); }
 
 	void ReflectionContext::addBasicType(TypeId typeId, TypeReflection typeReflection) {
-		if (mBasicTypeReflections.contains(typeId)) {
+		if (hasBasicType(typeId)) {
 			return;
 		}
 

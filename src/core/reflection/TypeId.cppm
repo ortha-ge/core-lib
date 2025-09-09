@@ -11,7 +11,12 @@ export module Core.TypeId;
 import Core.TypeInfo;
 
 export namespace Core {
+
 	class TypeId;
+
+	struct TypeIdHasher {
+		std::size_t operator()(const TypeId& typeId) const noexcept;
+	};
 }
 
 namespace Core {
@@ -34,11 +39,6 @@ namespace Core {
 		std::function<void(void*, const std::map<void*, void*>&)> applyFunc,
 		std::function<void(void*, std::function<void(const void*, const void*)>)> forEachFunc);
 } // namespace Core
-
-template<>
-struct std::hash<Core::TypeId> {
-	size_t operator()(const Core::TypeId& typeId) const noexcept;
-};
 
 export namespace Core {
 

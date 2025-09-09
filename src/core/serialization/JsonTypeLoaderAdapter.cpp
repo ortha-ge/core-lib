@@ -235,6 +235,11 @@ namespace Core {
 
 	void load(entt::registry& registry, const ReflectionContext& reflectionContext, std::string_view jsonInput, Any& anyValue) {
 		Log log;
+		load(log, reflectionContext, jsonInput, anyValue);
+		logEntries(registry, std::move(log));
+	}
+
+	void load(Log& log, const ReflectionContext& reflectionContext, std::string_view jsonInput, Any& anyValue) {
 		if (!reflectionContext.hasClass(anyValue.getTypeId())) {
 			logEntry(log, "Class not registered.");
 			return;
@@ -253,11 +258,16 @@ namespace Core {
 		}
 
 		load(log, reflectionContext, classRootObjectIt->value, anyValue);
-		logEntries(registry, std::move(log));
 	}
 
 	Any load(entt::registry& registry, const ReflectionContext& reflectionContext, std::string_view jsonInput) {
 		Log log;
+		Any result = load(log, reflectionContext, jsonInput);
+		logEntries(registry, std::move(log));
+		return result;
+	}
+
+	Any load(Log& log, const ReflectionContext& reflectionContext, std::string_view jsonInput) {
 		rapidjson::Document doc;
 		doc.Parse(jsonInput.data(), jsonInput.length());
 
@@ -283,7 +293,6 @@ namespace Core {
 
 		Any instance(*typeId);
 		load(log, reflectionContext, rootClassObjectIt->value, instance);
-		logEntries(registry, std::move(log));
 		return instance;
 	}
 

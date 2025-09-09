@@ -6,9 +6,11 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(kangaru CONFIG REQUIRED)
 find_package(RapidJSON CONFIG REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
 
 set(core-lib-src
         src/core/EnTTRegistry.cpp
+        src/core/kangaru.cpp
         src/core/Scheduler.cpp
         src/core/Timer.cpp
         src/core/logging/Log.cpp
@@ -100,10 +102,11 @@ set(core-lib-reflection-modules
 set(core-lib-libraries
         EnTT::EnTT
         glfw
-        glm
+        glm::glm
         bx
         bimg
         bimg_decode
+        SDL2::SDL2
 )
 
 add_library(core-lib STATIC ${core-lib-src} ${core-lib-modules} ${core-lib-reflection-modules})

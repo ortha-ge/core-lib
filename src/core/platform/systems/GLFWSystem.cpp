@@ -30,9 +30,11 @@ module;
 
 module Core.GLFWSystem;
 
-import Core.QuitAppRequest;
+
 import Core.GLFWWindow;
 import Core.NativeWindowHandles;
+import Core.ProcessError;
+import Core.QuitAppRequest;
 import Core.Window;
 
 namespace Core {
@@ -106,7 +108,7 @@ namespace Core {
 	}
 
 	void GLFWSystem::tickCreateWindowView(entt::registry& registry) {
-		registry.view<Window>(entt::exclude<GLFWWindow>).each([&registry](entt::entity entity, const Window& window) {
+		registry.view<Window>(entt::exclude<GLFWWindow, ProcessError>).each([&registry](entt::entity entity, const Window& window) {
 			tryCreateGLFWWindow(registry, entity, window);
 		});
 	}
@@ -126,6 +128,10 @@ namespace Core {
 		GLFWwindow* internalWindow =
 			glfwCreateWindow(window.width, window.height, window.title.c_str(), nullptr, nullptr);
 		if (!internalWindow) {
+			const char* description = nullptr;
+			if (glfwGetError(&description) && description) {
+				addProcessError(registry, entity, description);
+			}
 			return;
 		}
 

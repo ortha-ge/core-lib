@@ -1,6 +1,7 @@
 module;
 
 #include <memory>
+#include <string>
 
 #include <entt/entity/entity.hpp>
 

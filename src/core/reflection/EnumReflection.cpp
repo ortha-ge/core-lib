@@ -1,5 +1,6 @@
 module;
 
+#include <algorithm>
 #include <cstdio>
 #include <string>
 #include <string_view>

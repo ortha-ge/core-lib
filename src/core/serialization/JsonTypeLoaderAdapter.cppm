@@ -2,7 +2,7 @@ module;
 
 #include <string_view>
 
-#include <entt/fwd.hpp>
+#include <entt/entt.hpp>
 
 export module Core.JsonTypeLoaderAdapter;
 

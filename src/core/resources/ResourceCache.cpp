@@ -3,9 +3,11 @@ module;
 #include <algorithm>
 #include <string>
 
-#include <entt/entity/entity.hpp>
+#include <entt/entt.hpp>
 
 module Core.ResourceCache;
+
+import Core.ResourceHandle;
 
 namespace Core {
 

@@ -1,6 +1,7 @@
 module;
 
 #include <optional>
+#include <string>
 #include <variant>
 
 #include <entt/fwd.hpp>

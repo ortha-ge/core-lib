@@ -1,15 +1,16 @@
+module;
+
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 export module Core.Spatial;
 
 export namespace Core {
 
 	struct Spatial {
-		float x{};
-		float y{};
-		float z{};
-		float scaleX{ 1.0f };
-		float scaleY{ 1.0f };
-		float scaleZ{ 1.0f };
+		glm::vec3 position{};
+		glm::vec3 scale{ 1.0f, 1.0f, 1.0f };
+		glm::fquat rotation{};
 	};
 
 } // namespace Core

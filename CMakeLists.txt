@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.31)
 
 find_package(EnTT CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
+find_package(glm CONFIG REQUIRED)
 find_package(kangaru CONFIG REQUIRED)
 find_package(RapidJSON CONFIG REQUIRED)
 
@@ -96,13 +97,22 @@ set(core-lib-modules
 set(core-lib-reflection-modules
 )
 
+set(core-lib-libraries
+        EnTT::EnTT
+        glfw
+        glm
+        bx
+        bimg
+        bimg_decode
+)
+
 add_library(core-lib STATIC ${core-lib-src} ${core-lib-modules} ${core-lib-reflection-modules})
 
 target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
         ${core-lib-modules} ${core-lib-reflection-modules}
 )
 target_compile_features(core-lib PUBLIC cxx_std_23)
-target_link_libraries(core-lib PUBLIC EnTT::EnTT glfw bx bimg bimg_decode)
+target_link_libraries(core-lib PUBLIC ${core-lib-libraries})
 target_include_directories(core-lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_subdirectory(tests)

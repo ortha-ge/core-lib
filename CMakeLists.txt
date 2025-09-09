@@ -1,6 +1,7 @@
  
 cmake_minimum_required(VERSION 3.31)
 
+find_package(bgfx CONFIG REQUIRED)
 find_package(EnTT CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
@@ -103,9 +104,9 @@ set(core-lib-libraries
         EnTT::EnTT
         glfw
         glm::glm
-        bx
-        bimg
-        bimg_decode
+        bgfx::bx
+        bgfx::bimg
+        bgfx::bimg_decode
         SDL2::SDL2
 )
 

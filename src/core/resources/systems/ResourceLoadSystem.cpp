@@ -12,6 +12,7 @@ module Core.ResourceLoadSystem;
 import Core.FileDescriptor;
 import Core.FileLoadRequest;
 import Core.Log;
+import Core.Resource;
 import Core.ResourceCache;
 import Core.ResourceHandle;
 import Core.ResourceLoadRequest;
@@ -37,12 +38,18 @@ namespace Core {
 
 		auto resourceLoadRequestView = registry.view<ResourceLoadRequest>();
 		resourceLoadRequestView.each([&](entt::entity entity, const ResourceLoadRequest& loadRequest) {
-			const std::string& resourceFilePath{ loadRequest.getResourceFilePath() };
+			auto resourceHandle = loadRequest.lockResourceHandle();
+			if (!resourceHandle) {
+				registry.destroy(entity);
+				return;
+			}
+
+			const std::string& resourceFilePath{ resourceHandle->getResourceFilePath() };
 			auto resource{ resourceCache.getResource(resourceFilePath) };
 			if (!resource) {
 				//logEntry(registry, entity, "Resource not already loaded: {}", resourceFilePath);
 
-				entt::entity _resourceEntity{ loadRequest.createResource(registry) };
+				entt::entity _resourceEntity{ resourceHandle->createResource(registry) };
 				registry.emplace<FileDescriptor>(_resourceEntity, resourceFilePath);
 				registry.emplace<FileLoadRequest>(_resourceEntity);
 
@@ -51,10 +58,10 @@ namespace Core {
 				//logEntry(registry, entity, "Resource already loaded: {}", resourceFilePath);
 			}
 
-			registry.emplace<ResourceHandle>(entity, resource);
+			resourceHandle->setResource(resource);
 
 			resourceCache.updateRecentlyUsedResources(resource);
-			registry.remove<ResourceLoadRequest>(entity);
+			registry.destroy(entity);
 		});
 
 		const bool shouldFreeLRU{ std::chrono::steady_clock::now() >= mNextCleanupTime };

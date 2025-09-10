@@ -9,7 +9,7 @@ module;
 
 export module Core.ResourceCache;
 
-import Core.ResourceHandle;
+import Core.Resource;
 
 export namespace Core {
 

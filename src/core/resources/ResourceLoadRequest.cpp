@@ -1,24 +1,17 @@
 module;
 
-#include <string>
-#include <utility>
-
-#include <entt/entt.hpp>
+#include <memory>
 
 module Core.ResourceLoadRequest;
 
 namespace Core {
 
-	ResourceLoadRequest::ResourceLoadRequest(std::string resourceFilePath, TypeLoaderFunction typeLoaderFunction)
-		: resourceFilePath(std::move(resourceFilePath))
-		, typeLoaderFunction(std::move(typeLoaderFunction)) {}
+	ResourceLoadRequest::ResourceLoadRequest(std::shared_ptr<ResourceHandle> resourceHandle)
+		: mResourceHandle(resourceHandle) {
+	}
 
-	const std::string& ResourceLoadRequest::getResourceFilePath() const { return resourceFilePath; }
-
-	entt::entity ResourceLoadRequest::createResource(entt::registry& registry) const {
-		entt::entity resourceEntity{ registry.create() };
-		typeLoaderFunction(registry, resourceEntity);
-		return resourceEntity;
+	std::shared_ptr<ResourceHandle> ResourceLoadRequest::lockResourceHandle() const {
+		return mResourceHandle.lock();
 	}
 
 } // namespace Core

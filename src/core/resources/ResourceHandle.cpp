@@ -9,22 +9,14 @@ module Core.ResourceHandle;
 
 namespace Core {
 
-	Resource::Resource(std::string filePath, const entt::entity resourceEntity)
-		: mFilePath{ std::move(filePath) }
-		, mResourceEntity{ resourceEntity } {
-	}
-
-	const std::string& Resource::getFilePath() const {
-		return mFilePath;
-	}
-
-	entt::entity Resource::getResourceEntity() const {
-		return mResourceEntity;
-	}
-
 	ResourceHandle::ResourceHandle() = default;
 	ResourceHandle::ResourceHandle(std::shared_ptr<Resource> resource)
 		: mResource{ std::move(resource) } {}
+
+	ResourceHandle::ResourceHandle(std::string resourceFilePath, TypeLoaderFunction typeLoaderFunc)
+		: mResourceFilePath(std::move(resourceFilePath))
+		, mTypeLoaderFunc(std::move(typeLoaderFunc)) {
+	}
 
 	ResourceHandle::~ResourceHandle() = default;
 
@@ -32,6 +24,20 @@ namespace Core {
 	ResourceHandle::ResourceHandle(ResourceHandle&& other) noexcept = default;
 	ResourceHandle& ResourceHandle::operator=(const ResourceHandle& other) = default;
 	ResourceHandle& ResourceHandle::operator=(ResourceHandle&& other) noexcept = default;
+
+	void ResourceHandle::setResource(std::shared_ptr<Resource> resource) {
+		mResource = std::move(resource);
+	}
+
+	const std::string& ResourceHandle::getResourceFilePath() const {
+		return mResourceFilePath;
+	}
+
+	entt::entity ResourceHandle::createResource(entt::registry& registry) const {
+		const entt::entity resourceEntity{ registry.create() };
+		mTypeLoaderFunc(registry, resourceEntity);
+		return resourceEntity;
+	}
 
 	entt::entity ResourceHandle::getResourceEntity() const {
 		return mResource ? mResource->getResourceEntity() : entt::null;

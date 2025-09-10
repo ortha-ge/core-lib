@@ -7,7 +7,7 @@ module;
 
 module Core.ResourceCache;
 
-import Core.ResourceHandle;
+import Core.Resource;
 
 namespace Core {
 

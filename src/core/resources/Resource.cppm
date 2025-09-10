@@ -11,7 +11,7 @@ export namespace Core {
 	class Resource {
 	public:
 
-		explicit Resource(std::string filePath, entt::entity resourceEntity);
+		Resource(std::string filePath, entt::entity resourceEntity);
 
 		[[nodiscard]] const std::string& getFilePath() const;
 		[[nodiscard]] entt::entity getResourceEntity() const;
@@ -23,4 +23,4 @@ export namespace Core {
 
 	};
 
-} // nnamespace Core
+} // namespace Core

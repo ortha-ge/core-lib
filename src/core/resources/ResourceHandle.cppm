@@ -1,8 +1,9 @@
 module;
 
-#include <entt/entt.hpp>
 #include <memory>
 #include <tuple>
+
+#include <entt/entt.hpp>
 
 export module Core.ResourceHandle;
 

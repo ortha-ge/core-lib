@@ -4,7 +4,7 @@ module;
 #include <memory>
 #include <string>
 
-#include <entt/fwd.hpp>
+#include <entt/entt.hpp>
 
 export module Core.ResourceLoadRequest;
 

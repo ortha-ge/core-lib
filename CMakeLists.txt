@@ -83,6 +83,7 @@ set(core-lib-modules
         src/core/resources/Resource.cppm
         src/core/resources/ResourceCache.cppm
         src/core/resources/ResourceHandle.cppm
+        src/core/resources/ResourceHandleUtils.cppm
         src/core/resources/ResourceLoadRequest.cppm
         src/core/resources/descriptors/FileDescriptor.cppm
         src/core/resources/systems/FileLoadSystem.cppm

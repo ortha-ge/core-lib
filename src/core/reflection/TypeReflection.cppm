@@ -5,6 +5,7 @@ module;
 
 export module Core.TypeReflection;
 
+import Core.Log;
 import Core.TypeId;
 
 export namespace Core {
@@ -21,6 +22,8 @@ export namespace Core {
 
 		[[nodiscard]] const std::string& getName() const;
 		[[nodiscard]] size_t getSize() const;
+
+		Log moveLog();
 
 	private:
 		std::string mName;

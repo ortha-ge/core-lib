@@ -6,6 +6,7 @@ module;
 #include <string>
 #include <unordered_map>
 #include <utility>
+#include <variant>
 
 module Core.ReflectionContext;
 
@@ -34,45 +35,28 @@ namespace Core {
 
 	ReflectionContext::ReflectionContext() { initializeBasicTypes(); }
 
-	void ReflectionContext::addBasicType(TypeId typeId, TypeReflection typeReflection) {
-		if (hasBasicType(typeId)) {
-			return;
-		}
+	void ReflectionContext::addReflection(TypeId typeId, ReflectionTypes typeReflection) {
+		appendLogEntries(mLog, std::visit([](auto&& reflection) { return reflection.moveLog(); }, typeReflection));
 
-		const std::string& typeName{ typeReflection.getName() };
-		if (mTypeNameLookup.contains(typeName)) {
-			logEntry(mLog, "Type with name '{}' already exists.", typeName);
-			return;
-		}
+		const std::string& typeName{ std::visit([](auto&& reflection) {
+			return reflection.getName();
+		}, typeReflection) };
 
-		mTypeNameLookup.emplace(typeName, typeId);
-		mTypeIdToNameLookup.emplace(typeId, typeName);
-		mBasicTypeReflections.emplace(typeId, std::move(typeReflection));
-	}
+		if (hasReflection(typeId)) {
+			const std::string& existingTypeName{ std::visit([](auto&& reflection) {
+					return reflection.getName();
+				}, getReflection(typeId))
+			};
 
-	bool ReflectionContext::hasBasicType(const TypeId& typeId) const {
-		return mBasicTypeReflections.contains(typeId);
-	}
-
-	const TypeReflection& ReflectionContext::getBasicType(TypeId typeId) const {
-		return mBasicTypeReflections.at(typeId);
-	}
-
-	void ReflectionContext::addClass(TypeId typeId, ClassReflection classReflection) {
-		appendLogEntries(mLog, classReflection.moveLog());
-
-		const std::string& className{ classReflection.getName() };
-		if (hasClass(typeId)) {
-			const auto& existingClassName{ getClass(typeId).getName() };
 			logEntry(mLog,
-				"Failed to register Class '{}' with TypeId as Class '{}' already exists.",
-				className,
-				existingClassName
+				"Failed to add reflection for '{}' with TypeId as type '{}' already exists.",
+				typeName,
+				existingTypeName
 			);
 			return;
 		}
 
-		if (auto it = mTypeNameLookup.find(className); it != mTypeNameLookup.end()) {
+		if (auto it = mTypeNameLookup.find(typeName); it != mTypeNameLookup.end()) {
 			std::string type{ "Unknown" };
 			std::string name{ "Unknown" };
 			if (hasClass(it->second)) {
@@ -87,47 +71,61 @@ namespace Core {
 			}
 
 			logEntry(mLog,
-				"Failed to register Class '{}' as {} '{}' is already registered to it.",
-				className,
+				"Failed to register type '{}' as {} '{}' is already registered to it.",
+				typeName,
 				type,
 				name
 			);
 			return;
 		}
 
-		mTypeNameLookup.emplace(className, typeId);
-		mTypeIdToNameLookup.emplace(typeId, className);
-		mClassReflections.emplace(typeId, std::move(classReflection));
+		mTypeNameLookup.emplace(typeName, typeId);
+		mTypeReflections.emplace(typeId, std::move(typeReflection));
 	}
 
-	bool ReflectionContext::hasClass(const TypeId& typeId) const { return mClassReflections.contains(typeId); }
+	bool ReflectionContext::hasReflection(const TypeId& typeId) const {
+		return mTypeReflections.contains(typeId);
+	}
+
+	const ReflectionContext::ReflectionTypes& ReflectionContext::getReflection(const TypeId& typeId) const {
+		return mTypeReflections.at(typeId);
+	}
+
+	bool ReflectionContext::hasBasicType(const TypeId& typeId) const {
+		if (auto it = mTypeReflections.find(typeId); it != mTypeReflections.end()) {
+			return std::holds_alternative<TypeReflection>(it->second);
+		}
+
+		return false;
+	}
+
+	const TypeReflection& ReflectionContext::getBasicType(TypeId typeId) const {
+		return std::get<TypeReflection>(mTypeReflections.at(typeId));
+	}
+
+	bool ReflectionContext::hasClass(const TypeId& typeId) const {
+		if (auto it = mTypeReflections.find(typeId); it != mTypeReflections.end()) {
+			return std::holds_alternative<ClassReflection>(it->second);
+		}
+
+		return false;
+	}
 
 	const ClassReflection& ReflectionContext::getClass(const TypeId& typeId) const {
-		return mClassReflections.at(typeId);
+		return std::get<ClassReflection>(mTypeReflections.at(typeId));
 	}
 
-	void ReflectionContext::addEnum(TypeId typeId, EnumReflection enumReflection) {
-		appendLogEntries(mLog, enumReflection.moveLog());
-
-		if (hasEnum(typeId)) {
-			logEntry(mLog, "Enum already exists.\n");
-			return;
+	bool ReflectionContext::hasEnum(const TypeId& typeId) const {
+		if (auto it = mTypeReflections.find(typeId); it != mTypeReflections.end()) {
+			return std::holds_alternative<EnumReflection>(it->second);
 		}
 
-		const std::string& enumName{ enumReflection.getName() };
-		if (mTypeNameLookup.contains(enumName)) {
-			logEntry(mLog, "Type with name '%s' already exists.\n", enumName.c_str());
-			return;
-		}
-
-		mTypeNameLookup.emplace(enumName, typeId);
-		mTypeIdToNameLookup.emplace(typeId, enumName);
-		mEnumReflections.emplace(std::move(typeId), std::move(enumReflection));
+		return false;
 	}
 
-	bool ReflectionContext::hasEnum(const TypeId& typeId) const { return mEnumReflections.contains(typeId); }
-
-	const EnumReflection& ReflectionContext::getEnum(const TypeId& typeId) const { return mEnumReflections.at(typeId); }
+	const EnumReflection& ReflectionContext::getEnum(const TypeId& typeId) const {
+		return std::get<EnumReflection>(mTypeReflections.at(typeId));
+	}
 
 	std::optional<TypeId> ReflectionContext::getTypeIdByName(const std::string& name) const {
 		if (auto it = mTypeNameLookup.find(name); it != mTypeNameLookup.end()) {
@@ -138,8 +136,10 @@ namespace Core {
 	}
 
 	std::optional<std::string> ReflectionContext::getNameFromTypeId(const TypeId& typeId) const {
-		if (auto it = mTypeIdToNameLookup.find(typeId); it != mTypeIdToNameLookup.end()) {
-			return it->second;
+		if (auto it = mTypeReflections.find(typeId); it != mTypeReflections.end()) {
+			return std::visit([](auto&& reflection) {
+				return reflection.getName();
+			}, it->second);
 		}
 
 		return std::nullopt;
@@ -150,11 +150,11 @@ namespace Core {
 	}
 
 	void ReflectionContext::initializeBasicTypes() {
-		addBasicType(TypeId::get<std::string>(), TypeReflection("std::string", sizeof(std::string)));
-		addBasicType(TypeId::get<int32_t>(), TypeReflection("int32_t", sizeof(int32_t)));
-		addBasicType(TypeId::get<double>(), TypeReflection("double", sizeof(double)));
-		addBasicType(TypeId::get<float>(), TypeReflection("float", sizeof(float)));
-		addBasicType(TypeId::get<bool>(), TypeReflection("bool", sizeof(bool)));
+		addReflection(TypeId::get<std::string>(), TypeReflection("std::string", sizeof(std::string)));
+		addReflection(TypeId::get<int32_t>(), TypeReflection("int32_t", sizeof(int32_t)));
+		addReflection(TypeId::get<double>(), TypeReflection("double", sizeof(double)));
+		addReflection(TypeId::get<float>(), TypeReflection("float", sizeof(float)));
+		addReflection(TypeId::get<bool>(), TypeReflection("bool", sizeof(bool)));
 	}
 
 } // namespace Core

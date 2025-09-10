@@ -63,15 +63,18 @@ export namespace Core {
 	public:
 		ReflectionContext();
 
-		void addBasicType(TypeId typeId, TypeReflection typeReflection);
+		using ReflectionTypes = std::variant<TypeReflection, ClassReflection, EnumReflection>;
+
+		void addReflection(TypeId typeId, ReflectionTypes typeReflection);
+		bool hasReflection(const TypeId& typeId) const;
+		const ReflectionTypes& getReflection(const TypeId& typeId) const;
+
 		[[nodiscard]] bool hasBasicType(const TypeId& typeId) const;
 		[[nodiscard]] const TypeReflection& getBasicType(TypeId typeId) const;
 
-		void addClass(TypeId typeId, ClassReflection classReflection);
 		[[nodiscard]] bool hasClass(const TypeId& typeId) const;
 		[[nodiscard]] const ClassReflection& getClass(const TypeId& typeId) const;
 
-		void addEnum(TypeId typeId, EnumReflection enumReflection);
 		[[nodiscard]] bool hasEnum(const TypeId& typeId) const;
 		[[nodiscard]] const EnumReflection& getEnum(const TypeId& typeId) const;
 
@@ -138,12 +141,8 @@ export namespace Core {
 		Log mLog;
 		size_t mNextTypeId{};
 		std::unordered_map<std::string, TypeId> mTypeNameLookup;
-		std::unordered_map<TypeId, std::string, TypeIdHasher> mTypeIdToNameLookup;
+		std::unordered_map<TypeId, ReflectionTypes, TypeIdHasher> mTypeReflections;
 
-		// Make into variant
-		std::unordered_map<TypeId, TypeReflection, TypeIdHasher> mBasicTypeReflections;
-		std::unordered_map<TypeId, ClassReflection, TypeIdHasher> mClassReflections;
-		std::unordered_map<TypeId, EnumReflection, TypeIdHasher> mEnumReflections;
 	};
 
 	ReflectionContext& getCurrentReflectionContext() {
@@ -262,12 +261,12 @@ export namespace Core {
 
 	template<class T>
 	void ClassReflectionBuilder<T>::build() {
-		mContext.addClass(TypeId::get<T>(), getReflection());
+		mContext.addReflection(TypeId::get<T>(), getReflection());
 	}
 
 	template<typename T>
 	void EnumReflectionBuilder<T>::build() {
-		mContext.addEnum(TypeId::get<T>(), getReflection());
+		mContext.addReflection(TypeId::get<T>(), getReflection());
 	}
 
 } // namespace Core

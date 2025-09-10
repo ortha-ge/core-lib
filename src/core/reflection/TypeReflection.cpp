@@ -15,4 +15,8 @@ namespace Core {
 
 	size_t TypeReflection::getSize() const { return mSize; }
 
+	Log TypeReflection::moveLog() {
+		return {};
+	}
+
 } // namespace Core

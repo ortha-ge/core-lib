@@ -1,6 +1,7 @@
 
 #include <map>
 #include <string>
+#include <variant>
 #include <vector>
 
 #include <catch2/catch_test_macros.hpp>
@@ -177,6 +178,46 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptionalClass_LoadedOptionalIs
 	load(log, reflectionContext, jsonInput, anyValue);
 
 	REQUIRE(!testClass.optionalClassProperty);
+}
+
+TEST_CASE("JsonInput_LoadReflectedClassWithVariantIntType_LoadedVariantMatchesInput", "JsonTypeLoaderAdapterTests") {
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view jsonInput = R"({
+	"VariantTestClass": {
+	    "variantProperty": 5
+	}
+})";
+	ReflectionContext reflectionContext{};
+	reflect<VariantTestClass>(reflectionContext);
+	VariantTestClass testClass{};
+	Any anyValue(testClass);
+	Log log;
+
+	load(log, reflectionContext, jsonInput, anyValue);
+
+	REQUIRE(std::holds_alternative<int>(testClass.variantProperty));
+	REQUIRE(std::get<int>(testClass.variantProperty) == 5);
+}
+
+TEST_CASE("JsonInput_LoadReflectedClassWithVariantStringType_LoadedVariantMatchesInput", "JsonTypeLoaderAdapterTests") {
+	using namespace JsonTypeAdapterTestClasses;
+	using namespace Core;
+	constexpr std::string_view jsonInput = R"({
+	"VariantTestClass": {
+	    "variantProperty": "test"
+	}
+})";
+	ReflectionContext reflectionContext{};
+	reflect<VariantTestClass>(reflectionContext);
+	VariantTestClass testClass{};
+	Any anyValue(testClass);
+	Log log;
+
+	load(log, reflectionContext, jsonInput, anyValue);
+
+	REQUIRE(std::holds_alternative<std::string>(testClass.variantProperty));
+	REQUIRE(std::get<std::string>(testClass.variantProperty) == "test");
 }
 
 TEST_CASE("JsonInput_LoadReflectedClassWithVector_LoadedVectorMatchesInput", "JsonTypeLoaderAdapterTests") {

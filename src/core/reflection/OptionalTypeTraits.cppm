@@ -5,15 +5,17 @@ module;
 export module Core.OptionalTypeTraits;
 
 import Core.Any;
+import Core.BasicTypeTraits;
 import Core.TypeId;
 
 export namespace Core {
-	struct OptionalTypeTraits {
-		OptionalTypeTraits(
-			TypeId elementType, std::function<void(void*, const void*)> applyFunc, std::function<void*(void*)> getFunc);
+	struct OptionalTypeTraits : BasicTypeTraits {
+		OptionalTypeTraits(TypeId,
+			TypeId, BasicTypeInnerCreateFunc, BasicTypeInnerDestroyFunc, BasicTypeInnerApplyFunc,
+			OptionalTypeInnerApplyFunc, OptionalTypeInnerGetFunc);
 
 		TypeId elementType;
-		std::function<void(Any&, const Any&)> applyFunc;
-		std::function<Any(const Any&)> getFunc;
+		std::function<void(Any&, const Any&)> optionalApplyFunc;
+		std::function<Any(const Any&)> optionalGetFunc;
 	};
 } // namespace Core

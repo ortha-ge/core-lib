@@ -23,7 +23,7 @@ export namespace Core {
 	public:
 		T _loadComponent(entt::registry& registry, entt::entity entity, std::string_view jsonInput) {
 			auto& reflectionContext{ getCurrentReflectionContext() };
-			Core::reflectIfNotExisting<T>(reflectionContext);
+			Core::reflectIfValidType<T>(reflectionContext);
 
 			T instance{};
 			Any any(instance);

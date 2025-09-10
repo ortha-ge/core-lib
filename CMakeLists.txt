@@ -32,6 +32,7 @@ set(core-lib-src
         src/core/reflection/TypeInfoImpl.cpp
         src/core/reflection/TypeReflection.cpp
         src/core/reflection/TypeTraits.cpp
+        src/core/reflection/VariantTypeTraits.cpp
         src/core/reflection/VectorTypeTraits.cpp
         src/core/resources/Resource.cpp
         src/core/resources/ResourceCache.cpp
@@ -77,6 +78,7 @@ set(core-lib-modules
         src/core/reflection/TypeInfoImpl.cppm
         src/core/reflection/TypeReflection.cppm
         src/core/reflection/TypeTraits.cppm
+        src/core/reflection/VariantTypeTraits.cppm
         src/core/reflection/VectorTypeTraits.cppm
         src/core/resources/FileLoadRequest.cppm
         src/core/resources/RawDataResource.cppm

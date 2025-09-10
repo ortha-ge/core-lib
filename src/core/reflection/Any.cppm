@@ -13,6 +13,8 @@ export namespace Core {
 		Any();
 		Any(TypeId typeId, void* instance);
 		Any(TypeId typeId, const void* instance);
+		Any(TypeId typeId, void* instance, bool ownsInstance);
+		Any(TypeId typeId, const void* instance, bool ownsInstance);
 		~Any();
 
 		explicit Any(TypeId typeId);

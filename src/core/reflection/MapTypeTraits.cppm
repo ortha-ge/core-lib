@@ -6,17 +6,18 @@ module;
 export module Core.MapTypeTraits;
 
 import Core.Any;
+import Core.BasicTypeTraits;
 import Core.TypeId;
 
 export namespace Core {
-	struct MapTypeTraits {
-		MapTypeTraits(
-			TypeId keyType, TypeId valueType, std::function<void(void*, const std::map<void*, void*>&)> applyFunc,
-			std::function<void(void*, std::function<void(const void*, const void*)>)> forEachFunc);
+	struct MapTypeTraits : BasicTypeTraits {
+		MapTypeTraits(TypeId,
+			TypeId, TypeId, BasicTypeInnerCreateFunc, BasicTypeInnerDestroyFunc,
+			BasicTypeInnerApplyFunc, MapTypeInnerApplyFunc, MapTypeInnerForEachFunc);
 
 		TypeId keyType;
 		TypeId valueType;
-		std::function<void(Any&, const std::map<Any, Any>&)> applyFunc;
-		std::function<void(const Any&, const std::function<void(const Any&, const Any&)>&)> forEachFunc;
+		std::function<void(Any&, const std::map<Any, Any>&)> mapApplyFunc;
+		std::function<void(const Any&, const std::function<void(const Any&, const Any&)>&)> mapForEachFunc;
 	};
 } // namespace Core

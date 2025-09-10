@@ -21,6 +21,7 @@ import Core.OptionalTypeTraits;
 import Core.ReflectionContext;
 import Core.TypeId;
 import Core.TypeTraits;
+import Core.VariantTypeTraits;
 import Core.VectorTypeTraits;
 
 namespace Core {
@@ -141,16 +142,20 @@ namespace Core {
 	void _save(Log& log,
 		rapidjson::Value& outputValue, const Any& anyValue, const OptionalTypeTraits& typeTraits,
 		rapidjson::Document::AllocatorType& allocator) {
-		if (Any innerValue{ typeTraits.getFunc(anyValue) }; innerValue.getInstance() != nullptr) {
+		if (Any innerValue{ typeTraits.optionalGetFunc(anyValue) }; innerValue.getInstance() != nullptr) {
 			save(log, outputValue, innerValue, allocator);
 		}
 	}
+
+	void _save(
+		Log& log, rapidjson::Value& outputValue, const Any& anyValue, const VariantTypeTraits& typeTraits,
+		rapidjson::Document::AllocatorType& allocator) {}
 
 	void _save(Log& log,
 		rapidjson::Value& outputValue, const Any& anyValue, const VectorTypeTraits& typeTraits,
 		rapidjson::Document::AllocatorType& allocator) {
 		outputValue.SetArray();
-		typeTraits.forEachFunc(anyValue, [&log, &outputValue, &allocator](const Any& valueAny) {
+		typeTraits.vectorForEachFunc(anyValue, [&log, &outputValue, &allocator](const Any& valueAny) {
 			rapidjson::Value valueValue;
 			save(log, valueValue, valueAny, allocator);
 
@@ -162,7 +167,7 @@ namespace Core {
 		rapidjson::Value& outputValue, const Any& anyValue, const MapTypeTraits& typeTraits,
 		rapidjson::Document::AllocatorType& allocator) {
 		outputValue.SetObject();
-		typeTraits.forEachFunc(
+		typeTraits.mapForEachFunc(
 			anyValue, [&log, &outputValue, &allocator](const Any& keyAny, const Any& valueAny) {
 				rapidjson::Value keyValue;
 				save(log, keyValue, keyAny, allocator);

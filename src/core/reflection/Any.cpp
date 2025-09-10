@@ -13,6 +13,7 @@ import Core.TypeTraits;
 import Core.BasicTypeTraits;
 import Core.MapTypeTraits;
 import Core.OptionalTypeTraits;
+import Core.VariantTypeTraits;
 import Core.VectorTypeTraits;
 
 namespace Core {
@@ -27,25 +28,41 @@ namespace Core {
 		, mInstance(nullptr)
 		, mOwnsInstance(true) {
 
-		if (const auto* typeTraits = std::get_if<BasicTypeTraits>(&getTypeTraits(mTypeId))) {
-			*this = typeTraits->constructFunc();
-		}
+		std::visit([this](auto&& typeTraits) {
+			using T = std::decay_t<decltype(typeTraits)>;
+			if constexpr (!std::same_as<T, VoidTypeTraits>) {
+				*this = typeTraits.constructFunc();
+			}
+		}, getTypeTraits(mTypeId));
 	}
 
 	Any::Any(TypeId typeId, void* instance)
-		: mTypeId(typeId)
-		, mInstance(instance)
-		, mOwnsInstance(false) {}
+		: Any(std::move(typeId), instance, false) {}
 
 	Any::Any(TypeId typeId, const void* instance)
-		: Any(typeId, const_cast<void*>(instance)) {}
+		: Any(std::move(typeId), instance, false) {}
+
+	Any::Any(TypeId typeId, void* instance, bool ownsInstance)
+		: mTypeId(std::move(typeId))
+		, mInstance(instance)
+		, mOwnsInstance(ownsInstance) {
+
+	}
+
+	Any::Any(TypeId typeId, const void* instance, bool ownsInstance)
+		: Any(std::move(typeId), const_cast<void*>(instance), ownsInstance) {
+	}
 
 	Any::~Any() {
 		if (mOwnsInstance) {
-			if (const auto* typeTraits = std::get_if<BasicTypeTraits>(&getTypeTraits(mTypeId))) {
-				typeTraits->destroyFunc(*this);
-				mInstance = nullptr;
-			}
+			std::visit([this](auto&& typeTraits) {
+				using T = std::decay_t<decltype(typeTraits)>;
+				if constexpr (!std::same_as<T, VoidTypeTraits>) {
+					typeTraits.destroyFunc(*this);
+				}
+			}, getTypeTraits(mTypeId));
+
+			mInstance = nullptr;
 		}
 	}
 
@@ -95,11 +112,12 @@ namespace Core {
 	_assign(Any& lhs, const OptionalTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
 		assert(lhsTypeTraits.elementType == rhs.getTypeId());
 
-		lhsTypeTraits.applyFunc(lhs, rhs);
+		lhsTypeTraits.optionalApplyFunc(lhs, rhs);
 	}
 
 	void _assign(
 		Any& lhs, const OptionalTypeTraits& lhsTypeTraits, const Any& rhs, const OptionalTypeTraits& rhsTypeTraits) {
+		assert(false);
 		// if (lhsTypeTraits.mWrappedType != otherTypeId) {
 		//     return *this;
 		// }
@@ -107,8 +125,17 @@ namespace Core {
 		// optionalTraits->mApply(getInstance(), other.getInstance());
 	}
 
+	void _assign(Any& lhs, const VariantTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
+		auto it = std::ranges::find(lhsTypeTraits.types, rhs.getTypeId());
+		if (it == lhsTypeTraits.types.end()) {
+			assert(false);
+		}
+
+		lhsTypeTraits.variantApplyFunc(lhs, rhs);
+	}
+
 	void
-	_assign(Any& lhs, const VectorTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
+		_assign(Any& lhs, const VectorTypeTraits& lhsTypeTraits, const Any& rhs, const VectorTypeTraits& rhsTypeTraits) {
 		// if (lhsTypeTraits.elementType != otherTypeId) {
 		//     return *this;
 		// }
@@ -116,14 +143,14 @@ namespace Core {
 		assert(rhs.getTypeId() == TypeId::get<std::vector<Any>>());
 
 		const std::vector<Any>& anyVector{ *static_cast<const std::vector<Any>*>(rhs.getInstance()) };
-		lhsTypeTraits.applyFunc(lhs, anyVector);
+		lhsTypeTraits.vectorApplyFunc(lhs, anyVector);
 	}
 
-	void _assign(Any& lhs, const MapTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
+	void _assign(Any& lhs, const MapTypeTraits& lhsTypeTraits, const Any& rhs, const MapTypeTraits& rhsTypeTraits) {
 		assert((rhs.getTypeId() == TypeId::get<std::map<Any, Any>>()));
 
 		const std::map<Any, Any>& anyMap{ *static_cast<const std::map<Any, Any>*>(rhs.getInstance()) };
-		lhsTypeTraits.applyFunc(lhs, anyMap);
+		lhsTypeTraits.mapApplyFunc(lhs, anyMap);
 	}
 
 	Any::Any(const Any& other) {

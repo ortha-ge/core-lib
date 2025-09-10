@@ -46,6 +46,7 @@ namespace Core {
 		}
 
 		mTypeNameLookup.emplace(typeName, typeId);
+		mTypeIdToNameLookup.emplace(typeId, typeName);
 		mBasicTypeReflections.emplace(typeId, std::move(typeReflection));
 	}
 
@@ -95,6 +96,7 @@ namespace Core {
 		}
 
 		mTypeNameLookup.emplace(className, typeId);
+		mTypeIdToNameLookup.emplace(typeId, className);
 		mClassReflections.emplace(typeId, std::move(classReflection));
 	}
 
@@ -119,6 +121,7 @@ namespace Core {
 		}
 
 		mTypeNameLookup.emplace(enumName, typeId);
+		mTypeIdToNameLookup.emplace(typeId, enumName);
 		mEnumReflections.emplace(std::move(typeId), std::move(enumReflection));
 	}
 
@@ -128,6 +131,14 @@ namespace Core {
 
 	std::optional<TypeId> ReflectionContext::getTypeIdByName(const std::string& name) const {
 		if (auto it = mTypeNameLookup.find(name); it != mTypeNameLookup.end()) {
+			return it->second;
+		}
+
+		return std::nullopt;
+	}
+
+	std::optional<std::string> ReflectionContext::getNameFromTypeId(const TypeId& typeId) const {
+		if (auto it = mTypeIdToNameLookup.find(typeId); it != mTypeIdToNameLookup.end()) {
 			return it->second;
 		}
 

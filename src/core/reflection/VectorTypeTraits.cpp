@@ -11,11 +11,12 @@ import Core.TypeTraits;
 
 namespace Core {
 	VectorTypeTraits::VectorTypeTraits(
-		TypeId elementType, std::function<void(void*, const std::vector<void*>&)> applyFunc,
-		std::function<void(void*, std::function<void(const void*)>)> forEachFunc)
-		: elementType(std::move(elementType)) {
+			TypeId vectorType, TypeId elementType, BasicTypeInnerCreateFunc innerCreateFunc, BasicTypeInnerDestroyFunc innerDestroyFunc,
+			BasicTypeInnerApplyFunc innerApplyFunc, VectorTypeInnerApplyFunc vectorInnerApplyFunc, VectorTypeInnerForEachFunc vectorInnerForEachFunc)
+		: BasicTypeTraits(std::move(vectorType), std::move(innerCreateFunc), std::move(innerDestroyFunc), std::move(innerApplyFunc))
+		, elementType(std::move(elementType)) {
 
-		this->applyFunc = [applyFunc = std::move(applyFunc)](Any& dest, const std::vector<Any>& source) {
+		vectorApplyFunc = [applyFunc = std::move(vectorInnerApplyFunc)](Any& dest, const std::vector<Any>& source) {
 			const auto& typeTraits{ getTypeTraits(dest.getTypeId()) };
 			if (!std::holds_alternative<VectorTypeTraits>(typeTraits)) {
 				return;
@@ -36,7 +37,8 @@ namespace Core {
 
 			applyFunc(dest.getInstance(), voidVector);
 		};
-		this->forEachFunc = [elementType, forEachFunc = std::move(forEachFunc)](
+
+		vectorForEachFunc = [elementType, forEachFunc = std::move(vectorInnerForEachFunc)](
 								const Any& anyVector, std::function<void(const Any&)> visitor) {
 			forEachFunc(anyVector.getInstance(), [elementType, visitor = std::move(visitor)](const void* instance) {
 				visitor(Any{ elementType, instance });

@@ -3,6 +3,7 @@ module;
 #include <map>
 #include <optional>
 #include <string>
+#include <variant>
 #include <vector>
 
 export module JsonTypeAdapterTestClasses;
@@ -34,6 +35,13 @@ export namespace JsonTypeAdapterTestClasses {
 	class TestClass4 {
 	public:
 		std::optional<TestClass> optionalClassProperty{};
+	};
+
+	class VariantTestClass {
+	public:
+
+		std::variant<int, std::string> variantProperty{};
+
 	};
 
 	class VectorTestClass {
@@ -81,6 +89,14 @@ void Core::reflect<JsonTypeAdapterTestClasses::TestClass4>(ReflectionContext& re
 	using namespace JsonTypeAdapterTestClasses;
 	reflectionContext.addClass<TestClass4>("TestClass4")
 		.property("optionalClassProperty", &TestClass4::optionalClassProperty)
+		.build();
+}
+
+template <>
+void Core::reflect<JsonTypeAdapterTestClasses::VariantTestClass>(ReflectionContext& reflectionContext) {
+	using namespace JsonTypeAdapterTestClasses;
+	reflectionContext.addClass<VariantTestClass>("VariantTestClass")
+		.property("variantProperty", &VariantTestClass::variantProperty)
 		.build();
 }
 

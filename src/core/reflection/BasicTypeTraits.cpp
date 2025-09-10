@@ -10,10 +10,11 @@ namespace Core {
 	BasicTypeTraits::BasicTypeTraits(
 		TypeId typeId, std::function<void*()> constructFunc, std::function<void(void*)> destroyFunc,
 		std::function<void(void*, const void*)> applyFunc)
-		: typeId(std::move(typeId)) {
+		: typeId(typeId) {
 
 		this->constructFunc = [typeId, constructFunc = std::move(constructFunc)]() {
-			return Any(typeId, constructFunc());
+			auto* instance = constructFunc();
+			return Any(typeId, instance, true);
 		};
 		this->destroyFunc = [typeId, destroyFunc = std::move(destroyFunc)](Any& any) {
 			destroyFunc(any.getInstance());

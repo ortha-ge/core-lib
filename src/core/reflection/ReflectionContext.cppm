@@ -5,6 +5,7 @@ module;
 #include <string>
 #include <string_view>
 #include <unordered_map>
+#include <variant>
 #include <vector>
 
 export module Core.ReflectionContext;
@@ -75,6 +76,7 @@ export namespace Core {
 		[[nodiscard]] const EnumReflection& getEnum(const TypeId& typeId) const;
 
 		std::optional<TypeId> getTypeIdByName(const std::string& name) const;
+		std::optional<std::string> getNameFromTypeId(const TypeId& typeId) const;
 
 		template <class T>
 		[[nodiscard]] bool hasEnum() const {
@@ -136,6 +138,9 @@ export namespace Core {
 		Log mLog;
 		size_t mNextTypeId{};
 		std::unordered_map<std::string, TypeId> mTypeNameLookup;
+		std::unordered_map<TypeId, std::string, TypeIdHasher> mTypeIdToNameLookup;
+
+		// Make into variant
 		std::unordered_map<TypeId, TypeReflection, TypeIdHasher> mBasicTypeReflections;
 		std::unordered_map<TypeId, ClassReflection, TypeIdHasher> mClassReflections;
 		std::unordered_map<TypeId, EnumReflection, TypeIdHasher> mEnumReflections;
@@ -154,7 +159,7 @@ export namespace Core {
 	}
 
 	template<typename ValueType>
-	void reflectIfValidType(ReflectionContext& reflectionContext) {
+	void _reflectIfValidType(ReflectionContext& reflectionContext) {
 		if constexpr (
 			std::is_enum_v<ValueType> || (std::is_class_v<ValueType> && !std::is_same_v<ValueType, std::string> &&
 										  !std::is_same_v<ValueType, TypeId>) ) {
@@ -163,25 +168,52 @@ export namespace Core {
 		}
 	}
 
-	template<class T, typename ValueType>
-	void reflectIfValidType(ReflectionContext& reflectionContext, ValueType T::*) {
-		reflectIfValidType<ValueType>(reflectionContext);
+	template <typename Tail>
+	void reflectIfValidTypes(ReflectionContext& reflectionContext) {
+
 	}
 
-	template<class T, typename ValueType>
-	void reflectIfValidType(ReflectionContext& reflectionContext, std::vector<ValueType> T::*) {
-		reflectIfValidType<ValueType>(reflectionContext);
+	template <typename Tail, typename T, typename... ValueTypes>
+	void reflectIfValidTypes(ReflectionContext& reflectionContext) {
+		_reflectIfValidType<T>(reflectionContext);
+		reflectIfValidTypes<Tail, ValueTypes...>(reflectionContext);
 	}
 
-	template<class T, typename ValueType>
-	void reflectIfValidType(ReflectionContext& reflectionContext, std::optional<ValueType> T::*) {
-		reflectIfValidType<ValueType>(reflectionContext);
+	template <typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext, const ValueType*) {
+		_reflectIfValidType<ValueType>(reflectionContext);
 	}
 
-	template<class T, typename KeyType, typename ValueType>
-	void reflectIfValidType(ReflectionContext& reflectionContext, std::map<KeyType, ValueType> T::*) {
-		reflectIfValidType<KeyType>(reflectionContext);
-		reflectIfValidType<ValueType>(reflectionContext);
+	template <typename... ValueTypes>
+	void reflectIfValidType(ReflectionContext& reflectionContext, const std::variant<ValueTypes...>*) {
+		reflectIfValidTypes<void, ValueTypes...>(reflectionContext);
+	}
+
+	template<typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext, const std::vector<ValueType>*) {
+		_reflectIfValidType<ValueType>(reflectionContext);
+	}
+
+	template<typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext, const std::optional<ValueType>*) {
+		_reflectIfValidType<ValueType>(reflectionContext);
+	}
+
+	template<typename KeyType, typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext, const std::map<KeyType, ValueType>*) {
+		_reflectIfValidType<KeyType>(reflectionContext);
+		_reflectIfValidType<ValueType>(reflectionContext);
+	}
+
+	template<typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext) {
+		const ValueType* nullValue = nullptr;
+		reflectIfValidType(reflectionContext, nullValue);
+	}
+
+	template <typename Class, typename ReturnType>
+	void reflectIfValidType(ReflectionContext& reflectionContext, ReturnType Class::*) {
+		reflectIfValidType<ReturnType>(reflectionContext);
 	}
 
 	template<class T>

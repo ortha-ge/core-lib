@@ -24,6 +24,12 @@ export namespace Core {
 	using BasicTypeInnerDestroyFunc = std::function<void(void*)>;
 	using BasicTypeInnerApplyFunc = std::function<void(void*, const void*)>;
 
+	struct BasicTypeInnerFuncs {
+		BasicTypeInnerCreateFunc createFunc;
+		BasicTypeInnerDestroyFunc destroyFunc;
+		BasicTypeInnerApplyFunc applyFunc;
+	};
+
 	using OptionalTypeInnerApplyFunc = std::function<void(void*, const void*)>;
 	using OptionalTypeInnerGetFunc = std::function<void*(void*)>;
 
@@ -101,7 +107,7 @@ export namespace Core {
 				dest = *static_cast<const ValueType*>(sourceInstance);
 			};
 
-			return std::make_tuple(std::move(createFunc), std::move(destroyFunc), std::move(applyFunc));
+			return BasicTypeInnerFuncs(std::move(createFunc), std::move(destroyFunc), std::move(applyFunc));
 		}
 
 		template<typename ValueType, std::enable_if_t<!std::is_void_v<ValueType>, bool> = true>

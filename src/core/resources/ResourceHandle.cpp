@@ -13,9 +13,8 @@ namespace Core {
 	ResourceHandle::ResourceHandle(std::shared_ptr<Resource> resource)
 		: mResource{ std::move(resource) } {}
 
-	ResourceHandle::ResourceHandle(std::string resourceFilePath, TypeLoaderFunction typeLoaderFunc)
-		: mResourceFilePath(std::move(resourceFilePath))
-		, mTypeLoaderFunc(std::move(typeLoaderFunc)) {
+	ResourceHandle::ResourceHandle(std::string resourceFilePath)
+		: mResourceFilePath(std::move(resourceFilePath)) {
 	}
 
 	ResourceHandle::~ResourceHandle() = default;
@@ -31,12 +30,6 @@ namespace Core {
 
 	const std::string& ResourceHandle::getResourceFilePath() const {
 		return mResourceFilePath;
-	}
-
-	entt::entity ResourceHandle::createResource(entt::registry& registry) const {
-		const entt::entity resourceEntity{ registry.create() };
-		mTypeLoaderFunc(registry, resourceEntity);
-		return resourceEntity;
 	}
 
 	entt::entity ResourceHandle::getResourceEntity() const {

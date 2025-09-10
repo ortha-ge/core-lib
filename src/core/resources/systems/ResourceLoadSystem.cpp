@@ -49,7 +49,7 @@ namespace Core {
 			if (!resource) {
 				//logEntry(registry, entity, "Resource not already loaded: {}", resourceFilePath);
 
-				entt::entity _resourceEntity{ resourceHandle->createResource(registry) };
+				entt::entity _resourceEntity{ loadRequest.createResource(registry) };
 				registry.emplace<FileDescriptor>(_resourceEntity, resourceFilePath);
 				registry.emplace<FileLoadRequest>(_resourceEntity);
 

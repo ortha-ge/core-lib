@@ -2,6 +2,7 @@ module;
 
 #include <algorithm>
 #include <memory>
+#include <string>
 #include <vector>
 
 module Core.Node;

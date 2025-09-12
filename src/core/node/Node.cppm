@@ -1,6 +1,7 @@
 module;
 
 #include <memory>
+#include <string>
 #include <vector>
 
 export module Core.Node;

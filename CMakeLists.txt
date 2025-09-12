@@ -107,6 +107,9 @@ set(core-lib-modules
 )
 
 set(core-lib-reflection-modules
+        src/core-reflection/glmVec2.cppm
+        src/core-reflection/glmVec3.cppm
+        src/core-reflection/glmVec4.cppm
 )
 
 set(core-lib-libraries

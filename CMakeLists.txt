@@ -16,6 +16,8 @@ set(core-lib-src
         src/core/Timer.cpp
         src/core/logging/Log.cpp
         src/core/logging/systems/LogReportingSystem.cpp
+        src/core/node/EnTTNode.cpp
+        src/core/node/Node.cpp
         src/core/platform/systems/GLFWSystem.cpp
         src/core/processor/ProcessError.cpp
         src/core/processor/systems/ProcessErrorLoggingSystem.cpp
@@ -55,6 +57,8 @@ set(core-lib-modules
         src/core/logging/Log.cppm
         src/core/logging/LogReportedFlag.cppm
         src/core/logging/systems/LogReportingSystem.cppm
+        src/core/node/EnTTNode.cppm
+        src/core/node/Node.cppm
         src/core/platform/GLFWWindow.cppm
         src/core/platform/NativeWindowHandles.cppm
         src/core/platform/Window.cppm

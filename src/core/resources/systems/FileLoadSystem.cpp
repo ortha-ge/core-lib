@@ -32,6 +32,11 @@ namespace Core {
 				return;
 			}
 
+			if (std::filesystem::is_directory(fileDescriptor.filePath)) {
+				addProcessError(registry, entity, "FileLoadRequest: Path '{}' is a directory.", fileDescriptor.filePath);
+				return;
+			}
+
 			uintmax_t fileSize = std::filesystem::file_size(fileDescriptor.filePath);
 
 			std::vector<uint8_t> rawData;

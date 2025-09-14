@@ -35,11 +35,28 @@ TEST_CASE("AnyConstructWithLValue_GetOwnsInstance_ReturnsFalse", "Any") {
 
 TEST_CASE("AnyConstructWithInstanceOwnsInstanceTrue_DestroyAny_InstanceIsDestroyed") {
 	using namespace Core;
-	int* instance = new int{ 5 };
+	bool isDestroyed = false;
+	class TestClass {
+	public:
 
-	{ Any any(TypeId::get<int>(), instance, true); }
+		TestClass() = default;
+		TestClass(bool& isDestroyed)
+			: mIsDestroyed(&isDestroyed) {
+		}
 
-	REQUIRE(*instance != 5);
+		~TestClass() {
+			if (mIsDestroyed) {
+				*mIsDestroyed = true;
+			}
+		}
+
+		bool* mIsDestroyed{ nullptr };
+	};
+	TestClass* instance = new TestClass{ isDestroyed };
+
+	{ Any any(TypeId::get<TestClass>(), instance, true); }
+
+	REQUIRE(isDestroyed);
 }
 
 TEST_CASE("AnyConstructWithInstanceOwnsInstanceFalse_DestroyAny_InstanceIsNotDestroyed") {

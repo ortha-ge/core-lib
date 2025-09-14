@@ -11,10 +11,9 @@ export namespace Core {
 
 	struct BasicTypeTraits {
 		BasicTypeTraits(
-			TypeId typeId, std::function<void*()> constructFunc, std::function<void(void*)> destroyFunc,
-			std::function<void(void*, const void*)> applyFunc);
+			BasicTypeInnerCreateFunc constructFunc, BasicTypeInnerDestroyFunc destroyFunc,
+			BasicTypeInnerApplyFunc applyFunc);
 
-		TypeId typeId;
 		std::function<Any()> constructFunc;
 		std::function<void(Any&)> destroyFunc;
 		std::function<void(Any&, const Any&)> applyFunc;

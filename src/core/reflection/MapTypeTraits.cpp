@@ -11,10 +11,11 @@ module Core.MapTypeTraits;
 import Core.TypeTraits;
 
 namespace Core {
-	MapTypeTraits::MapTypeTraits(TypeId mapType,
-			TypeId keyType, TypeId valueType, BasicTypeInnerCreateFunc innerCreateFunc, BasicTypeInnerDestroyFunc innerDestroyFunc,
-			BasicTypeInnerApplyFunc innerApplyFunc, MapTypeInnerApplyFunc innerMapApplyFunc, MapTypeInnerForEachFunc innerMapForEachFunc)
-		: BasicTypeTraits(std::move(mapType), std::move(innerCreateFunc), std::move(innerDestroyFunc), std::move(innerApplyFunc))
+	MapTypeTraits::MapTypeTraits(
+		TypeId keyType, TypeId valueType, BasicTypeInnerCreateFunc innerCreateFunc,
+		BasicTypeInnerDestroyFunc innerDestroyFunc, BasicTypeInnerApplyFunc innerApplyFunc,
+		MapTypeInnerApplyFunc innerMapApplyFunc, MapTypeInnerForEachFunc innerMapForEachFunc)
+		: BasicTypeTraits(std::move(innerCreateFunc), std::move(innerDestroyFunc), std::move(innerApplyFunc))
 		, keyType(std::move(keyType))
 		, valueType(std::move(valueType)) {
 
@@ -38,7 +39,7 @@ namespace Core {
 		};
 
 		mapForEachFunc = [keyType, valueType, forEachFunc = std::move(innerMapForEachFunc)](
-								const Any& mapAny, const std::function<void(const Any&, const Any&)>& visitor) {
+							 const Any& mapAny, const std::function<void(const Any&, const Any&)>& visitor) {
 			forEachFunc(
 				mapAny.getInstance(),
 				[keyType, valueType, &visitor](const void* keyInstance, const void* valueInstance) {

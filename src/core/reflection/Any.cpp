@@ -17,23 +17,27 @@ import Core.VariantTypeTraits;
 import Core.VectorTypeTraits;
 
 namespace Core {
-
 	Any::Any()
-		: mTypeId{}
-		, mInstance{ nullptr }
-		, mOwnsInstance{ false } {}
+		: Any(TypeInstance({}, nullptr), false) {}
+
+	Any::Any(TypeInstance typeInstance)
+		: Any(std::move(typeInstance), false) {}
+
+	Any::Any(TypeInstance typeInstance, bool ownsInstance)
+		: mTypeInstance(std::move(typeInstance))
+		, mOwnsInstance(ownsInstance) {}
 
 	Any::Any(TypeId typeId)
-		: mTypeId{ typeId }
-		, mInstance(nullptr)
-		, mOwnsInstance(true) {
+		: Any(TypeInstance(std::move(typeId), nullptr), true) {
 
-		std::visit([this](auto&& typeTraits) {
-			using T = std::decay_t<decltype(typeTraits)>;
-			if constexpr (!std::same_as<T, VoidTypeTraits>) {
-				*this = typeTraits.constructFunc();
-			}
-		}, getTypeTraits(mTypeId));
+		std::visit(
+			[this](auto&& typeTraits) {
+				using T = std::decay_t<decltype(typeTraits)>;
+				if constexpr (!std::same_as<T, VoidTypeTraits>) {
+					*this = typeTraits.constructFunc();
+				}
+			},
+			getTypeTraits(mTypeInstance.typeId));
 	}
 
 	Any::Any(TypeId typeId, void* instance)
@@ -43,51 +47,49 @@ namespace Core {
 		: Any(std::move(typeId), instance, false) {}
 
 	Any::Any(TypeId typeId, void* instance, bool ownsInstance)
-		: mTypeId(std::move(typeId))
-		, mInstance(instance)
-		, mOwnsInstance(ownsInstance) {
-
-	}
+		: Any(TypeInstance(std::move(typeId), instance), ownsInstance) {}
 
 	Any::Any(TypeId typeId, const void* instance, bool ownsInstance)
-		: Any(std::move(typeId), const_cast<void*>(instance), ownsInstance) {
-	}
+		: Any(std::move(typeId), const_cast<void*>(instance), ownsInstance) {}
 
 	Any::~Any() {
 		if (mOwnsInstance) {
-			std::visit([this](auto&& typeTraits) {
-				using T = std::decay_t<decltype(typeTraits)>;
-				if constexpr (!std::same_as<T, VoidTypeTraits>) {
-					typeTraits.destroyFunc(*this);
-				}
-			}, getTypeTraits(mTypeId));
+			std::visit(
+				[this](auto&& typeTraits) {
+					using T = std::decay_t<decltype(typeTraits)>;
+					if constexpr (!std::same_as<T, VoidTypeTraits>) {
+						typeTraits.destroyFunc(*this);
+					}
+				},
+				getTypeTraits(mTypeInstance.typeId));
 
-			mInstance = nullptr;
+			mTypeInstance = {};
 		}
 	}
 
 	Any::Any(Any&& any) noexcept
-		: mTypeId{ std::move(any.mTypeId) }
-		, mInstance(any.mInstance)
+		: mTypeInstance(std::move(any.mTypeInstance))
 		, mOwnsInstance(any.mOwnsInstance) {
-		any.mInstance = nullptr;
+
 		any.mOwnsInstance = false;
 	}
 
 	Any& Any::operator=(Any&& any) noexcept {
-		mTypeId = std::move(any.mTypeId);
-		mInstance = any.mInstance;
+		mTypeInstance = std::move(any.mTypeInstance);
 		mOwnsInstance = any.mOwnsInstance;
 
-		any.mInstance = nullptr;
 		any.mOwnsInstance = false;
 
 		return *this;
 	}
 
-	const TypeId& Any::getTypeId() const { return mTypeId; }
+	TypeInstance& Any::getTypeInstance() { return mTypeInstance; }
 
-	void* Any::getInstance() const { return mInstance; }
+	const TypeInstance& Any::getTypeInstance() const { return mTypeInstance; }
+
+	const TypeId& Any::getTypeId() const { return mTypeInstance.typeId; }
+
+	void* Any::getInstance() const { return mTypeInstance.instance; }
 
 	template<typename LhsTraits, typename RhsTraits>
 	void _assign(Any&, const LhsTraits& lhsTraits, const Any&, const RhsTraits& rhsTraits) {
@@ -103,7 +105,7 @@ namespace Core {
 	}
 
 	void _assign(Any& lhs, const BasicTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
-		assert(lhsTypeTraits.typeId == rhsTypeTraits.typeId);
+		assert(lhs.getTypeId() == rhs.getTypeId());
 
 		lhsTypeTraits.applyFunc(lhs, rhs);
 	}
@@ -125,7 +127,8 @@ namespace Core {
 		// optionalTraits->mApply(getInstance(), other.getInstance());
 	}
 
-	void _assign(Any& lhs, const VariantTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
+	void
+	_assign(Any& lhs, const VariantTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
 		auto it = std::ranges::find(lhsTypeTraits.types, rhs.getTypeId());
 		if (it == lhsTypeTraits.types.end()) {
 			assert(false);
@@ -135,7 +138,7 @@ namespace Core {
 	}
 
 	void
-		_assign(Any& lhs, const VectorTypeTraits& lhsTypeTraits, const Any& rhs, const VectorTypeTraits& rhsTypeTraits) {
+	_assign(Any& lhs, const VectorTypeTraits& lhsTypeTraits, const Any& rhs, const VectorTypeTraits& rhsTypeTraits) {
 		// if (lhsTypeTraits.elementType != otherTypeId) {
 		//     return *this;
 		// }

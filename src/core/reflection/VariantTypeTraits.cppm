@@ -11,7 +11,7 @@ import Core.TypeId;
 
 export namespace Core {
 	struct VariantTypeTraits : BasicTypeTraits {
-		VariantTypeTraits(TypeId,
+		VariantTypeTraits(
 			std::vector<TypeId>, BasicTypeInnerCreateFunc, BasicTypeInnerDestroyFunc, BasicTypeInnerApplyFunc,
 			VariantTypeInnerApplyFunc);
 

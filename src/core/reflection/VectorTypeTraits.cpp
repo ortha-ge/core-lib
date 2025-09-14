@@ -11,9 +11,10 @@ import Core.TypeTraits;
 
 namespace Core {
 	VectorTypeTraits::VectorTypeTraits(
-			TypeId vectorType, TypeId elementType, BasicTypeInnerCreateFunc innerCreateFunc, BasicTypeInnerDestroyFunc innerDestroyFunc,
-			BasicTypeInnerApplyFunc innerApplyFunc, VectorTypeInnerApplyFunc vectorInnerApplyFunc, VectorTypeInnerForEachFunc vectorInnerForEachFunc)
-		: BasicTypeTraits(std::move(vectorType), std::move(innerCreateFunc), std::move(innerDestroyFunc), std::move(innerApplyFunc))
+		TypeId elementType, BasicTypeInnerCreateFunc innerCreateFunc, BasicTypeInnerDestroyFunc innerDestroyFunc,
+		BasicTypeInnerApplyFunc innerApplyFunc, VectorTypeInnerApplyFunc vectorInnerApplyFunc,
+		VectorTypeInnerForEachFunc vectorInnerForEachFunc)
+		: BasicTypeTraits(std::move(innerCreateFunc), std::move(innerDestroyFunc), std::move(innerApplyFunc))
 		, elementType(std::move(elementType)) {
 
 		vectorApplyFunc = [applyFunc = std::move(vectorInnerApplyFunc)](Any& dest, const std::vector<Any>& source) {

@@ -15,14 +15,15 @@ import Core.TypeInfo;
 export namespace Core {
 
 	class TypeId;
+	struct TypeInstance;
 
 	struct TypeIdHasher {
 		std::size_t operator()(const TypeId& typeId) const noexcept;
 	};
 
-	using BasicTypeInnerCreateFunc = std::function<void*()>;
-	using BasicTypeInnerDestroyFunc = std::function<void(void*)>;
-	using BasicTypeInnerApplyFunc = std::function<void(void*, const void*)>;
+	using BasicTypeInnerCreateFunc = std::function<TypeInstance()>;
+	using BasicTypeInnerDestroyFunc = std::function<void(TypeInstance&)>;
+	using BasicTypeInnerApplyFunc = std::function<void(TypeInstance&, const TypeInstance&)>;
 
 	struct BasicTypeInnerFuncs {
 		BasicTypeInnerCreateFunc createFunc;
@@ -94,21 +95,7 @@ export namespace Core {
 		}
 
 		template <typename ValueType>
-		static auto _getBasicTypeCreateFuncs() {
-			auto createFunc = []() {
-				auto* instance = new ValueType();
-				return instance;
-			};
-			auto destroyFunc = [](void* instance) {
-				delete static_cast<ValueType*>(instance);
-			};
-			auto applyFunc = [](void* destInstance, const void* sourceInstance) {
-				ValueType& dest{ *static_cast<ValueType*>(destInstance) };
-				dest = *static_cast<const ValueType*>(sourceInstance);
-			};
-
-			return BasicTypeInnerFuncs(std::move(createFunc), std::move(destroyFunc), std::move(applyFunc));
-		}
+		static auto _getBasicTypeCreateFuncs();
 
 		template<typename ValueType, std::enable_if_t<!std::is_void_v<ValueType>, bool> = true>
 		static TypeId _get() {
@@ -244,5 +231,42 @@ export namespace Core {
 	private:
 		const TypeInfo* mTypeInfo{ nullptr };
 	};
+
+	/* @brief Wrapper for a void* and it's associated TypeId.
+	 * Safer than just passing void* since you can check the type before static_cast.
+	 */
+	struct TypeInstance {
+		TypeId typeId;
+		void* instance{ nullptr };
+	};
+
+	template <typename ValueType>
+	auto TypeId::_getBasicTypeCreateFuncs() {
+		auto createFunc = []() {
+			return TypeInstance{ TypeId::get<ValueType>(), new ValueType() };
+		};
+		auto destroyFunc = [](TypeInstance& typeInstance) {
+			if (TypeId::get<ValueType>() != typeInstance.typeId) {
+				return;
+			}
+
+			delete static_cast<ValueType*>(typeInstance.instance);
+		};
+		auto applyFunc = [](TypeInstance& destInstance, const TypeInstance& sourceInstance) {
+			const auto& typeId(TypeId::get<ValueType>());
+			const bool isDestTypeValid = destInstance.typeId == typeId;
+			const bool isSourceTypeValid = sourceInstance.typeId == typeId;
+
+			assert(isDestTypeValid && isSourceTypeValid);
+			if (!isDestTypeValid || !isSourceTypeValid) {
+				return;
+			}
+
+			ValueType& dest{ *static_cast<ValueType*>(destInstance.instance) };
+			dest = *static_cast<const ValueType*>(sourceInstance.instance);
+		};
+
+		return BasicTypeInnerFuncs(std::move(createFunc), std::move(destroyFunc), std::move(applyFunc));
+	}
 
 } // namespace Core

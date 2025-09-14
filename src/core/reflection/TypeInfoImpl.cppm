@@ -11,8 +11,8 @@ export namespace Core {
 	class TypeInfoImpl : public TypeInfo {
 	public:
 		TypeInfoImpl(size_t size);
+		TypeInfoImpl(size_t size, TypeTraits typeTraits);
 
-		TypeTraits& getTypeTraits();
 		const TypeTraits& getTypeTraits() const;
 
 	private:

@@ -6,10 +6,11 @@ module;
 module Core.OptionalTypeTraits;
 
 namespace Core {
-	OptionalTypeTraits::OptionalTypeTraits(TypeId optionalType,
-			TypeId elementType, BasicTypeInnerCreateFunc innerCreateFunc, BasicTypeInnerDestroyFunc innerDestroyFunc, BasicTypeInnerApplyFunc innerApplyFunc,
-			OptionalTypeInnerApplyFunc optionalInnerApplyFunc, OptionalTypeInnerGetFunc optionalInnerGetFunc)
-		: BasicTypeTraits(std::move(optionalType), std::move(innerCreateFunc), std::move(innerDestroyFunc), std::move(innerApplyFunc))
+	OptionalTypeTraits::OptionalTypeTraits(
+		TypeId elementType, BasicTypeInnerCreateFunc innerCreateFunc, BasicTypeInnerDestroyFunc innerDestroyFunc,
+		BasicTypeInnerApplyFunc innerApplyFunc, OptionalTypeInnerApplyFunc optionalInnerApplyFunc,
+		OptionalTypeInnerGetFunc optionalInnerGetFunc)
+		: BasicTypeTraits(std::move(innerCreateFunc), std::move(innerDestroyFunc), std::move(innerApplyFunc))
 		, elementType(std::move(elementType)) {
 
 		optionalApplyFunc = [applyFunc = std::move(optionalInnerApplyFunc)](Any& destAny, const Any& srcAny) {

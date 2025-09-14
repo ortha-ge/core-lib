@@ -7,6 +7,7 @@ set(core-lib-tests-src
         FileLoadSystemTests.cpp
         GLFWSystemTests.cpp
         reflection/ClassReflectionTests.cpp
+        reflection/TypeIdTests.cpp
         serialization/JsonTypeLoaderAdapterTests.cpp
         serialization/JsonTypeSaverAdapterTests.cpp
 )

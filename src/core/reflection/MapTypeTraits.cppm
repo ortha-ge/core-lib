@@ -11,9 +11,9 @@ import Core.TypeId;
 
 export namespace Core {
 	struct MapTypeTraits : BasicTypeTraits {
-		MapTypeTraits(TypeId,
-			TypeId, TypeId, BasicTypeInnerCreateFunc, BasicTypeInnerDestroyFunc,
-			BasicTypeInnerApplyFunc, MapTypeInnerApplyFunc, MapTypeInnerForEachFunc);
+		MapTypeTraits(
+			TypeId, TypeId, BasicTypeInnerCreateFunc, BasicTypeInnerDestroyFunc, BasicTypeInnerApplyFunc,
+			MapTypeInnerApplyFunc, MapTypeInnerForEachFunc);
 
 		TypeId keyType;
 		TypeId valueType;

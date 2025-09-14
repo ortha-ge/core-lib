@@ -25,54 +25,47 @@ namespace Core {
 	std::unique_ptr<TypeInfo> createBasicTypeInfo(
 		size_t size, BasicTypeInnerCreateFunc createFunc, BasicTypeInnerDestroyFunc destroyFunc,
 		BasicTypeInnerApplyFunc applyFunc) {
-		auto typeInfo = std::make_unique<TypeInfoImpl>(size);
-		typeInfo->getTypeTraits() =
-			BasicTypeTraits{ TypeId(*typeInfo), std::move(createFunc), std::move(destroyFunc), std::move(applyFunc) };
-		return typeInfo;
+
+		return std::make_unique<TypeInfoImpl>(
+			size, BasicTypeTraits{ std::move(createFunc), std::move(destroyFunc), std::move(applyFunc) });
 	}
 
 	std::unique_ptr<TypeInfo> createOptionalTypeInfo(
 		size_t size, TypeId valueType, BasicTypeInnerCreateFunc createFunc, BasicTypeInnerDestroyFunc destroyFunc,
 		BasicTypeInnerApplyFunc applyFunc, OptionalTypeInnerApplyFunc optionalApplyFunc,
 		OptionalTypeInnerGetFunc optionalGetFunc) {
-		auto typeInfo = std::make_unique<TypeInfoImpl>(size);
-		typeInfo->getTypeTraits() =
-			OptionalTypeTraits{ TypeId(*typeInfo), std::move(valueType), std::move(createFunc),		std::move(destroyFunc),
-								std::move(applyFunc), std::move(optionalApplyFunc), std::move(optionalGetFunc) };
-		return typeInfo;
+
+		return std::make_unique<TypeInfoImpl>(
+			size, OptionalTypeTraits{ std::move(valueType), std::move(createFunc), std::move(destroyFunc),
+									  std::move(applyFunc), std::move(optionalApplyFunc), std::move(optionalGetFunc) });
 	}
 
 	std::unique_ptr<TypeInfo> createVectorTypeInfo(
 		size_t size, TypeId valueType, BasicTypeInnerCreateFunc createFunc, BasicTypeInnerDestroyFunc destroyFunc,
 		BasicTypeInnerApplyFunc applyFunc, VectorTypeInnerApplyFunc vectorApplyFunc,
 		VectorTypeInnerForEachFunc vectorForEachFunc) {
-		auto typeInfo = std::make_unique<TypeInfoImpl>(size);
-		typeInfo->getTypeTraits() =
-			VectorTypeTraits{ TypeId(*typeInfo),		   std::move(valueType), std::move(createFunc),
-							  std::move(destroyFunc),	   std::move(applyFunc), std::move(vectorApplyFunc),
-							  std::move(vectorForEachFunc) };
-		return typeInfo;
+		return std::make_unique<TypeInfoImpl>(
+			size, VectorTypeTraits{ std::move(valueType), std::move(createFunc), std::move(destroyFunc),
+									std::move(applyFunc), std::move(vectorApplyFunc), std::move(vectorForEachFunc) });
 	}
 
 	std::unique_ptr<TypeInfo> createMapTypeInfo(
 		size_t size, TypeId keyType, TypeId valueType, BasicTypeInnerCreateFunc createFunc,
 		BasicTypeInnerDestroyFunc destroyFunc, BasicTypeInnerApplyFunc applyFunc, MapTypeInnerApplyFunc mapApplyFunc,
 		MapTypeInnerForEachFunc mapForEachFunc) {
-		auto typeInfo = std::make_unique<TypeInfoImpl>(size);
-		typeInfo->getTypeTraits() =
-			MapTypeTraits{ TypeId(*typeInfo), std::move(keyType),		 std::move(valueType), std::move(createFunc),
-						   std::move(destroyFunc),	 std::move(applyFunc), std::move(mapApplyFunc),
-						   std::move(mapForEachFunc) };
-		return typeInfo;
+		return std::make_unique<TypeInfoImpl>(
+			size,
+			MapTypeTraits{ std::move(keyType), std::move(valueType), std::move(createFunc), std::move(destroyFunc),
+						   std::move(applyFunc), std::move(mapApplyFunc), std::move(mapForEachFunc) });
 	}
 
-	std::unique_ptr<TypeInfo> createVariantTypeInfo(size_t size,
-		std::vector<TypeId> types, BasicTypeInnerCreateFunc createFunc, BasicTypeInnerDestroyFunc destroyFunc,
-		BasicTypeInnerApplyFunc applyFunc, VariantTypeInnerApplyFunc variantApplyFunc) {
-		auto typeInfo = std::make_unique<TypeInfoImpl>(size);
-		typeInfo->getTypeTraits() = VariantTypeTraits{ TypeId(*typeInfo), std::move(types), std::move(createFunc), std::move(destroyFunc),
-													   std::move(applyFunc), std::move(variantApplyFunc) };
-		return typeInfo;
+	std::unique_ptr<TypeInfo> createVariantTypeInfo(
+		size_t size, std::vector<TypeId> types, BasicTypeInnerCreateFunc createFunc,
+		BasicTypeInnerDestroyFunc destroyFunc, BasicTypeInnerApplyFunc applyFunc,
+		VariantTypeInnerApplyFunc variantApplyFunc) {
+		return std::make_unique<TypeInfoImpl>(
+			size, VariantTypeTraits{ std::move(types), std::move(createFunc), std::move(destroyFunc),
+									 std::move(applyFunc), std::move(variantApplyFunc) });
 	}
 
 	TypeId::TypeId()

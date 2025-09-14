@@ -10,7 +10,7 @@ import Core.TypeId;
 
 export namespace Core {
 	struct OptionalTypeTraits : BasicTypeTraits {
-		OptionalTypeTraits(TypeId,
+		OptionalTypeTraits(
 			TypeId, BasicTypeInnerCreateFunc, BasicTypeInnerDestroyFunc, BasicTypeInnerApplyFunc,
 			OptionalTypeInnerApplyFunc, OptionalTypeInnerGetFunc);
 

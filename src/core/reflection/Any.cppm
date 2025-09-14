@@ -11,13 +11,16 @@ export namespace Core {
 	class Any {
 	public:
 		Any();
+
+		explicit Any(TypeInstance typeInstance);
+		Any(TypeInstance typeInstance, bool ownsInstance);
+
+		explicit Any(TypeId typeId);
 		Any(TypeId typeId, void* instance);
 		Any(TypeId typeId, const void* instance);
 		Any(TypeId typeId, void* instance, bool ownsInstance);
 		Any(TypeId typeId, const void* instance, bool ownsInstance);
 		~Any();
-
-		explicit Any(TypeId typeId);
 
 		Any(const Any&);
 		Any(Any&&) noexcept;
@@ -27,28 +30,30 @@ export namespace Core {
 
 		template<typename T>
 		Any(T&& instance, std::true_type)
-			: mTypeId{ TypeId::get<std::remove_const_t<std::remove_reference_t<T>>>() }
-			, mInstance(&const_cast<std::add_lvalue_reference_t<std::remove_const_t<std::remove_reference_t<T>>>>(instance))
+			: mTypeInstance(
+				  { TypeId::get<std::remove_const_t<std::remove_reference_t<T>>>() },
+				  &const_cast<std::add_lvalue_reference_t<std::remove_const_t<std::remove_reference_t<T>>>>(instance))
 			, mOwnsInstance(false) {}
 
-		template <typename T>
+		template<typename T>
 		Any(T&& instance, std::false_type)
 			: Any(TypeId::get<std::remove_const_t<std::remove_reference_t<T>>>()) {
 
-			*static_cast<T*>(mInstance) = std::forward<T>(instance);
+			*static_cast<T*>(mTypeInstance.instance) = std::forward<T>(instance);
 		}
 
 		template<typename T>
 		explicit Any(T&& instance)
-			: Any(std::forward<T>(instance), std::is_lvalue_reference<T>()) {
-		}
+			: Any(std::forward<T>(instance), std::is_lvalue_reference<T>()) {}
+
+		TypeInstance& getTypeInstance();
+		const TypeInstance& getTypeInstance() const;
 
 		const TypeId& getTypeId() const;
 		void* getInstance() const;
 
 	private:
-		TypeId mTypeId{};
-		void* mInstance{};
+		TypeInstance mTypeInstance;
 		bool mOwnsInstance{};
 	};
 

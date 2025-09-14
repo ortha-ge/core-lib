@@ -12,8 +12,8 @@ import Core.TypeId;
 export namespace Core {
 	struct VectorTypeTraits : BasicTypeTraits {
 		VectorTypeTraits(
-			TypeId, TypeId, BasicTypeInnerCreateFunc, BasicTypeInnerDestroyFunc,
-			BasicTypeInnerApplyFunc, VectorTypeInnerApplyFunc, VectorTypeInnerForEachFunc);
+			TypeId, BasicTypeInnerCreateFunc, BasicTypeInnerDestroyFunc, BasicTypeInnerApplyFunc,
+			VectorTypeInnerApplyFunc, VectorTypeInnerForEachFunc);
 
 		TypeId elementType;
 		std::function<void(Any&, const std::vector<Any>&)> vectorApplyFunc;

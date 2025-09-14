@@ -25,7 +25,6 @@ export namespace Core {
 		TaskHandle mTickHandle{};
 
 		entt::entity mResourceCacheEntity{ entt::null };
-		std::chrono::steady_clock::time_point mNextCleanupTime{};
 	};
 
 } // namespace Core

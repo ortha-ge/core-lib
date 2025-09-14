@@ -26,7 +26,6 @@ namespace Core {
 		mResourceCacheEntity = registry.create();
 		registry.emplace<ResourceCache>(mResourceCacheEntity);
 
-		mNextCleanupTime = std::chrono::steady_clock::now() + std::chrono::seconds(5);
 		mTickHandle = mScheduler.schedule([this]() { tick(mRegistry); });
 	}
 
@@ -63,10 +62,8 @@ namespace Core {
 			registry.destroy(entity);
 		});
 
-		const bool shouldFreeLRU{ std::chrono::steady_clock::now() >= mNextCleanupTime };
-		if (shouldFreeLRU) {
+		if (resourceCache.isNextCleanupTimePassed()) {
 			resourceCache.cleanupLeastUsedResources(registry);
-			mNextCleanupTime = std::chrono::steady_clock::now() + std::chrono::seconds(5);
 		}
 	}
 

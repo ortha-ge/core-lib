@@ -1,5 +1,6 @@
 module;
 
+#include <chrono>
 #include <list>
 #include <memory>
 #include <string>
@@ -15,21 +16,28 @@ export namespace Core {
 
 	class ResourceCache {
 	public:
+
+		using ResourceMap = std::unordered_map<std::string, std::weak_ptr<Resource>>;
+
+		ResourceCache();
+
 		std::shared_ptr<Resource> getResource(const std::string&) const;
 		std::shared_ptr<Resource> addResource(const std::string&, entt::entity);
 
 		void cleanupLeastUsedResources(entt::registry&);
 		void updateRecentlyUsedResources(std::shared_ptr<Resource> resource);
 
-		// LRU for determining resources based on how recently a resource has been requested.
-		// Resources use a shared handle so they don't get released unless all handles are dropped.
-		// Resources are mapped to identifier so multiple requests will fetch the shared version.
-		// 'Load<T>' call will automagically create adapter.
-		// Adapters could be mapped to TypeId with a register call for runtime resolution.
+		void setCleanupTriggerTimeSeconds(const std::chrono::seconds& timeInSeconds);
+		const std::chrono::seconds& getCleanupTriggerTimeSeconds() const;
+		bool isNextCleanupTimePassed() const;
+
+		const ResourceMap& getResourceLookup() const;
 
 	private:
-		std::unordered_map<std::string, std::weak_ptr<Resource>> mResourceLookup{};
+		ResourceMap mResourceLookup{};
 		std::list<std::shared_ptr<Resource>> mRecentlyUsedResources{};
+		std::chrono::steady_clock::time_point mLastCleanupTime{};
+		std::chrono::seconds mCleanupTriggerTimeSeconds;
 	};
 
 } // namespace Core

@@ -84,12 +84,10 @@ namespace Core {
 	}
 
 	TypeInstance& Any::getTypeInstance() { return mTypeInstance; }
-
 	const TypeInstance& Any::getTypeInstance() const { return mTypeInstance; }
-
 	const TypeId& Any::getTypeId() const { return mTypeInstance.typeId; }
-
 	void* Any::getInstance() const { return mTypeInstance.instance; }
+	bool Any::getOwnsInstance() const { return mOwnsInstance; }
 
 	template<typename LhsTraits, typename RhsTraits>
 	void _assign(Any&, const LhsTraits& lhsTraits, const Any&, const RhsTraits& rhsTraits) {

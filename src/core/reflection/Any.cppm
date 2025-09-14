@@ -46,11 +46,12 @@ export namespace Core {
 		explicit Any(T&& instance)
 			: Any(std::forward<T>(instance), std::is_lvalue_reference<T>()) {}
 
-		TypeInstance& getTypeInstance();
-		const TypeInstance& getTypeInstance() const;
+		[[nodiscard]] TypeInstance& getTypeInstance();
+		[[nodiscard]] const TypeInstance& getTypeInstance() const;
 
-		const TypeId& getTypeId() const;
-		void* getInstance() const;
+		[[nodiscard]] const TypeId& getTypeId() const;
+		[[nodiscard]] void* getInstance() const;
+		[[nodiscard]] bool getOwnsInstance() const;
 
 	private:
 		TypeInstance mTypeInstance;

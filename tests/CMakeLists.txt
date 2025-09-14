@@ -6,6 +6,7 @@ find_package(Catch2 3 REQUIRED)
 set(core-lib-tests-src
         FileLoadSystemTests.cpp
         GLFWSystemTests.cpp
+        reflection/AnyTests.cpp
         reflection/ClassReflectionTests.cpp
         reflection/TypeIdTests.cpp
         serialization/JsonTypeLoaderAdapterTests.cpp

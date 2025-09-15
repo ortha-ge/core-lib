@@ -5,7 +5,9 @@ module;
 export module Core.Systems;
 
 import Core.EnTTRegistry;
+import Core.GlobalSpatialUpdateSystem;
 import Core.LogReportingSystem;
+import Core.NodeParentGlobalSpatialUpdateSystem;
 import Core.ProcessErrorLoggingSystem;
 import Core.ProcessErrorRetrySystem;
 import Core.ResourceLoadSystem;
@@ -28,6 +30,8 @@ export namespace Core {
 	private:
 		entt::registry& mRegistry;
 		Scheduler& mScheduler;
+		NodeParentGlobalSpatialUpdateSystem mNodeParentGlobalSpatialUpdateSystem;
+		GlobalSpatialUpdateSystem mGlobalSpatialPropagationSystem;
 		LogReportingSystem mLogReportingSystem;
 		ProcessErrorLoggingSystem mProcessErrorLoggingSystem;
 		ProcessErrorRetrySystem mProcessErrorRetrySystem;

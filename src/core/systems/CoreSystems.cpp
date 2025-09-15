@@ -9,6 +9,10 @@ module Core.Systems;
 import Core.EnTTRegistry;
 import Core.FileLoadSystem;
 import Core.GLFWSystem;
+import Core.LogReportingSystem;
+import Core.ProcessErrorLoggingSystem;
+import Core.ProcessErrorRetrySystem;
+import Core.ResourceLoadSystem;
 import Core.Scheduler;
 import Core.TypeLoaderSystem;
 
@@ -17,6 +21,8 @@ namespace Core {
 	CoreSystems::CoreSystems(EnTTRegistry& registry, Scheduler& scheduler)
 		: mRegistry(registry)
 		, mScheduler{ scheduler }
+		, mNodeParentGlobalSpatialUpdateSystem(registry, scheduler)
+		, mGlobalSpatialPropagationSystem(registry, scheduler)
 		, mLogReportingSystem{ registry, scheduler }
 		, mProcessErrorLoggingSystem{ registry, scheduler }
 		, mProcessErrorRetrySystem{ registry, scheduler }

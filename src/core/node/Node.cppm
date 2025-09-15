@@ -1,10 +1,13 @@
 module;
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
 
 export module Core.Node;
+
+import Core.TypeId;
 
 export namespace Core {
 
@@ -13,10 +16,13 @@ export namespace Core {
 		using Ptr = std::shared_ptr<Node>;
 		using WeakPtr = std::weak_ptr<Node>;
 
+		Node();
 		Node(std::string name);
 		virtual ~Node() {}
 
 		virtual void destroy();
+		virtual TypeId getTypeId() const;
+
 		void addChild(Ptr child);
 		void removeChild(const Ptr& child);
 
@@ -49,6 +55,7 @@ export namespace Core {
 		Node::Ptr mNode;
 	};
 
-	Node::Ptr getRootNode(const NodeHandle& node);
+	Node::Ptr getRootNode(const NodeHandle&);
+	void visitParentHeirarchy(const NodeHandle&, const std::function<void(const Node::Ptr&, const Node::Ptr&)>&);
 
 } // namespace Core

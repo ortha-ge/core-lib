@@ -1,6 +1,7 @@
 module;
 
 #include <algorithm>
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
@@ -8,6 +9,8 @@ module;
 module Core.Node;
 
 namespace Core {
+
+	Node::Node() = default;
 
 	Node::Node(std::string name)
 		: mName(std::move(name)) {}
@@ -18,6 +21,10 @@ namespace Core {
 		}
 
 		mChildren.clear();
+	}
+
+	TypeId Node::getTypeId() const {
+		return TypeId::get<Node>();
 	}
 
 	void Node::addChild(Ptr child) {
@@ -38,6 +45,7 @@ namespace Core {
 			return;
 		}
 
+		child->setParent(shared_from_this());
 		mChildren.push_back(std::move(child));
 	}
 
@@ -89,6 +97,20 @@ namespace Core {
 		}
 
 		return rootNode;
+	}
+
+	void _visitParentHeirarchy(Node::Ptr node, const std::function<void(const Node::Ptr&, const Node::Ptr&)>& visitor) {
+		if (!node) {
+			return;
+		}
+
+		Node::Ptr parentNode = node->getParentNode();
+		_visitParentHeirarchy(parentNode, visitor);
+		visitor(parentNode, node);
+	}
+
+	void visitParentHeirarchy(const NodeHandle& node, const std::function<void(const Node::Ptr&, const Node::Ptr&)>& visitor) {
+		_visitParentHeirarchy(node.getNode(), visitor);
 	}
 
 } // namespace Core

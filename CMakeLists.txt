@@ -18,6 +18,7 @@ set(core-lib-src
         src/core/logging/systems/LogReportingSystem.cpp
         src/core/node/EnTTNode.cpp
         src/core/node/Node.cpp
+        src/core/node/systems/NodeParentGlobalSpatialUpdateSystem.cpp
         src/core/platform/systems/GLFWSystem.cpp
         src/core/processor/ProcessError.cpp
         src/core/processor/systems/ProcessErrorLoggingSystem.cpp
@@ -46,10 +47,12 @@ set(core-lib-src
         src/core/serialization/JsonTypeSaverAdapter.cpp
         src/core/serialization/systems/TypeLoaderSystem.cpp
         src/core/systems/CoreSystems.cpp
+        src/core/systems/GlobalSpatialUpdateSystem.cpp
 )
 
 set(core-lib-modules
         src/core/EnTTRegistry.cppm
+        src/core/GlobalSpatial.cppm
         src/core/Scheduler.cppm
         src/core/Spatial.cppm
         src/core/Timer.cppm
@@ -59,6 +62,7 @@ set(core-lib-modules
         src/core/logging/systems/LogReportingSystem.cppm
         src/core/node/EnTTNode.cppm
         src/core/node/Node.cppm
+        src/core/node/systems/NodeParentGlobalSpatialUpdateSystem.cppm
         src/core/platform/GLFWWindow.cppm
         src/core/platform/NativeWindowHandles.cppm
         src/core/platform/Window.cppm
@@ -103,6 +107,7 @@ set(core-lib-modules
         src/core/services/EnTTRegistryService.cppm
         src/core/services/SchedulerService.cppm
         src/core/services/TimerService.cppm
+        src/core/systems/GlobalSpatialUpdateSystem.cppm
         src/core/systems/CoreSystems.cppm
 )
 

@@ -25,7 +25,7 @@ namespace Core {
 
 			const auto& vectorTypeTraits = std::get<VectorTypeTraits>(typeTraits);
 
-			std::vector<void*> voidVector;
+			std::vector<TypeInstance> voidVector;
 			voidVector.reserve(source.size());
 
 			for (const auto& anyElement : source) {
@@ -33,16 +33,16 @@ namespace Core {
 					return;
 				}
 
-				voidVector.push_back(anyElement.getInstance());
+				voidVector.push_back(anyElement.getTypeInstance());
 			}
 
-			applyFunc(dest.getInstance(), voidVector);
+			applyFunc(dest.getTypeInstance(), voidVector);
 		};
 
 		vectorForEachFunc = [elementType, forEachFunc = std::move(vectorInnerForEachFunc)](
 								const Any& anyVector, std::function<void(const Any&)> visitor) {
-			forEachFunc(anyVector.getInstance(), [elementType, visitor = std::move(visitor)](const void* instance) {
-				visitor(Any{ elementType, instance });
+			forEachFunc(anyVector.getTypeInstance(), [elementType, visitor = std::move(visitor)](const TypeInstance& instance) {
+				visitor(Any{ instance });
 			});
 		};
 	}

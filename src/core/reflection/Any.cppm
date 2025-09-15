@@ -39,7 +39,7 @@ export namespace Core {
 		Any(T&& instance, std::false_type)
 			: Any(TypeId::get<std::remove_const_t<std::remove_reference_t<T>>>()) {
 
-			*static_cast<T*>(mTypeInstance.instance) = std::forward<T>(instance);
+			*static_cast<T*>(mTypeInstance.getInstance()) = std::forward<T>(instance);
 		}
 
 		template<typename T>

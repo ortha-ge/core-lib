@@ -18,7 +18,7 @@ import Core.VectorTypeTraits;
 
 namespace Core {
 	Any::Any()
-		: Any(TypeInstance({}, nullptr), false) {}
+		: Any(TypeInstance(), false) {}
 
 	Any::Any(TypeInstance typeInstance)
 		: Any(std::move(typeInstance), false) {}
@@ -37,7 +37,7 @@ namespace Core {
 					*this = typeTraits.constructFunc();
 				}
 			},
-			getTypeTraits(mTypeInstance.typeId));
+			getTypeTraits(mTypeInstance.getTypeId()));
 	}
 
 	Any::Any(TypeId typeId, void* instance)
@@ -61,7 +61,7 @@ namespace Core {
 						typeTraits.destroyFunc(*this);
 					}
 				},
-				getTypeTraits(mTypeInstance.typeId));
+				getTypeTraits(mTypeInstance.getTypeId()));
 
 			mTypeInstance = {};
 		}
@@ -85,8 +85,8 @@ namespace Core {
 
 	TypeInstance& Any::getTypeInstance() { return mTypeInstance; }
 	const TypeInstance& Any::getTypeInstance() const { return mTypeInstance; }
-	const TypeId& Any::getTypeId() const { return mTypeInstance.typeId; }
-	void* Any::getInstance() const { return mTypeInstance.instance; }
+	const TypeId& Any::getTypeId() const { return mTypeInstance.getTypeId(); }
+	void* Any::getInstance() const { return mTypeInstance.getInstance(); }
 	bool Any::getOwnsInstance() const { return mOwnsInstance; }
 
 	template<typename LhsTraits, typename RhsTraits>

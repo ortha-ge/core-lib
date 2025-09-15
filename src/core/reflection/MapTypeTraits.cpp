@@ -27,23 +27,23 @@ namespace Core {
 
 			const auto& mapTypeTraits{ std::get<MapTypeTraits>(typeTraits) };
 
-			std::map<void*, void*> voidMap;
+			std::vector<std::pair<TypeInstance, TypeInstance>> voidMap;
 			for (const auto& [inputKey, inputValue] : source) {
 				assert(inputKey.getTypeId() == mapTypeTraits.keyType);
 				assert(inputValue.getTypeId() == mapTypeTraits.valueType);
 
-				voidMap[inputKey.getInstance()] = inputValue.getInstance();
+				voidMap.emplace_back(inputKey.getTypeInstance(), inputValue.getTypeInstance());
 			}
 
-			applyFunc(dest.getInstance(), voidMap);
+			applyFunc(dest.getTypeInstance(), voidMap);
 		};
 
-		mapForEachFunc = [keyType, valueType, forEachFunc = std::move(innerMapForEachFunc)](
+		mapForEachFunc = [forEachFunc = std::move(innerMapForEachFunc)](
 							 const Any& mapAny, const std::function<void(const Any&, const Any&)>& visitor) {
 			forEachFunc(
-				mapAny.getInstance(),
-				[keyType, valueType, &visitor](const void* keyInstance, const void* valueInstance) {
-					visitor(Any{ keyType, keyInstance }, Any{ valueType, valueInstance });
+				mapAny.getTypeInstance(),
+				[&visitor](const TypeInstance& keyInstance, const TypeInstance& valueInstance) {
+					visitor(Any{ keyInstance }, Any{ valueInstance });
 				});
 		};
 	}

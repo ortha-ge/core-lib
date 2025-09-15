@@ -12,7 +12,7 @@ namespace Core {
 		, types(std::move(types)) {
 
 		variantApplyFunc = [applyFunc = std::move(innerOptionalApplyFunc)](Any& lhs, const Any& rhs) {
-			applyFunc(lhs.getInstance(), rhs.getTypeId(), rhs.getInstance());
+			applyFunc(lhs.getTypeInstance(), rhs.getTypeInstance());
 		};
 	}
 

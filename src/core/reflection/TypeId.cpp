@@ -100,4 +100,29 @@ namespace Core {
 		return reinterpret_cast<size_t>(&typeId.getTypeInfo());
 	}
 
+	TypeInstance::TypeInstance() = default;
+
+	TypeInstance::TypeInstance(TypeId typeId, void* instance, bool isConst)
+		: mTypeId(std::move(typeId))
+		, mInstance(instance)
+		, mIsConst(isConst) {
+	}
+
+	TypeInstance::TypeInstance(TypeId typeId, void* instance)
+		: TypeInstance(std::move(typeId), instance, false) {
+	}
+
+	TypeInstance::TypeInstance(TypeId typeId, const void* instance)
+		: TypeInstance(std::move(typeId), const_cast<void*>(instance), true) {
+	}
+
+	TypeInstance::TypeInstance(TypeId typeId, std::nullptr_t)
+		: TypeInstance(std::move(typeId), nullptr, true) {
+
+	}
+
+	const TypeId& TypeInstance::getTypeId() const { return mTypeId; }
+	void* TypeInstance::getInstance() const { return mInstance; }
+	bool TypeInstance::getIsConst() const { return mIsConst; }
+
 } // namespace Core

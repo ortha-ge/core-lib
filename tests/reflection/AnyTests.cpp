@@ -10,8 +10,8 @@ TEST_CASE("AnyConstructDefault_GetTypeInstance_IsVoidTypeIdAndNullInstance", "An
 
 	const auto typeInstance = any.getTypeInstance();
 
-	REQUIRE(typeInstance.typeId == TypeId::get<void>());
-	REQUIRE(typeInstance.instance == nullptr);
+	REQUIRE(typeInstance.getTypeId() == TypeId::get<void>());
+	REQUIRE(typeInstance.getInstance() == nullptr);
 }
 
 TEST_CASE("AnyConstructWithIntTypeId_GetOwnsInstance_ReturnsTrue", "Any") {
@@ -74,8 +74,8 @@ TEST_CASE("AnyConstructWithIntTypeId_GetTypeInstance_IsIntTypeIdAndInstanceIsZer
 
 	const auto typeInstance = any.getTypeInstance();
 
-	REQUIRE(typeInstance.typeId == TypeId::get<int>());
-	REQUIRE(typeInstance.instance != nullptr);
-	int& intInstance = *static_cast<int*>(typeInstance.instance);
+	REQUIRE(typeInstance.getTypeId() == TypeId::get<int>());
+	REQUIRE(typeInstance.getInstance() != nullptr);
+	int& intInstance = *static_cast<int*>(typeInstance.getInstance());
 	REQUIRE(intInstance == 0);
 }

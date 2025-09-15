@@ -14,11 +14,11 @@ namespace Core {
 		, elementType(std::move(elementType)) {
 
 		optionalApplyFunc = [applyFunc = std::move(optionalInnerApplyFunc)](Any& destAny, const Any& srcAny) {
-			applyFunc(destAny.getInstance(), srcAny.getInstance());
+			applyFunc(destAny.getTypeInstance(), srcAny.getTypeInstance());
 		};
 
 		optionalGetFunc = [elementType, getFunc = std::move(optionalInnerGetFunc)](const Any& any) -> Any {
-			return { elementType, getFunc(any.getInstance()) };
+			return Any{ getFunc(any.getTypeInstance()) };
 		};
 	}
 } // namespace Core

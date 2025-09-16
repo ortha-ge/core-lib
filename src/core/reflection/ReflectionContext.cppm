@@ -145,6 +145,7 @@ export namespace Core {
 
 	};
 
+	// TODO: Should be a stack and not static lifetime, should be provided by client.
 	ReflectionContext& getCurrentReflectionContext() {
 		static ReflectionContext reflectionContext;
 		return reflectionContext;

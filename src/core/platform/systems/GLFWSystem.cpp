@@ -84,6 +84,8 @@ namespace Core {
 			return;
 		}
 
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
 		int monitorCount{ 0 };
 		GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
 		if (monitorCount <= 0) {

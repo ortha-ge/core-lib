@@ -8,7 +8,7 @@ module;
 #include <string_view>
 #include <variant>
 
-#include <entt/entt.hpp>
+#include <entt/fwd.hpp>
 
 export module Core.ProcessError;
 

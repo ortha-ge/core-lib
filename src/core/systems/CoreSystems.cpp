@@ -13,6 +13,7 @@ import Core.LogReportingSystem;
 import Core.ProcessErrorLoggingSystem;
 import Core.ProcessErrorRetrySystem;
 import Core.ResourceLoadSystem;
+import Core.ReflectionContext;
 import Core.Scheduler;
 import Core.TypeLoaderSystem;
 
@@ -42,6 +43,9 @@ namespace Core {
 
 		FileLoadSystem::destroySystem(mRegistry);
 		GLFWSystem::destroySystem(mRegistry);
+
+		// TODO: Required due to the static reflection context destruction order trying to access static TypeInfo
+		getCurrentReflectionContext() = {};
 	}
 
 } // namespace Core

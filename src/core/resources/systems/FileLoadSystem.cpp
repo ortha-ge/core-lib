@@ -21,7 +21,7 @@ namespace Core {
 	void FileLoadSystem::destroySystem(entt::registry& registry) {}
 
 	void FileLoadSystem::tickSystem(entt::registry& registry) {
-		ZoneScoped;
+		ZoneScopedN("FileLoadSystem::tickSystem");
 
 		auto fileResourceRequestView = registry.view<FileDescriptor, FileLoadRequest>(entt::exclude<RawDataResource, ProcessError>);
 		fileResourceRequestView.each([&registry](entt::entity entity, FileDescriptor& fileDescriptor) {

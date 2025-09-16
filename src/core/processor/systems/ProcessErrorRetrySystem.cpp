@@ -57,7 +57,7 @@ namespace Core {
 	}
 
 	void ProcessErrorRetrySystem::tickSystem(entt::registry& registry) {
-		ZoneScoped;
+		ZoneScopedN("ProcessErrorRetrySystem::tickSystem");
 
 		registry.view<ProcessError>()
 			.each([this, &registry](const entt::entity entity, ProcessError& processError) {

@@ -32,7 +32,7 @@ namespace Core {
 	}
 
 	void ProcessErrorLoggingSystem::tickSystem(entt::registry& registry) {
-		ZoneScoped;
+		ZoneScopedN("ProcessErrorLoggingSystem::tickSystem");
 
 		registry.view<ProcessError>(entt::exclude<ProcessErrorLoggedFlag>)
 			.each([&registry](const entt::entity entity, const ProcessError& processError) {

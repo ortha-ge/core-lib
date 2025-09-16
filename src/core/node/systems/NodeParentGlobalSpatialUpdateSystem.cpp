@@ -67,7 +67,7 @@ namespace Core {
 	}
 
 	void NodeParentGlobalSpatialUpdateSystem::tickSystem(entt::registry& registry) {
-		ZoneScoped;
+		ZoneScopedN("NodeParentGlobalSpatialUpdateSystem::tickSystem");
 		using namespace NodeParentGlobalSpatialUpdateSystemInternal;
 
 		registry.view<NodeHandle>()

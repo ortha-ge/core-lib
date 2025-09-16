@@ -28,7 +28,7 @@ namespace Core {
 	}
 
 	void LogReportingSystem::tickSystem(entt::registry& registry) {
-		ZoneScoped;
+		ZoneScopedN("LogReportingSystem::tickSystem");
 
 		registry.view<Log>(entt::exclude<LogReportedFlag>)
 			.each([&registry](const entt::entity entity, Log& log) {

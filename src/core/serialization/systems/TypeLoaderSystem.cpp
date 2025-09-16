@@ -3,6 +3,7 @@ module;
 #include <utility>
 
 #include <entt/entt.hpp>
+#include <tracy/Tracy.hpp>
 
 module Core.TypeLoaderSystem;
 
@@ -23,6 +24,7 @@ namespace Core {
 	TypeLoaderSystem::~TypeLoaderSystem() { mScheduler.unschedule(std::move(mTickHandle)); }
 
 	void TypeLoaderSystem::tickSystem(entt::registry& registry) {
+		ZoneScopedN("TypeLoaderSystem::tickSystem");
 		auto jsonLoaderView =
 			registry.view<Core::RawDataResource, Core::TypeLoader>(entt::exclude<Core::FileLoadRequest>);
 		jsonLoaderView.each(

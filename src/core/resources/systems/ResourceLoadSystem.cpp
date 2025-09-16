@@ -33,7 +33,7 @@ namespace Core {
 	ResourceLoadSystem::~ResourceLoadSystem() { mScheduler.unschedule(std::move(mTickHandle)); }
 
 	void ResourceLoadSystem::tick(entt::registry& registry) {
-		ZoneScoped;
+		ZoneScopedN("ResourceLoadSystem::tick");
 
 		auto& resourceCache{ registry.get<ResourceCache>(mResourceCacheEntity) };
 

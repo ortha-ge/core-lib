@@ -28,7 +28,7 @@ namespace Core {
 	}
 
 	void GlobalSpatialUpdateSystem::tickSystem(entt::registry& registry) {
-		ZoneScoped;
+		ZoneScopedN("GlobalSpatialUpdateSystem::tickSystem");
 
 		registry.view<ParentGlobalSpatial, Spatial>()
 			.each([&registry](const entt::entity entity, const ParentGlobalSpatial& parentGlobalSpatial, const Spatial& spatial) {

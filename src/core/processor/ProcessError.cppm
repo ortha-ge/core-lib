@@ -2,7 +2,10 @@ module;
 
 #include <chrono>
 #include <cstdint>
+#include <format>
+#include <optional>
 #include <string>
+#include <string_view>
 #include <variant>
 
 #include <entt/entt.hpp>

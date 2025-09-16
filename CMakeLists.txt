@@ -1,6 +1,17 @@
  
 cmake_minimum_required(VERSION 3.31)
 
+Include(FetchContent)
+
+FetchContent_Declare (
+        tracy
+        GIT_REPOSITORY https://github.com/wolfpld/tracy.git
+        GIT_TAG c556831ddc6fe26d2fce01c14c97205a9dad46d5
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(tracy)
+
 find_package(bgfx CONFIG REQUIRED)
 find_package(EnTT CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
@@ -125,6 +136,7 @@ set(core-lib-libraries
         bgfx::bimg
         bgfx::bimg_decode
         SDL2::SDL2
+        TracyClient
 )
 
 add_library(core-lib STATIC ${core-lib-src} ${core-lib-modules} ${core-lib-reflection-modules})

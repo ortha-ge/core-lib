@@ -4,6 +4,7 @@ module;
 #include <variant>
 
 #include <entt/entt.hpp>
+#include <tracy/Tracy.hpp>
 
 module Core.ProcessErrorRetrySystem;
 
@@ -56,6 +57,8 @@ namespace Core {
 	}
 
 	void ProcessErrorRetrySystem::tickSystem(entt::registry& registry) {
+		ZoneScoped;
+
 		registry.view<ProcessError>()
 			.each([this, &registry](const entt::entity entity, ProcessError& processError) {
 				tickProcessError(registry, entity, processError);

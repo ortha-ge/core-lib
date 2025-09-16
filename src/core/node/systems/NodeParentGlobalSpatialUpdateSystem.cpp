@@ -3,6 +3,7 @@ module;
 #include <utility>
 
 #include <entt/entt.hpp>
+#include <tracy/Tracy.hpp>
 
 module Core.NodeParentGlobalSpatialUpdateSystem;
 
@@ -66,6 +67,7 @@ namespace Core {
 	}
 
 	void NodeParentGlobalSpatialUpdateSystem::tickSystem(entt::registry& registry) {
+		ZoneScoped;
 		using namespace NodeParentGlobalSpatialUpdateSystemInternal;
 
 		registry.view<NodeHandle>()

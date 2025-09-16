@@ -4,6 +4,8 @@ module;
 #include <functional>
 #include <memory>
 
+#include <tracy/Tracy.hpp>
+
 module Core.Scheduler;
 
 namespace Core {
@@ -14,6 +16,7 @@ namespace Core {
 	void Task::tick() { mOnTick(); }
 
 	void Schedule::tick() {
+		ZoneScoped;
 		for (auto&& task : mTasks) {
 			task->tick();
 		}

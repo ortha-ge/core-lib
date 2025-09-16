@@ -5,6 +5,7 @@ module;
 #include <entt/entt.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <tracy/Tracy.hpp>
 
 module Core.GlobalSpatialUpdateSystem;
 
@@ -27,6 +28,8 @@ namespace Core {
 	}
 
 	void GlobalSpatialUpdateSystem::tickSystem(entt::registry& registry) {
+		ZoneScoped;
+
 		registry.view<ParentGlobalSpatial, Spatial>()
 			.each([&registry](const entt::entity entity, const ParentGlobalSpatial& parentGlobalSpatial, const Spatial& spatial) {
 				auto& globalSpatial = registry.get_or_emplace<GlobalSpatial>(entity);

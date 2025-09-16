@@ -1,6 +1,7 @@
 module;
 
 #include <entt/entt.hpp>
+#include <tracy/Tracy.hpp>
 
 module Core.ProcessErrorLoggingSystem;
 
@@ -31,6 +32,8 @@ namespace Core {
 	}
 
 	void ProcessErrorLoggingSystem::tickSystem(entt::registry& registry) {
+		ZoneScoped;
+
 		registry.view<ProcessError>(entt::exclude<ProcessErrorLoggedFlag>)
 			.each([&registry](const entt::entity entity, const ProcessError& processError) {
 				tickProcessError(registry, entity, processError);

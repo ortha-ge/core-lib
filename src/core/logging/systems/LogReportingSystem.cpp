@@ -4,6 +4,7 @@ module;
 #include <utility>
 
 #include <entt/entt.hpp>
+#include <tracy/Tracy.hpp>
 
 module Core.LogReportingSystem;
 
@@ -27,6 +28,8 @@ namespace Core {
 	}
 
 	void LogReportingSystem::tickSystem(entt::registry& registry) {
+		ZoneScoped;
+
 		registry.view<Log>(entt::exclude<LogReportedFlag>)
 			.each([&registry](const entt::entity entity, Log& log) {
 				for (auto&& message : log.messages) {

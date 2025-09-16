@@ -4,6 +4,7 @@ module;
 #include <fstream>
 
 #include <entt/entt.hpp>
+#include <tracy/Tracy.hpp>
 
 module Core.FileLoadSystem;
 
@@ -20,6 +21,8 @@ namespace Core {
 	void FileLoadSystem::destroySystem(entt::registry& registry) {}
 
 	void FileLoadSystem::tickSystem(entt::registry& registry) {
+		ZoneScoped;
+
 		auto fileResourceRequestView = registry.view<FileDescriptor, FileLoadRequest>(entt::exclude<RawDataResource, ProcessError>);
 		fileResourceRequestView.each([&registry](entt::entity entity, FileDescriptor& fileDescriptor) {
 			if (fileDescriptor.filePath.empty()) {

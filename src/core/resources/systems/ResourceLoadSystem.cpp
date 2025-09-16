@@ -5,6 +5,7 @@ module;
 #include <utility>
 
 #include <entt/entt.hpp>
+#include <tracy/Tracy.hpp>
 
 module Core.ResourceLoadSystem;
 
@@ -32,6 +33,8 @@ namespace Core {
 	ResourceLoadSystem::~ResourceLoadSystem() { mScheduler.unschedule(std::move(mTickHandle)); }
 
 	void ResourceLoadSystem::tick(entt::registry& registry) {
+		ZoneScoped;
+
 		auto& resourceCache{ registry.get<ResourceCache>(mResourceCacheEntity) };
 
 		auto resourceLoadRequestView = registry.view<ResourceLoadRequest>();

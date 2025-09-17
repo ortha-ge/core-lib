@@ -26,7 +26,9 @@ module;
 #define GLFW_EXPOSE_NATIVE_WGL
 #endif //
 
+#ifndef __EMSCRIPTEN__
 #include <GLFW/glfw3native.h>
+#endif
 
 module Core.GLFWSystem;
 

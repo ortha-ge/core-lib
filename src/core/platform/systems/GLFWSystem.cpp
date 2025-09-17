@@ -132,10 +132,14 @@ namespace Core {
 		GLFWwindow* internalWindow =
 			glfwCreateWindow(window.width, window.height, window.title.c_str(), nullptr, nullptr);
 		if (!internalWindow) {
+			#ifndef __EMSCRIPTEN__
 			const char* description = nullptr;
 			if (glfwGetError(&description) && description) {
 				addProcessError(registry, entity, description);
 			}
+			#else
+			addProcessError(registry, entity, "Failed to create GLFW window.");
+			#endif
 			return;
 		}
 

@@ -18,7 +18,6 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(kangaru CONFIG REQUIRED)
 find_package(RapidJSON CONFIG REQUIRED)
-find_package(SDL2 CONFIG REQUIRED)
 
 set(core-lib-src
         src/core/EnTTRegistry.cpp
@@ -135,9 +134,13 @@ set(core-lib-libraries
         bgfx::bx
         bgfx::bimg
         bgfx::bimg_decode
-        SDL2::SDL2
         TracyClient
 )
+
+if (EMSCRIPTEN_BUILD)
+find_package(SDL2 CONFIG REQUIRED)
+set(core-lib-libraries ${core-lib-libraries} SDL2::SDL2)
+endif()
 
 add_library(core-lib STATIC ${core-lib-src} ${core-lib-modules} ${core-lib-reflection-modules})
 
@@ -147,5 +150,9 @@ target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
 target_compile_features(core-lib PUBLIC cxx_std_23)
 target_link_libraries(core-lib PUBLIC ${core-lib-libraries})
 target_include_directories(core-lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+if (EMSCRIPTEN_BUILD)
+#target_compile_options(core-lib PUBLIC -pthread)
+endif()
 
 add_subdirectory(tests)

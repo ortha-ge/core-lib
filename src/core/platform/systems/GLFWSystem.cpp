@@ -34,6 +34,7 @@ module Core.GLFWSystem;
 
 
 import Core.GLFWWindow;
+import Core.Log;
 import Core.NativeWindowHandles;
 import Core.ProcessError;
 import Core.QuitAppRequest;
@@ -63,13 +64,14 @@ namespace Core {
 #elif defined(_WIN32) || defined(_WIN64)
 		return glfwGetWin32Window(_window);
 #elif defined(__EMSCRIPTEN__)
-		return nullptr;
+		static const char* canvasWindowHandleName = "#canvas";
+		return reinterpret_cast<void*>(const_cast<char*>("#canvas"));
 #else
 		static_assert(false, "Unhandled platform");
 #endif
 	}
 
-	void* getNativeDisplayHandle() {
+	void* glfwNativeDisplayHandle() {
 #if defined(__linux__)
 #if false
 		return glfwGetWaylandDisplay();
@@ -83,6 +85,7 @@ namespace Core {
 
 	void GLFWSystem::initSystem(entt::registry& registry) {
 		if (glfwInit() != GLFW_TRUE) {
+			logEntry(registry, "GLFW failed to initialize.");
 			return;
 		}
 
@@ -145,9 +148,10 @@ namespace Core {
 
 		registry.emplace<GLFWWindow>(entity, internalWindow);
 
-		NativeWindowHandles nativeWindowHandles{ glfwNativeWindowHandle(internalWindow), getNativeDisplayHandle() };
+		NativeWindowHandles nativeWindowHandles{ glfwNativeWindowHandle(internalWindow), glfwNativeDisplayHandle() };
 
 		if (!nativeWindowHandles.windowHandle) {
+			addProcessError(registry, entity, "Failed to retrieve window handles.");
 			return;
 		}
 

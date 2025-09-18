@@ -73,6 +73,7 @@ set(core-lib-modules
         src/core/logging/systems/LogReportingSystem.cppm
         src/core/node/EnTTNode.cppm
         src/core/node/Node.cppm
+        src/core/node/TemplateNode.cppm
         src/core/node/systems/NodeParentGlobalSpatialUpdateSystem.cppm
         src/core/platform/GLFWWindow.cppm
         src/core/platform/NativeWindowHandles.cppm

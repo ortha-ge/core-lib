@@ -26,4 +26,6 @@ export namespace Core {
 		entt::handle mEntityHandle;
 	};
 
+	void addChildNode(entt::registry&, entt::entity, entt::entity);
+
 } // namespace Core

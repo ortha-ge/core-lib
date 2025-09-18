@@ -30,4 +30,12 @@ namespace Core {
 		return mEntityHandle.entity();
 	}
 
+	void addChildNode(entt::registry& registry, const entt::entity parent, const entt::entity child) {
+		const auto* parentNodeHandle = registry.try_get<NodeHandle>(parent);
+		const auto* childNodeHandle = registry.try_get<NodeHandle>(child);
+		if (parentNodeHandle && childNodeHandle) {
+			parentNodeHandle->getNode()->addChild(childNodeHandle->getNode());
+		}
+	}
+
 } // namespace Core

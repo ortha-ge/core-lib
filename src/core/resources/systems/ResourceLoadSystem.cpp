@@ -12,6 +12,7 @@ module Core.ResourceLoadSystem;
 import Core.FileDescriptor;
 import Core.FileLoadRequest;
 import Core.Log;
+import Core.ProcessError;
 import Core.Resource;
 import Core.ResourceCache;
 import Core.ResourceHandle;
@@ -37,7 +38,7 @@ namespace Core {
 
 		auto& resourceCache{ registry.get<ResourceCache>(mResourceCacheEntity) };
 
-		auto resourceLoadRequestView = registry.view<ResourceLoadRequest>();
+		auto resourceLoadRequestView = registry.view<ResourceLoadRequest>(entt::exclude<ProcessError>);
 		resourceLoadRequestView.each([&](entt::entity entity, const ResourceLoadRequest& loadRequest) {
 			auto resourceHandle = loadRequest.lockResourceHandle();
 			if (!resourceHandle) {
@@ -46,17 +47,18 @@ namespace Core {
 			}
 
 			const std::string& resourceFilePath{ resourceHandle->getResourceFilePath() };
+			if (resourceFilePath.empty()) {
+				addProcessError(registry, entity, "Empty resource file path.");
+				return;
+			}
+
 			auto resource{ resourceCache.getResource(resourceFilePath) };
 			if (!resource) {
-				//logEntry(registry, entity, "Resource not already loaded: {}", resourceFilePath);
-
 				entt::entity _resourceEntity{ loadRequest.createResource(registry) };
 				registry.emplace<FileDescriptor>(_resourceEntity, resourceFilePath);
 				registry.emplace<FileLoadRequest>(_resourceEntity);
 
 				resource = resourceCache.addResource(resourceFilePath, _resourceEntity);
-			} else {
-				//logEntry(registry, entity, "Resource already loaded: {}", resourceFilePath);
 			}
 
 			resourceHandle->setResource(resource);

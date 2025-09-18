@@ -3,6 +3,7 @@ module;
 #include <functional>
 #include <memory>
 #include <vector>
+#include <queue>
 
 export module Core.Scheduler;
 
@@ -14,8 +15,12 @@ export namespace Core {
 
 		void tick();
 
+		void setIsRemoved(bool isRemoved);
+		bool getIsRemoved() const;
+
 	private:
 		std::function<void()> mOnTick;
+		bool mIsRemoved{ false };
 	};
 
 	class Schedule {
@@ -27,6 +32,8 @@ export namespace Core {
 
 	private:
 		std::vector<std::shared_ptr<Task>> mTasks;
+		std::queue<std::shared_ptr<Task>> mAddQueue;
+		std::queue<std::shared_ptr<Task>> mRemoveQueue;
 	};
 
 	class TaskHandle {

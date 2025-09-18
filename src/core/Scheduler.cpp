@@ -15,30 +15,48 @@ namespace Core {
 
 	void Task::tick() { mOnTick(); }
 
+	void Task::setIsRemoved(bool isRemoved) { mIsRemoved = isRemoved; }
+
+	bool Task::getIsRemoved() const { return mIsRemoved; }
+
 	void Schedule::tick() {
 		ZoneScoped;
-		for (auto&& task : mTasks) {
-			task->tick();
+		for (const auto& task : mTasks) {
+			if (!task->getIsRemoved()) {
+				task->tick();
+			}
+		}
+
+		for (; !mAddQueue.empty(); mAddQueue.pop()) {
+			auto& queueTask = mAddQueue.front();
+			queueTask->tick();
+			mTasks.emplace_back(std::move(queueTask));
+		}
+
+		for (; !mRemoveQueue.empty(); mRemoveQueue.pop()) {
+			auto task = mRemoveQueue.front();
+			mTasks.erase(std::ranges::remove(mTasks, task).begin(), mTasks.end());
 		}
 	}
 
 	std::weak_ptr<Task> Schedule::schedule(std::function<void()> onTick) {
 		auto task = std::make_shared<Task>(std::move(onTick));
-		mTasks.emplace_back(task);
+		mAddQueue.emplace(task);
 		return task;
 	}
 
 	void Schedule::unschedule(std::shared_ptr<Task> task) {
 		if (task) {
-			mTasks.erase(std::remove(mTasks.begin(), mTasks.end(), task), mTasks.end());
+			task->setIsRemoved(true);
+			mRemoveQueue.emplace(std::move(task));
 		}
 	}
 
 	TaskHandle::TaskHandle() = default;
 
 	TaskHandle::TaskHandle(std::weak_ptr<Schedule> schedule, std::weak_ptr<Task> task)
-		: mSchedule{ schedule }
-		, mTask{ task } {}
+		: mSchedule{ std::move(schedule) }
+		, mTask{ std::move(task) } {}
 
 	TaskHandle::~TaskHandle() {
 		auto schedule = mSchedule.lock();

@@ -8,7 +8,10 @@ export import Core.Systems;
 
 export namespace Core {
 
-	class CoreSystemsService
-		: public kgr::single_service<CoreSystems, kgr::dependency<EnTTRegistryService, SchedulerService>> {};
+	void initCoreSubSystems(CoreSystems&, kgr::container&);
+
+	struct CoreSystemsService
+		: kgr::single_service<CoreSystems>
+		, kgr::autocall<kgr::invoke_method<initCoreSubSystems>>{};
 
 } // namespace Core

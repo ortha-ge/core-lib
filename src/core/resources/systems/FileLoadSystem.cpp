@@ -16,9 +16,18 @@ import Core.RawDataResource;
 
 namespace Core {
 
-	void FileLoadSystem::initSystem(entt::registry& registry) {}
+	FileLoadSystem::FileLoadSystem(EnTTRegistry& registry, Scheduler& scheduler)
+		: mRegistry(registry)
+		, mScheduler(scheduler) {
 
-	void FileLoadSystem::destroySystem(entt::registry& registry) {}
+		mTickHandle = mScheduler.schedule([this] {
+			tickSystem(mRegistry);
+		});
+	}
+
+	FileLoadSystem::~FileLoadSystem() {
+		mScheduler.unschedule(std::move(mTickHandle));
+	}
 
 	void FileLoadSystem::tickSystem(entt::registry& registry) {
 		ZoneScopedN("FileLoadSystem::tickSystem");

@@ -4,13 +4,25 @@ module;
 
 export module Core.FileLoadSystem;
 
+import Core.EnTTRegistry;
+import Core.Scheduler;
+
 export namespace Core {
 
 	class FileLoadSystem {
 	public:
-		static void initSystem(entt::registry& registry);
-		static void destroySystem(entt::registry& registry);
+
+		FileLoadSystem(EnTTRegistry&, Scheduler&);
+		~FileLoadSystem();
+
 		static void tickSystem(entt::registry& registry);
+
+	private:
+
+		EnTTRegistry& mRegistry;
+		Scheduler& mScheduler;
+		TaskHandle mTickHandle;
+
 	};
 
 } // namespace Core

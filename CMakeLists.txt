@@ -53,6 +53,7 @@ set(core-lib-src
         src/core/resources/ResourceLoadRequest.cpp
         src/core/resources/systems/FileLoadSystem.cpp
         src/core/resources/systems/ResourceLoadSystem.cpp
+        src/core/services/CoreSystemsService.cpp
         src/core/serialization/JsonTypeLoaderAdapter.cpp
         src/core/serialization/JsonTypeSaverAdapter.cpp
         src/core/serialization/systems/TypeLoaderSystem.cpp
@@ -115,8 +116,17 @@ set(core-lib-modules
         src/core/serialization/systems/TypeLoaderSystem.cppm
         src/core/services/CoreSystemsService.cppm
         src/core/services/EnTTRegistryService.cppm
+        src/core/services/FileLoadSystemService.cppm
+        src/core/services/GLFWSystemService.cppm
+        src/core/services/GlobalSpatialUpdateSystemService.cppm
+        src/core/services/LogReportingSystemService.cppm
+        src/core/services/NodeParentGlobalSpatialUpdateSystemService.cppm
+        src/core/services/ProcessErrorLoggingSystemService.cppm
+        src/core/services/ProcessErrorRetrySystemService.cppm
+        src/core/services/ResourceLoadSystemService.cppm
         src/core/services/SchedulerService.cppm
         src/core/services/TimerService.cppm
+        src/core/services/TypeLoaderSystemService.cppm
         src/core/systems/GlobalSpatialUpdateSystem.cppm
         src/core/systems/CoreSystems.cppm
 )

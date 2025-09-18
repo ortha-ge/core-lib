@@ -2,6 +2,7 @@
 module;
 
 #include <chrono>
+#include <utility>
 
 #include <GLFW/glfw3.h>
 #include <entt/entt.hpp>
@@ -83,7 +84,10 @@ namespace Core {
 #endif
 	}
 
-	void GLFWSystem::initSystem(entt::registry& registry) {
+	GLFWSystem::GLFWSystem(EnTTRegistry& registry, Scheduler& scheduler)
+		: mRegistry(registry)
+		, mScheduler(scheduler) {
+
 		if (glfwInit() != GLFW_TRUE) {
 			logEntry(registry, "GLFW failed to initialize.");
 			return;
@@ -91,14 +95,18 @@ namespace Core {
 
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
-		int monitorCount{ 0 };
-		GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
-		if (monitorCount <= 0) {
-			return;
-		}
+		mTickHandle = mScheduler.schedule([this] {
+			tickSystem(mRegistry);
+		});
 	}
 
-	void GLFWSystem::destroySystem(entt::registry& registry) {
+	GLFWSystem::~GLFWSystem() {
+		destroyWindows(mRegistry);
+
+		mScheduler.unschedule(std::move(mTickHandle));
+	}
+
+	void GLFWSystem::destroyWindows(entt::registry& registry) {
 		auto internalWindowView = registry.view<GLFWWindow>();
 		internalWindowView.each([&registry](entt::entity windowEntity, GLFWWindow& window) {
 			glfwDestroyWindow(window.window);
@@ -155,7 +163,7 @@ namespace Core {
 			return;
 		}
 
-		registry.emplace<NativeWindowHandles>(entity, std::move(nativeWindowHandles));
+		registry.emplace<NativeWindowHandles>(entity, nativeWindowHandles);
 	}
 
 } // namespace Core

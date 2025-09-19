@@ -36,6 +36,6 @@ export namespace Core {
 
 	};
 
-
+	using ResourceHandlePtr = std::shared_ptr<ResourceHandle>;
 
 } // namespace Core

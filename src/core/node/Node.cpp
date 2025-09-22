@@ -82,6 +82,13 @@ namespace Core {
 
 	const Node::Ptr& NodeHandle::getNode() const { return mNode; }
 
+	Node* NodeHandle::operator->() {
+		return mNode.get();
+	}
+	const Node* NodeHandle::operator->() const {
+		return mNode.get();
+	}
+
 	NodeHandle::NodeHandle(Node::Ptr node)
 		: mNode(std::move(node)) {}
 

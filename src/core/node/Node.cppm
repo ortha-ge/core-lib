@@ -48,6 +48,8 @@ export namespace Core {
 		}
 
 		const Node::Ptr& getNode() const;
+		Node* operator->();
+		const Node* operator->() const;
 
 	private:
 		NodeHandle(Node::Ptr node);

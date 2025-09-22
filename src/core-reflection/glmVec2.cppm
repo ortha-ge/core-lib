@@ -15,3 +15,13 @@ void Core::reflect<glm::vec2>(ReflectionContext& reflectionContext) {
 		.property("v", &glm::vec2::y)
 		.build();
 }
+
+template<>
+void Core::reflect<glm::ivec2>(ReflectionContext& reflectionContext) {
+	reflectionContext.addClass<glm::ivec2>("glm::ivec2")
+		.property("x", &glm::ivec2::x)
+		.property("y", &glm::ivec2::y)
+		.property("u", &glm::ivec2::x)
+		.property("v", &glm::ivec2::y)
+		.build();
+}

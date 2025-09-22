@@ -26,6 +26,8 @@ export namespace Core {
 		entt::handle mEntityHandle;
 	};
 
+	const entt::entity createEnTTNode(entt::registry&, std::string);
+	const entt::entity createChildEnTTNode(entt::registry&, entt::entity, std::string);
 	void addChildNode(entt::registry&, entt::entity, entt::entity);
 
 } // namespace Core

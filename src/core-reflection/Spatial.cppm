@@ -6,7 +6,7 @@ export module Core.Reflection.Spatial;
 
 export import Core.Spatial;
 
-import Core.EnTTClassAnnotation;
+import Core.EnTTComponentAttribute;
 import Core.ReflectionContext;
 import Glm.Reflection.Vec3;
 
@@ -18,7 +18,7 @@ export namespace Core {
 			.property("position", &SpatialType::position)
 			//.property("rotation", &Spatial::rotation)
 			.property("scale", &SpatialType::scale)
-			.annotate(createEnTTClassAnnotation<SpatialType>())
+			.annotate(createEnTTComponentAttribute<SpatialType>())
 			.build();
 	}
 }

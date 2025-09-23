@@ -68,21 +68,21 @@ namespace Core {
 
 	const std::vector<ClassProperty>& ClassReflection::getProperties() const { return mProperties; }
 
-	void ClassReflection::annotate(Any annotation) {
-		if (mAnnotations.contains(annotation.getTypeId())) {
+	void ClassReflection::addAttribute(Any attribute) {
+		if (mAttributes.contains(attribute.getTypeId())) {
 			logEntry(mLog, "Annotation already exists.");
 			return;
 		}
 
-		mAnnotations.emplace(annotation.getTypeId(), std::move(annotation));
+		mAttributes.emplace(attribute.getTypeId(), std::move(attribute));
 	}
 
-	bool ClassReflection::hasAnnotation(const TypeId& typeId) const {
-		return mAnnotations.contains(typeId);
+	bool ClassReflection::hasAttribute(const TypeId& typeId) const {
+		return mAttributes.contains(typeId);
 	}
 
-	const Any& ClassReflection::getAnnotation(const TypeId& typeId) const {
-		return mAnnotations.at(typeId);
+	const Any& ClassReflection::getAttribute(const TypeId& typeId) const {
+		return mAttributes.at(typeId);
 	}
 
 	Log ClassReflection::moveLog() {

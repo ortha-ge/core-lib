@@ -90,31 +90,31 @@ export namespace Core {
 		Log moveLog();
 
 		// NEW
-		void annotate(Any annotation);
-		bool hasAnnotation(const TypeId&) const;
-		const Any& getAnnotation(const TypeId&) const;
+		void addAttribute(Any attribute);
+		bool hasAttribute(const TypeId&) const;
+		const Any& getAttribute(const TypeId&) const;
 
 		template <typename T>
-		void annotate(T annotation) {
-			annotate(Any{ std::move(annotation) });
+		void addAttribute(T attribute) {
+			addAttribute(Any{ std::move(attribute) });
 		}
 
 		template <typename T>
-		bool hasAnnotation() const {
-			return hasAnnotation(TypeId::get<T>());
+		bool hasAttribute() const {
+			return hasAttribute(TypeId::get<T>());
 		}
 
 		template <typename T>
-		const T& getAnnotation() const {
-			const Any& annotation = getAnnotation(TypeId::get<T>());
-			return *static_cast<const T*>(annotation.getInstance());
+		const T& getAttribute() const {
+			const Any& attribute = getAttribute(TypeId::get<T>());
+			return *static_cast<const T*>(attribute.getInstance());
 		}
 
 	private:
 		TypeId mTypeId{};
 		std::string mName;
 		std::vector<ClassProperty> mProperties;
-		std::unordered_map<TypeId, Any, TypeIdHasher> mAnnotations;
+		std::unordered_map<TypeId, Any, TypeIdHasher> mAttributes;
 		Log mLog;
 	};
 

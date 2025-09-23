@@ -4,17 +4,18 @@ module;
 
 #include <entt/entt.hpp>
 
-export module Core.EnTTClassAnnotation;
+export module Core.EnTTComponentAttribute;
 
 export namespace Core {
 
-	struct EnTTClassAnnotation {
+	struct EnTTComponentAttribute {
 		std::function<void*(entt::registry&, const entt::entity)> getComponent;
 	};
 
 	template <typename T>
-	EnTTClassAnnotation createEnTTClassAnnotation() {
-		EnTTClassAnnotation annotation{
+	EnTTComponentAttribute createEnTTComponentAttribute() {
+		EnTTComponentAttribute annotation{
+			// TODO: change to returns Any
 			[](entt::registry& registry, entt::entity entity) -> void* {
 				if (registry.all_of<T>(entity)) {
 					return &registry.get<T>(entity);

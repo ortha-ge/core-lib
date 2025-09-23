@@ -88,7 +88,7 @@ set(core-lib-modules
         src/core/reflection/Any.cppm
         src/core/reflection/BasicTypeTraits.cppm
         src/core/reflection/ClassReflection.cppm
-        src/core/reflection/EnTTClassAnnotation.cppm
+        src/core/reflection/EnTTComponentAttribute.cppm
         src/core/reflection/EnumReflection.cppm
         src/core/reflection/MapTypeTraits.cppm
         src/core/reflection/OptionalTypeTraits.cppm

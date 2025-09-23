@@ -30,8 +30,8 @@ export namespace Core {
 		void property(ClassProperty property);
 
 		template <typename T>
-		void annotate(T annotation) {
-			mClassReflection.annotate(std::move(annotation));
+		void attribute(T attribute) {
+			mClassReflection.addAttribute(std::move(attribute));
 		}
 
 	private:
@@ -242,9 +242,9 @@ export namespace Core {
 			return *this;
 		}
 
-		template <typename AnnotationType>
-		ClassReflectionBuilder& annotate(AnnotationType annotation) {
-			ClassReflectionBuilderBase::annotate(std::move(annotation));
+		template <typename AttributeType>
+		ClassReflectionBuilder& annotate(AttributeType attribute) {
+			ClassReflectionBuilderBase::attribute(std::move(attribute));
 			return *this;
 		}
 

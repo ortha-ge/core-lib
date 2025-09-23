@@ -88,6 +88,7 @@ set(core-lib-modules
         src/core/reflection/Any.cppm
         src/core/reflection/BasicTypeTraits.cppm
         src/core/reflection/ClassReflection.cppm
+        src/core/reflection/EnTTClassAnnotation.cppm
         src/core/reflection/EnumReflection.cppm
         src/core/reflection/MapTypeTraits.cppm
         src/core/reflection/OptionalTypeTraits.cppm
@@ -132,10 +133,17 @@ set(core-lib-modules
         src/core/systems/CoreSystems.cppm
 )
 
+set(core-lib-reflection-src
+        src/core-reflection/Reflection.cpp
+)
+
 set(core-lib-reflection-modules
         src/core-reflection/glmVec2.cppm
         src/core-reflection/glmVec3.cppm
         src/core-reflection/glmVec4.cppm
+        src/core-reflection/GlobalSpatial.cppm
+        src/core-reflection/Reflection.cppm
+        src/core-reflection/Spatial.cppm
 )
 
 set(core-lib-libraries
@@ -153,7 +161,7 @@ find_package(SDL2 CONFIG REQUIRED)
 set(core-lib-libraries ${core-lib-libraries} SDL2::SDL2)
 endif()
 
-add_library(core-lib STATIC ${core-lib-src} ${core-lib-modules} ${core-lib-reflection-modules})
+add_library(core-lib STATIC ${core-lib-src} ${core-lib-modules} ${core-lib-reflection-src} ${core-lib-reflection-modules})
 
 target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
         ${core-lib-modules} ${core-lib-reflection-modules}

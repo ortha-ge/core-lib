@@ -8,6 +8,7 @@ module;
 
 export module Core.ClassReflection;
 
+import Core.Any;
 import Core.Log;
 import Core.TypeId;
 
@@ -88,10 +89,32 @@ export namespace Core {
 
 		Log moveLog();
 
+		// NEW
+		void annotate(Any annotation);
+		bool hasAnnotation(const TypeId&) const;
+		const Any& getAnnotation(const TypeId&) const;
+
+		template <typename T>
+		void annotate(T annotation) {
+			annotate(Any{ std::move(annotation) });
+		}
+
+		template <typename T>
+		bool hasAnnotation() const {
+			return hasAnnotation(TypeId::get<T>());
+		}
+
+		template <typename T>
+		const T& getAnnotation() const {
+			const Any& annotation = getAnnotation(TypeId::get<T>());
+			return *static_cast<const T*>(annotation.getInstance());
+		}
+
 	private:
 		TypeId mTypeId{};
 		std::string mName;
 		std::vector<ClassProperty> mProperties;
+		std::unordered_map<TypeId, Any, TypeIdHasher> mAnnotations;
 		Log mLog;
 	};
 

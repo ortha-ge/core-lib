@@ -149,6 +149,14 @@ namespace Core {
 		return std::move(mLog);
 	}
 
+	void ReflectionContext::forEachClass(const std::function<void(const ClassReflection&)>& visitor) const {
+		for (auto&& [typeId, typeReflection] : mTypeReflections) {
+			if (std::holds_alternative<ClassReflection>(typeReflection)) {
+				visitor(std::get<ClassReflection>(typeReflection));
+			}
+		}
+	}
+
 	void ReflectionContext::initializeBasicTypes() {
 		addReflection(TypeId::get<std::string>(), TypeReflection("std::string", sizeof(std::string)));
 		addReflection(TypeId::get<int32_t>(), TypeReflection("int32_t", sizeof(int32_t)));

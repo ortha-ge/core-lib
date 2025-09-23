@@ -1,5 +1,6 @@
 module;
 
+#include <functional>
 #include <map>
 #include <optional>
 #include <string>
@@ -27,6 +28,11 @@ export namespace Core {
 		explicit ClassReflectionBuilderBase(TypeId typeId, std::string_view className);
 
 		void property(ClassProperty property);
+
+		template <typename T>
+		void annotate(T annotation) {
+			mClassReflection.annotate(std::move(annotation));
+		}
 
 	private:
 		TypeId mTypeId;
@@ -135,6 +141,8 @@ export namespace Core {
 
 		Log moveLog();
 
+		void forEachClass(const std::function<void(const ClassReflection&)>& visitor) const;
+
 	private:
 		void initializeBasicTypes();
 
@@ -231,6 +239,12 @@ export namespace Core {
 			const auto size = memberSize(member);
 			const auto typeId = TypeId::get(member);
 			ClassReflectionBuilderBase::property(ClassProperty(typeId, name, offset, size));
+			return *this;
+		}
+
+		template <typename AnnotationType>
+		ClassReflectionBuilder& annotate(AnnotationType annotation) {
+			ClassReflectionBuilderBase::annotate(std::move(annotation));
 			return *this;
 		}
 

@@ -12,12 +12,16 @@ import Core.LogReportingSystemService;
 import Core.NodeParentGlobalSpatialUpdateSystemService;
 import Core.ProcessErrorLoggingSystemService;
 import Core.ProcessErrorRetrySystemService;
+import Core.Reflection;
+import Core.ReflectionContext;
 import Core.ResourceLoadSystemService;
 import Core.TypeLoaderSystemService;
 
 namespace Core {
 
 	void initCoreSubSystems(CoreSystems&, kgr::container& container) {
+		reflectAll(getCurrentReflectionContext());
+
 		// Platform
 		container.emplace<GLFWSystemService>();
 

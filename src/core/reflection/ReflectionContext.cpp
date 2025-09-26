@@ -159,7 +159,8 @@ namespace Core {
 
 	void ReflectionContext::initializeBasicTypes() {
 		addReflection(TypeId::get<std::string>(), TypeReflection("std::string", sizeof(std::string)));
-		addReflection(TypeId::get<int32_t>(), TypeReflection("int32_t", sizeof(int32_t)));
+		addReflection(TypeId::get<int32_t>(), TypeReflection("int32", sizeof(int32_t)));
+		addReflection(TypeId::get<uint8_t>(), TypeReflection("uint8", sizeof(uint8_t)));
 		addReflection(TypeId::get<double>(), TypeReflection("double", sizeof(double)));
 		addReflection(TypeId::get<float>(), TypeReflection("float", sizeof(float)));
 		addReflection(TypeId::get<bool>(), TypeReflection("bool", sizeof(bool)));

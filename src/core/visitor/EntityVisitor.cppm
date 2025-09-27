@@ -3,7 +3,7 @@ module;
 #include <functional>
 #include <vector>
 
-#include <entt/entt.hpp>
+#include <entt/fwd.hpp>
 
 export module Core.EntityVisitor;
 

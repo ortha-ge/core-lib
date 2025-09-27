@@ -1,8 +1,9 @@
 module;
 
+#include <cstdint>
 #include <functional>
+#include <list>
 #include <memory>
-#include <vector>
 #include <queue>
 
 export module Core.Scheduler;
@@ -11,15 +12,18 @@ export namespace Core {
 
 	class Task {
 	public:
-		Task(std::function<void()> onTick);
+		Task(std::function<void()> onTick, uint8_t priority);
 
 		void tick();
 
 		void setIsRemoved(bool isRemoved);
+
+		uint8_t getPriority() const;
 		bool getIsRemoved() const;
 
 	private:
 		std::function<void()> mOnTick;
+		uint8_t mPriority;
 		bool mIsRemoved{ false };
 	};
 
@@ -27,11 +31,12 @@ export namespace Core {
 	public:
 		void tick();
 
-		std::weak_ptr<Task> schedule(std::function<void()> onTick);
+		std::weak_ptr<Task> schedule(std::function<void()> onTick, uint8_t priority);
 		void unschedule(std::shared_ptr<Task> task);
 
 	private:
-		std::vector<std::shared_ptr<Task>> mTasks;
+
+		std::list<std::shared_ptr<Task>> mTasks;
 		std::queue<std::shared_ptr<Task>> mAddQueue;
 		std::queue<std::shared_ptr<Task>> mRemoveQueue;
 	};
@@ -61,7 +66,7 @@ export namespace Core {
 
 		void tick();
 
-		TaskHandle schedule(std::function<void()> onTick);
+		TaskHandle schedule(std::function<void()> onTick, uint8_t priority = 0);
 		void unschedule(TaskHandle taskHandle);
 
 	private:

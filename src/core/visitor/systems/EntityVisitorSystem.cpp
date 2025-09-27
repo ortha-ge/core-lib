@@ -53,7 +53,7 @@ namespace Core {
 
 		mTickHandle = mScheduler.schedule([this] {
 			tickSystem(mRegistry);
-		});
+		}, 200);
 	}
 
 	EntityVisitorSystem::~EntityVisitorSystem() {

@@ -1,9 +1,11 @@
 
 target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
-        EntityVisitor.cppm
+        Log.cppm
+        LogReportedFlag.cppm
 )
 
 target_sources(core-lib PRIVATE
+        Log.cpp
 )
 
 add_subdirectory(services)

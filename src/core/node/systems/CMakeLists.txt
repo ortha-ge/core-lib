@@ -1,10 +1,8 @@
 
 target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
-        EntityVisitor.cppm
+        NodeParentGlobalSpatialUpdateSystem.cppm
 )
 
 target_sources(core-lib PRIVATE
+        NodeParentGlobalSpatialUpdateSystem.cpp
 )
-
-add_subdirectory(services)
-add_subdirectory(systems)

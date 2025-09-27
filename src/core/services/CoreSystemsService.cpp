@@ -5,6 +5,7 @@ module;
 module Core.SystemsService;
 
 import kangaru;
+import Core.EntityVisitorSystemService;
 import Core.FileLoadSystemService;
 import Core.GLFWSystemService;
 import Core.GlobalSpatialUpdateSystemService;
@@ -24,6 +25,9 @@ namespace Core {
 
 		// Platform
 		container.emplace<GLFWSystemService>();
+
+		// Visitor
+		container.emplace<EntityVisitorSystemService>();
 
 		// GlobalSpatial
 		container.emplace<NodeParentGlobalSpatialUpdateSystemService>();

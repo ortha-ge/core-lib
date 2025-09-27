@@ -174,4 +174,5 @@ if (EMSCRIPTEN_BUILD)
 #target_compile_options(core-lib PUBLIC -pthread)
 endif()
 
+add_subdirectory(src)
 add_subdirectory(tests)

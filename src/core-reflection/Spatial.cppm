@@ -2,6 +2,8 @@ module;
 
 #include <string_view>
 
+#include <entt/entt.hpp>
+
 export module Core.Reflection.Spatial;
 
 export import Core.Spatial;

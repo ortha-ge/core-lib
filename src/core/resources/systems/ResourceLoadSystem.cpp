@@ -4,7 +4,6 @@ module;
 #include <memory>
 #include <utility>
 
-#include <entt/entt.hpp>
 #include <tracy/Tracy.hpp>
 
 module Core.ResourceLoadSystem;
@@ -17,6 +16,7 @@ import Core.Resource;
 import Core.ResourceCache;
 import Core.ResourceHandle;
 import Core.ResourceLoadRequest;
+import entt;
 
 namespace Core {
 

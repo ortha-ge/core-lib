@@ -3,11 +3,10 @@ module;
 #include <memory>
 #include <tuple>
 
-#include <entt/entt.hpp>
-
 export module Core.ResourceHandleUtils;
 
 import Core.ResourceHandle;
+import entt;
 
 export namespace Core {
 

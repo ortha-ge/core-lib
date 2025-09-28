@@ -1,20 +1,13 @@
 module;
 
-#include <entt/fwd.hpp>
+#include <memory>
 
 export module Core.EnTTRegistry;
 
+import entt;
+
 export namespace Core {
 
-	class EnTTRegistry {
-	public:
-		EnTTRegistry();
-
-		operator entt::registry&();
-		operator const entt::registry&() const;
-
-	private:
-		std::unique_ptr<entt::registry> mRegistry{};
-	};
+	using EnTTRegistry = entt::registry;
 
 } // namespace Core

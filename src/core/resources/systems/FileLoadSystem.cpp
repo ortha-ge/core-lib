@@ -3,7 +3,6 @@ module;
 #include <filesystem>
 #include <fstream>
 
-#include <entt/entt.hpp>
 #include <tracy/Tracy.hpp>
 
 module Core.FileLoadSystem;
@@ -13,6 +12,7 @@ import Core.FileLoadRequest;
 import Core.Log;
 import Core.ProcessError;
 import Core.RawDataResource;
+import entt;
 
 namespace Core {
 

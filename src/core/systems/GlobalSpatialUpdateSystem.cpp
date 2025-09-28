@@ -2,15 +2,13 @@ module;
 
 #include <utility>
 
-#include <entt/entt.hpp>
-#include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
 #include <tracy/Tracy.hpp>
 
 module Core.GlobalSpatialUpdateSystem;
 
 import Core.GlobalSpatial;
 import Core.Spatial;
+import glm;
 
 namespace Core {
 

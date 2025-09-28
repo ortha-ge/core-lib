@@ -1,12 +1,9 @@
-module;
-
-#include <entt/fwd.hpp>
-
 export module Core.ProcessErrorLoggingSystem;
 
 import Core.EnTTRegistry;
 import Core.ProcessError;
 import Core.Scheduler;
+import entt;
 
 export namespace Core {
 

@@ -6,11 +6,10 @@ module;
 #include <string>
 #include <unordered_map>
 
-#include <entt/fwd.hpp>
-
 export module Core.ResourceCache;
 
 import Core.Resource;
+import entt;
 
 export namespace Core {
 

@@ -4,8 +4,6 @@ module;
 #include <string>
 #include <variant>
 
-#include <entt/fwd.hpp>
-
 #include <rapidjson/document.h>
 #include <rapidjson/prettywriter.h>
 #include <rapidjson/stringbuffer.h>
@@ -23,6 +21,7 @@ import Core.TypeId;
 import Core.TypeTraits;
 import Core.VariantTypeTraits;
 import Core.VectorTypeTraits;
+import entt;
 
 namespace Core {
 

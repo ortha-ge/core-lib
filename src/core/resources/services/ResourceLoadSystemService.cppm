@@ -1,11 +1,10 @@
-
 export module Core.ResourceLoadSystemService;
 
-import kangaru;
+export import Core.ResourceLoadSystem;
+
 import Core.EnTTRegistryService;
 import Core.SchedulerService;
-
-export import Core.ResourceLoadSystem;
+import kangaru;
 
 export namespace Core {
 

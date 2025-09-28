@@ -1,8 +1,8 @@
 module;
 
+#include <memory>
 #include <utility>
-
-#include <entt/entt.hpp>
+#include <vector>
 
 module Core.EntityVisitorSystem;
 
@@ -10,6 +10,7 @@ import Core.EntityVisitor;
 import Core.EnTTNode;
 import Core.Node;
 import Core.TypeId;
+import entt;
 
 namespace Core::EntityVisitorSystemInternal {
 

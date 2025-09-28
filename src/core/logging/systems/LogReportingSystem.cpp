@@ -3,16 +3,15 @@ module;
 #include <cstdio>
 #include <utility>
 
-#include <entt/entt.hpp>
 #include <tracy/Tracy.hpp>
 
 module Core.LogReportingSystem;
 
 import Core.Log;
 import Core.LogReportedFlag;
+import entt;
 
 namespace Core {
-
 
 	LogReportingSystem::LogReportingSystem(EnTTRegistry& registry, Scheduler& scheduler)
 		: mRegistry{ registry }

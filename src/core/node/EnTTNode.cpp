@@ -1,10 +1,11 @@
 module;
 
-#include <entt/entt.hpp>
+#include <string>
 
 module Core.EnTTNode;
 
 import Core.ProcessError;
+import entt;
 
 namespace Core {
 

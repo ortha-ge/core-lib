@@ -1,14 +1,8 @@
-module;
-
-#include <chrono>
-
-#include <entt/entity/entity.hpp>
-#include <entt/fwd.hpp>
-
 export module Core.ResourceLoadSystem;
 
 import Core.EnTTRegistry;
 import Core.Scheduler;
+import entt;
 
 export namespace Core {
 

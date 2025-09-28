@@ -1,11 +1,11 @@
-
 export module Core.ProcessErrorRetrySystemService;
 
-import kangaru;
+export import Core.ProcessErrorRetrySystem;
+
 import Core.EnTTRegistryService;
 import Core.SchedulerService;
+import kangaru;
 
-export import Core.ProcessErrorRetrySystem;
 
 export namespace Core {
 

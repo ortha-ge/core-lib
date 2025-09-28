@@ -2,14 +2,13 @@ module;
 
 #include <string_view>
 
-#include <entt/entt.hpp>
-
 export module Core.JsonTypeLoaderAdapter;
 
 import Core.Any;
 import Core.Log;
 import Core.ReflectionContext;
 import Core.TypeLoader;
+import entt;
 
 export namespace Core {
 

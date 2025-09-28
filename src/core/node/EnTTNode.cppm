@@ -2,12 +2,11 @@ module;
 
 #include <string>
 
-#include <entt/entt.hpp>
-
 export module Core.EnTTNode;
 
 import Core.Node;
 import Core.TypeId;
+import entt;
 
 export namespace Core {
 

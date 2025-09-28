@@ -36,6 +36,13 @@ endif()
 
 add_library(core-lib STATIC)
 
+target_sources(core-lib
+        PUBLIC
+        FILE_SET CXX_MODULES
+        BASE_DIRS ${glm_DIR}../../../include/glm
+        FILES ${glm_DIR}/../../include/glm/glm.cppm
+)
+
 target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES BASE_DIRS src)
 target_compile_features(core-lib PUBLIC cxx_std_23)
 target_link_libraries(core-lib PUBLIC ${core-lib-libraries})

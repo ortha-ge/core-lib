@@ -1,11 +1,8 @@
-module;
-
-#include <entt/fwd.hpp>
-
 export module Core.NodeParentGlobalSpatialUpdateSystem;
 
 import Core.EnTTRegistry;
 import Core.Scheduler;
+import entt;
 
 export namespace Core {
 

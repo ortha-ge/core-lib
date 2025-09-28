@@ -2,7 +2,6 @@ module;
 
 #include <utility>
 
-#include <entt/entt.hpp>
 #include <tracy/Tracy.hpp>
 
 module Core.TypeLoaderSystem;
@@ -11,6 +10,7 @@ import Core.FileLoadRequest;
 import Core.JsonTypeLoaderAdapter;
 import Core.RawDataResource;
 import Core.TypeLoader;
+import entt;
 
 namespace Core {
 

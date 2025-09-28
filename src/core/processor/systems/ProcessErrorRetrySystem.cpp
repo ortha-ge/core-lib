@@ -3,13 +3,13 @@ module;
 #include <chrono>
 #include <variant>
 
-#include <entt/entt.hpp>
 #include <tracy/Tracy.hpp>
 
 module Core.ProcessErrorRetrySystem;
 
 import Core.ProcessError;
 import Core.ProcessErrorLoggedFlag;
+import entt;
 
 namespace Core::ProcessErrorRetrySystemInternal {
 	bool tickProcessError(entt::registry& registry, const entt::entity entity, ProcessError& error, bool shouldRetry) {

@@ -3,11 +3,10 @@ module;
 #include <string>
 #include <utility>
 
-#include <entt/entt.hpp>
-
 module Core.Log;
 
 import Core.LogReportedFlag;
+import entt;
 
 namespace Core {
 

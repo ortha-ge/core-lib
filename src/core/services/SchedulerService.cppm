@@ -1,9 +1,8 @@
-
 export module Core.SchedulerService;
 
-import kangaru;
-
 export import Core.Scheduler;
+
+import kangaru;
 
 export namespace Core {
 

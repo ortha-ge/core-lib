@@ -1,8 +1,8 @@
 module;
 
+#include <memory>
 #include <utility>
 
-#include <entt/entt.hpp>
 #include <tracy/Tracy.hpp>
 
 module Core.NodeParentGlobalSpatialUpdateSystem;
@@ -12,6 +12,7 @@ import Core.GlobalSpatial;
 import Core.Node;
 import Core.Spatial;
 import Core.TypeId;
+import entt;
 
 namespace Core::NodeParentGlobalSpatialUpdateSystemInternal {
 

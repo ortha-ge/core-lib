@@ -2,9 +2,9 @@ module;
 
 #include <string>
 
-#include <entt/entity/entity.hpp>
-
 export module Core.Resource;
+
+import entt;
 
 export namespace Core {
 

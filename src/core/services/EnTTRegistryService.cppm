@@ -1,7 +1,7 @@
-
 export module Core.EnTTRegistryService;
 
 export import Core.EnTTRegistry;
+
 import kangaru;
 
 export namespace Core {

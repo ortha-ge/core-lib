@@ -1,12 +1,9 @@
-module;
-
-#include <entt/fwd.hpp>
-
 export module Core.GLFWSystem;
 
 import Core.EnTTRegistry;
 import Core.Scheduler;
 import Core.Window;
+import entt;
 
 export namespace Core {
 	class GLFWSystem {

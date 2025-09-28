@@ -5,6 +5,7 @@ target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
         Scheduler.cppm
         Spatial.cppm
         Timer.cppm
+        entt.cppm
         kangaru.cppm
 )
 

@@ -1,11 +1,12 @@
 module;
 
+#include <optional>
 #include <string>
 #include <variant>
 
-#include <entt/entt.hpp>
-
 module Core.ProcessError;
+
+import entt;
 
 namespace Core {
 

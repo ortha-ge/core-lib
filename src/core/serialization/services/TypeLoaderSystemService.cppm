@@ -1,11 +1,10 @@
-
 export module Core.TypeLoaderSystemService;
 
-import kangaru;
+export import Core.TypeLoaderSystem;
+
 import Core.EnTTRegistryService;
 import Core.SchedulerService;
-
-export import Core.TypeLoaderSystem;
+import kangaru;
 
 export namespace Core {
 

@@ -11,7 +11,7 @@ import entt;
 
 namespace Core {
 
-	ProcessErrorLoggingSystem::ProcessErrorLoggingSystem(EnTTRegistry& registry, Scheduler& scheduler)
+	ProcessErrorLoggingSystem::ProcessErrorLoggingSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry{ registry }
 		, mScheduler{ scheduler } {
 

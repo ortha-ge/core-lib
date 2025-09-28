@@ -54,7 +54,7 @@ namespace Core::NodeParentGlobalSpatialUpdateSystemInternal {
 
 namespace Core {
 
-	NodeParentGlobalSpatialUpdateSystem::NodeParentGlobalSpatialUpdateSystem(EnTTRegistry& registry, Scheduler& scheduler)
+	NodeParentGlobalSpatialUpdateSystem::NodeParentGlobalSpatialUpdateSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry(registry)
 		, mScheduler(scheduler) {
 

@@ -14,7 +14,7 @@ import entt;
 
 namespace Core {
 
-	TypeLoaderSystem::TypeLoaderSystem(EnTTRegistry& registry, Scheduler& scheduler)
+	TypeLoaderSystem::TypeLoaderSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry{ registry }
 		, mScheduler{ scheduler } {
 

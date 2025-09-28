@@ -16,7 +16,7 @@ import entt;
 
 namespace Core {
 
-	FileLoadSystem::FileLoadSystem(EnTTRegistry& registry, Scheduler& scheduler)
+	FileLoadSystem::FileLoadSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry(registry)
 		, mScheduler(scheduler) {
 

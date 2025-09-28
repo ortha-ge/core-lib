@@ -32,7 +32,7 @@ namespace Core::ProcessErrorRetrySystemInternal {
 
 namespace Core {
 
-	ProcessErrorRetrySystem::ProcessErrorRetrySystem(EnTTRegistry& registry, Scheduler& scheduler)
+	ProcessErrorRetrySystem::ProcessErrorRetrySystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry{ registry }
 		, mScheduler{ scheduler } {
 

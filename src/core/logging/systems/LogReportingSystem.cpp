@@ -13,7 +13,7 @@ import entt;
 
 namespace Core {
 
-	LogReportingSystem::LogReportingSystem(EnTTRegistry& registry, Scheduler& scheduler)
+	LogReportingSystem::LogReportingSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry{ registry }
 		, mScheduler{ scheduler } {
 

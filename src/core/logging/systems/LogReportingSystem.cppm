@@ -1,6 +1,5 @@
 export module Core.LogReportingSystem;
 
-import Core.EnTTRegistry;
 import Core.Scheduler;
 import entt;
 
@@ -9,14 +8,14 @@ export namespace Core {
 	class LogReportingSystem {
 	public:
 
-		LogReportingSystem(EnTTRegistry&, Scheduler&);
+		LogReportingSystem(entt::registry&, Scheduler&);
 		~LogReportingSystem();
 
 		static void tickSystem(entt::registry&);
 
 	private:
 
-		EnTTRegistry& mRegistry;
+		entt::registry& mRegistry;
 		Scheduler& mScheduler;
 		TaskHandle mTickHandle{};
 

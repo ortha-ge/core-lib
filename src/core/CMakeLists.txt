@@ -1,6 +1,5 @@
 
 target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
-        EnTTRegistry.cppm
         GlobalSpatial.cppm
         Scheduler.cppm
         Spatial.cppm
@@ -10,7 +9,6 @@ target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
 )
 
 target_sources(core-lib PRIVATE
-        EnTTRegistry.cpp
         Scheduler.cpp
         Timer.cpp
         kangaru.cpp

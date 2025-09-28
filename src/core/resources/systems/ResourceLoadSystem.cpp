@@ -20,11 +20,10 @@ import entt;
 
 namespace Core {
 
-	ResourceLoadSystem::ResourceLoadSystem(EnTTRegistry& _registry, Scheduler& scheduler)
-		: mRegistry{ _registry }
+	ResourceLoadSystem::ResourceLoadSystem(entt::registry& registry, Scheduler& scheduler)
+		: mRegistry{ registry }
 		, mScheduler{ scheduler } {
 
-		entt::registry& registry(mRegistry);
 		mResourceCacheEntity = registry.create();
 		registry.emplace<ResourceCache>(mResourceCacheEntity);
 

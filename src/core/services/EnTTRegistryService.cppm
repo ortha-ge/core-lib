@@ -1,11 +1,10 @@
 export module Core.EnTTRegistryService;
 
-export import Core.EnTTRegistry;
-
+import entt;
 import kangaru;
 
 export namespace Core {
 
-	class EnTTRegistryService : public kgr::single_service<EnTTRegistry> {};
+	class EnTTRegistryService : public kgr::single_service<entt::registry> {};
 
 } // namespace Core

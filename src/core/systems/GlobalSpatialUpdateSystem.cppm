@@ -1,6 +1,5 @@
 export module Core.GlobalSpatialUpdateSystem;
 
-import Core.EnTTRegistry;
 import Core.Scheduler;
 import entt;
 
@@ -9,14 +8,14 @@ export namespace Core {
 	class GlobalSpatialUpdateSystem {
 	public:
 
-		GlobalSpatialUpdateSystem(EnTTRegistry&, Scheduler&);
+		GlobalSpatialUpdateSystem(entt::registry&, Scheduler&);
 		~GlobalSpatialUpdateSystem();
 
 		void tickSystem(entt::registry&);
 
 	private:
 
-		EnTTRegistry& mRegistry;
+		entt::registry& mRegistry;
 		Scheduler& mScheduler;
 		TaskHandle mTickHandle;
 

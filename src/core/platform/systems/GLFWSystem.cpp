@@ -83,7 +83,7 @@ namespace Core {
 #endif
 	}
 
-	GLFWSystem::GLFWSystem(EnTTRegistry& registry, Scheduler& scheduler)
+	GLFWSystem::GLFWSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry(registry)
 		, mScheduler(scheduler) {
 

@@ -48,7 +48,7 @@ namespace Core::EntityVisitorSystemInternal {
 
 namespace Core {
 
-	EntityVisitorSystem::EntityVisitorSystem(EnTTRegistry& registry, Scheduler& scheduler)
+	EntityVisitorSystem::EntityVisitorSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry(registry)
 		, mScheduler(scheduler) {
 

@@ -2,7 +2,6 @@ module;
 
 export module Core.EntityVisitorSystem;
 
-import Core.EnTTRegistry;
 import Core.Scheduler;
 import entt;
 
@@ -11,14 +10,14 @@ export namespace Core {
 	class EntityVisitorSystem {
 	public:
 
-		EntityVisitorSystem(EnTTRegistry&, Scheduler&);
+		EntityVisitorSystem(entt::registry&, Scheduler&);
 		~EntityVisitorSystem();
 
 		void tickSystem(entt::registry&);
 
 	private:
 
-		EnTTRegistry& mRegistry;
+		entt::registry& mRegistry;
 		Scheduler& mScheduler;
 		TaskHandle mTickHandle;
 

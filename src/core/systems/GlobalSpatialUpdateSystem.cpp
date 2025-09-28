@@ -12,7 +12,7 @@ import glm;
 
 namespace Core {
 
-	GlobalSpatialUpdateSystem::GlobalSpatialUpdateSystem(EnTTRegistry& registry, Scheduler& scheduler)
+	GlobalSpatialUpdateSystem::GlobalSpatialUpdateSystem(entt::registry& registry, Scheduler& scheduler)
 			: mRegistry(registry)
 			, mScheduler(scheduler) {
 

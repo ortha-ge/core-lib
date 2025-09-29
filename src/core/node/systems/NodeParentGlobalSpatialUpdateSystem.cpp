@@ -10,6 +10,7 @@ module Core.NodeParentGlobalSpatialUpdateSystem;
 import Core.EnTTNode;
 import Core.GlobalSpatial;
 import Core.Node;
+import Core.NodeHandle;
 import Core.Spatial;
 import Core.TypeId;
 import entt;

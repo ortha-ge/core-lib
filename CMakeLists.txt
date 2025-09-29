@@ -23,7 +23,7 @@ FetchContent_MakeAvailable(tracy)
 FetchContent_Declare(
         glm
         GIT_REPOSITORY	https://github.com/sweet-niamhy/glm.git
-        GIT_TAG 	f14020bdb5bd33ea8d822694c5158bb78f95b103 #cpp20_module_cmake
+        GIT_TAG 	078805bfaaceaeeb3a6a06ccd9d77ca70eec53ee #cpp20_module_cmake
 )
 
 FetchContent_MakeAvailable(glm)

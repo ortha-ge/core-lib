@@ -4,6 +4,7 @@ module;
 
 module Core.EnTTNode;
 
+import Core.NodeHandle;
 import Core.ProcessError;
 import entt;
 

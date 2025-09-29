@@ -27,6 +27,11 @@ namespace Core {
 
 	void Timer::tick() {
 		using namespace TimerInternal;
+
+		if (getIsPaused()) {
+			return;
+		}
+
 		using DeltaTimeCast = std::chrono::duration<float>;
 		auto clockNow = std::chrono::steady_clock::now();
 		auto deltaT = std::chrono::duration_cast<DeltaTimeCast>(clockNow - mLastTick).count();
@@ -37,12 +42,31 @@ namespace Core {
 			mDeltaTimes.pop_back();
 		}
 
-		mDeltaT = std::ranges::fold_left(mDeltaTimes, 0.0f, std::plus<float>());
-		mDeltaT /= mDeltaTimes.size();
+		mDeltaT = std::ranges::fold_left(mDeltaTimes, 0.0f, std::plus<>());
+		mDeltaT /= static_cast<float>(mDeltaTimes.size());
+	}
+
+	void Timer::setIsPaused(bool isPaused) {
+		if (mIsPaused == isPaused) {
+			return;
+		}
+
+		mIsPaused = isPaused;
+
+		if (isPaused) {
+			mDeltaTimes.clear();
+			mDeltaT = 0.0f;
+		} else {
+			mLastTick = std::chrono::steady_clock::now();
+		}
 	}
 
 	float Timer::getDeltaT() const {
 		return mDeltaT;
+	}
+
+	bool Timer::getIsPaused() const {
+		return mIsPaused;
 	}
 
 } // namespace Core

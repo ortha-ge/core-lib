@@ -16,6 +16,10 @@ namespace Core {
 		: mName(std::move(name)) {}
 
 	void Node::destroy() {
+		if (auto parentNode = getParentNode()) {
+			parentNode->removeChild(shared_from_this());
+		}
+
 		for (auto&& child : mChildren) {
 			child->destroy();
 		}

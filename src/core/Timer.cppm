@@ -12,12 +12,14 @@ export namespace Core {
 	class Timer {
 	public:
 
-		Timer(Scheduler&);
+		explicit Timer(Scheduler&);
 		~Timer();
 
 		void tick();
+		void setIsPaused(bool isPaused);
 
 		[[nodiscard]] float getDeltaT() const;
+		[[nodiscard]] bool getIsPaused() const;
 
 	private:
 
@@ -27,6 +29,7 @@ export namespace Core {
 
 		std::list<float> mDeltaTimes;
 		float mDeltaT{ 0.0f };
+		bool mIsPaused{ false };
 
 	};
 

@@ -9,6 +9,7 @@ add_compile_definitions(
 
 Include(FetchContent)
 
+# Tracy
 FetchContent_Declare(
         tracy
         GIT_REPOSITORY https://github.com/wolfpld/tracy.git
@@ -18,6 +19,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(tracy)
 
+# Glm
 FetchContent_Declare(
         glm
         GIT_REPOSITORY	https://github.com/sweet-niamhy/glm.git
@@ -26,16 +28,33 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(glm)
 
+# entt
+FetchContent_Declare(
+        entt
+        GIT_REPOSITORY https://github.com/sweet-niamhy/entt.git
+        GIT_TAG ee64894b14c560839711804e1716925179591caa #cpp20_module
+)
+
+FetchContent_MakeAvailable(entt)
+
+# kangaru
+FetchContent_Declare(
+        kangaru
+        GIT_REPOSITORY  https://github.com/sweet-niamhy/kangaru.git
+        GIT_TAG e57b8efad1b13ff5f70c57db4fa1a2e95e2713ab #cpp20_module
+)
+
+FetchContent_MakeAvailable(kangaru)
+
 find_package(bgfx CONFIG REQUIRED)
-find_package(EnTT CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
-find_package(kangaru CONFIG REQUIRED)
 find_package(RapidJSON CONFIG REQUIRED)
 
 set(core-lib-libraries
-        EnTT::EnTT
+        EnTT::EnTT-Library
         glfw
         glm::glm
+        kangaru::kangaru-library
         bgfx::bx
         bgfx::bimg
         bgfx::bimg_decode

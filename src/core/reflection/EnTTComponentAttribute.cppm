@@ -1,6 +1,9 @@
 module;
 
 #include <functional>
+#include <list>
+#include <unordered_map>
+#include <vector>
 
 export module Core.EnTTComponentAttribute;
 

@@ -4,7 +4,6 @@ module;
 #include <memory>
 #include <utility>
 
-#include <entt/entt.hpp>
 #include <tracy/Tracy.hpp>
 
 module Core.ResourceLoadSystem;
@@ -17,14 +16,14 @@ import Core.Resource;
 import Core.ResourceCache;
 import Core.ResourceHandle;
 import Core.ResourceLoadRequest;
+import entt;
 
 namespace Core {
 
-	ResourceLoadSystem::ResourceLoadSystem(EnTTRegistry& _registry, Scheduler& scheduler)
-		: mRegistry{ _registry }
+	ResourceLoadSystem::ResourceLoadSystem(entt::registry& registry, Scheduler& scheduler)
+		: mRegistry{ registry }
 		, mScheduler{ scheduler } {
 
-		entt::registry& registry(mRegistry);
 		mResourceCacheEntity = registry.create();
 		registry.emplace<ResourceCache>(mResourceCacheEntity);
 

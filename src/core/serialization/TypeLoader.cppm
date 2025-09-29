@@ -3,9 +3,9 @@ module;
 #include <memory>
 #include <string_view>
 
-#include <entt/fwd.hpp>
-
 export module Core.TypeLoader;
+
+import entt;
 
 export namespace Core {
 

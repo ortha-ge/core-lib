@@ -1,6 +1,12 @@
  
 cmake_minimum_required(VERSION 3.31)
 
+add_compile_definitions(
+        GLM_GTC_INLINE_NAMESPACE
+        GLM_GTX_INLINE_NAMESPACE
+        GLM_ENABLE_EXPERIMENTAL
+)
+
 Include(FetchContent)
 
 FetchContent_Declare(
@@ -12,10 +18,17 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(tracy)
 
+FetchContent_Declare(
+        glm
+        GIT_REPOSITORY	https://github.com/sweet-niamhy/glm.git
+        GIT_TAG 	f14020bdb5bd33ea8d822694c5158bb78f95b103 #cpp20_module_cmake
+)
+
+FetchContent_MakeAvailable(glm)
+
 find_package(bgfx CONFIG REQUIRED)
 find_package(EnTT CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
-find_package(glm CONFIG REQUIRED)
 find_package(kangaru CONFIG REQUIRED)
 find_package(RapidJSON CONFIG REQUIRED)
 

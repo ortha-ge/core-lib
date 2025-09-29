@@ -2,9 +2,9 @@ module;
 
 #include <memory>
 
-#include <entt/entt.hpp>
-
 module Core.ResourceLoadRequest;
+
+import entt;
 
 namespace Core {
 

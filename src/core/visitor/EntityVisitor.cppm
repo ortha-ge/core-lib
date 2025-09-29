@@ -3,9 +3,9 @@ module;
 #include <functional>
 #include <vector>
 
-#include <entt/fwd.hpp>
-
 export module Core.EntityVisitor;
+
+import entt;
 
 export namespace Core {
 

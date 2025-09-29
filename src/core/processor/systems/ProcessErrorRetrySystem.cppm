@@ -1,19 +1,15 @@
-module;
-
-#include <entt/fwd.hpp>
-
 export module Core.ProcessErrorRetrySystem;
 
-import Core.EnTTRegistry;
 import Core.ProcessError;
 import Core.Scheduler;
+import entt;
 
 export namespace Core {
 
 	class ProcessErrorRetrySystem {
 	public:
 
-		ProcessErrorRetrySystem(EnTTRegistry&, Scheduler&);
+		ProcessErrorRetrySystem(entt::registry&, Scheduler&);
 		~ProcessErrorRetrySystem();
 
 		void tickProcessError(entt::registry&, entt::entity, ProcessError&);
@@ -21,7 +17,7 @@ export namespace Core {
 
 	private:
 
-		EnTTRegistry& mRegistry;
+		entt::registry& mRegistry;
 		Scheduler& mScheduler;
 		TaskHandle mTickHandle{};
 

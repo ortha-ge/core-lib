@@ -1,11 +1,10 @@
-
 export module Core.LogReportingSystemService;
 
-import kangaru;
+export import Core.LogReportingSystem;
+
 import Core.EnTTRegistryService;
 import Core.SchedulerService;
-
-export import Core.LogReportingSystem;
+import kangaru;
 
 export namespace Core {
 

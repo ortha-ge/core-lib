@@ -4,12 +4,11 @@ module;
 #include <chrono>
 #include <string>
 
-#include <entt/entt.hpp>
-
 module Core.ResourceCache;
 
 import Core.Log;
 import Core.Resource;
+import entt;
 
 namespace Core {
 

@@ -5,7 +5,6 @@ module;
 #include <utility>
 
 #include <GLFW/glfw3.h>
-#include <entt/entt.hpp>
 
 #if GLFW_VERSION_MINOR < 2
 #error "GLFW 3.2 or later is required"
@@ -33,13 +32,13 @@ module;
 
 module Core.GLFWSystem;
 
-
 import Core.GLFWWindow;
 import Core.Log;
 import Core.NativeWindowHandles;
 import Core.ProcessError;
 import Core.QuitAppRequest;
 import Core.Window;
+import entt;
 
 namespace Core {
 
@@ -84,7 +83,7 @@ namespace Core {
 #endif
 	}
 
-	GLFWSystem::GLFWSystem(EnTTRegistry& registry, Scheduler& scheduler)
+	GLFWSystem::GLFWSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry(registry)
 		, mScheduler(scheduler) {
 

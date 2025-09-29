@@ -2,9 +2,9 @@ module;
 
 #include <functional>
 
-#include <entt/entt.hpp>
-
 export module Core.EnTTComponentAttribute;
+
+import entt;
 
 export namespace Core {
 

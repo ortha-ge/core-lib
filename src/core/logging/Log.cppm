@@ -6,9 +6,9 @@ module;
 #include <utility>
 #include <vector>
 
-#include <entt/entt.hpp>
-
 export module Core.Log;
+
+import entt;
 
 export namespace Core {
 

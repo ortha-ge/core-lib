@@ -1,19 +1,15 @@
-module;
-
-#include <entt/fwd.hpp>
-
 export module Core.ProcessErrorLoggingSystem;
 
-import Core.EnTTRegistry;
 import Core.ProcessError;
 import Core.Scheduler;
+import entt;
 
 export namespace Core {
 
 	class ProcessErrorLoggingSystem {
 	public:
 
-		ProcessErrorLoggingSystem(EnTTRegistry&, Scheduler&);
+		ProcessErrorLoggingSystem(entt::registry&, Scheduler&);
 		~ProcessErrorLoggingSystem();
 
 		static void tickSystem(entt::registry&);
@@ -21,7 +17,7 @@ export namespace Core {
 
 	private:
 
-		EnTTRegistry& mRegistry;
+		entt::registry& mRegistry;
 		Scheduler& mScheduler;
 		TaskHandle mTickHandle{};
 

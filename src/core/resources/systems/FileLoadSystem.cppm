@@ -1,25 +1,21 @@
-module;
-
-#include <entt/fwd.hpp>
-
 export module Core.FileLoadSystem;
 
-import Core.EnTTRegistry;
 import Core.Scheduler;
+import entt;
 
 export namespace Core {
 
 	class FileLoadSystem {
 	public:
 
-		FileLoadSystem(EnTTRegistry&, Scheduler&);
+		FileLoadSystem(entt::registry&, Scheduler&);
 		~FileLoadSystem();
 
 		static void tickSystem(entt::registry& registry);
 
 	private:
 
-		EnTTRegistry& mRegistry;
+		entt::registry& mRegistry;
 		Scheduler& mScheduler;
 		TaskHandle mTickHandle;
 

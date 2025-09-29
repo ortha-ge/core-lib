@@ -8,9 +8,9 @@ module;
 #include <string_view>
 #include <variant>
 
-#include <entt/fwd.hpp>
-
 export module Core.ProcessError;
+
+import entt;
 
 export namespace Core {
 

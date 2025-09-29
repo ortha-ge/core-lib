@@ -1,13 +1,13 @@
 
 #include <GLFW/glfw3.h>
 #include <catch2/catch_test_macros.hpp>
-#include <entt/entt.hpp>
 
 import Core.GLFWSystem;
 import Core.QuitAppRequest;
 import Core.GLFWWindow;
 import Core.NativeWindowHandles;
 import Core.Window;
+import entt;
 
 // TEST_CASE("Window_GLFWSystemTickCreateWindowView_GLFWWindowProduced", "GLFWSystem") {
 // 	using namespace Core;

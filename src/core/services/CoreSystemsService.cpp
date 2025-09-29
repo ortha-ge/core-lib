@@ -1,10 +1,5 @@
-module;
-
-#include <entt/entt.hpp>
-
 module Core.SystemsService;
 
-import kangaru;
 import Core.EntityVisitorSystemService;
 import Core.FileLoadSystemService;
 import Core.GLFWSystemService;
@@ -17,6 +12,7 @@ import Core.Reflection;
 import Core.ReflectionContext;
 import Core.ResourceLoadSystemService;
 import Core.TypeLoaderSystemService;
+import kangaru;
 
 namespace Core {
 

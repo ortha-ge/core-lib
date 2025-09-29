@@ -1,18 +1,14 @@
-module;
-
-#include <entt/fwd.hpp>
-
 export module Core.GLFWSystem;
 
-import Core.EnTTRegistry;
 import Core.Scheduler;
 import Core.Window;
+import entt;
 
 export namespace Core {
 	class GLFWSystem {
 	public:
 
-		GLFWSystem(EnTTRegistry&, Scheduler&);
+		GLFWSystem(entt::registry&, Scheduler&);
 		~GLFWSystem();
 
 		static void tickSystem(entt::registry&);
@@ -26,7 +22,7 @@ export namespace Core {
 
 	private:
 
-		EnTTRegistry& mRegistry;
+		entt::registry& mRegistry;
 		Scheduler& mScheduler;
 		TaskHandle mTickHandle;
 

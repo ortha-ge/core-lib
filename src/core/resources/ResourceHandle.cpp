@@ -3,9 +3,9 @@ module;
 #include <memory>
 #include <string>
 
-#include <entt/entt.hpp>
-
 module Core.ResourceHandle;
+
+import entt;
 
 namespace Core {
 

@@ -4,8 +4,6 @@ module;
 #include <print>
 #include <variant>
 
-#include <entt/entt.hpp>
-
 #include <rapidjson/document.h>
 
 module Core.JsonTypeLoaderAdapter;
@@ -21,6 +19,7 @@ import Core.TypeId;
 import Core.TypeTraits;
 import Core.VariantTypeTraits;
 import Core.VectorTypeTraits;
+import entt;
 
 namespace Core {
 

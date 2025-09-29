@@ -2,9 +2,8 @@ module;
 
 #include <string>
 
-#include <entt/entity/entity.hpp>
-
 module Core.Resource;
+import entt;
 
 namespace Core {
 

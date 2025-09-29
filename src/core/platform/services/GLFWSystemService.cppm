@@ -1,11 +1,10 @@
-
 export module Core.GLFWSystemService;
 
-import kangaru;
+export import Core.GLFWSystem;
+
 import Core.EnTTRegistryService;
 import Core.SchedulerService;
-
-export import Core.GLFWSystem;
+import kangaru;
 
 export namespace Core {
 

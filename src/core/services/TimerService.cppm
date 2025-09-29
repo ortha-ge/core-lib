@@ -1,10 +1,9 @@
-
 export module Core.TimerService;
 
 export import Core.Timer;
 
-import kangaru;
 import Core.SchedulerService;
+import kangaru;
 
 export namespace Core {
 

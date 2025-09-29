@@ -1,11 +1,10 @@
-
 export module Core.GlobalSpatialUpdateSystemService;
+
+export import Core.GlobalSpatialUpdateSystem;
 
 import kangaru;
 import Core.EnTTRegistryService;
 import Core.SchedulerService;
-
-export import Core.GlobalSpatialUpdateSystem;
 
 export namespace Core {
 

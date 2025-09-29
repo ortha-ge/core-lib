@@ -3,13 +3,12 @@ module;
 #include <string>
 #include <string_view>
 
-#include <entt/fwd.hpp>
-
 export module Core.JsonTypeSaverAdapter;
 
 import Core.Any;
 import Core.Log;
 import Core.TypeSaver;
+import entt;
 
 export namespace Core {
 

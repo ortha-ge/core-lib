@@ -1,6 +1,5 @@
 module;
 
-#include <entt/entt.hpp>
 #include <tracy/Tracy.hpp>
 
 module Core.ProcessErrorLoggingSystem;
@@ -8,10 +7,11 @@ module Core.ProcessErrorLoggingSystem;
 import Core.Log;
 import Core.ProcessError;
 import Core.ProcessErrorLoggedFlag;
+import entt;
 
 namespace Core {
 
-	ProcessErrorLoggingSystem::ProcessErrorLoggingSystem(EnTTRegistry& registry, Scheduler& scheduler)
+	ProcessErrorLoggingSystem::ProcessErrorLoggingSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry{ registry }
 		, mScheduler{ scheduler } {
 

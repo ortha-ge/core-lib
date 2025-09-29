@@ -4,11 +4,10 @@ module;
 #include <memory>
 #include <string>
 
-#include <entt/entt.hpp>
-
 export module Core.ResourceLoadRequest;
 
 import Core.ResourceHandle;
+import entt;
 
 export namespace Core {
 

@@ -1,9 +1,6 @@
-module;
-
-#include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
-
 export module Core.Spatial;
+
+import glm;
 
 export namespace Core {
 

@@ -1,10 +1,11 @@
 
 export module Core.SystemsService;
 
-import kangaru;
+export import Core.Systems;
+
 import Core.EnTTRegistryService;
 import Core.SchedulerService;
-export import Core.Systems;
+import kangaru;
 
 export namespace Core {
 

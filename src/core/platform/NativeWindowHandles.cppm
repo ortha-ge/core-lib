@@ -1,4 +1,3 @@
-
 export module Core.NativeWindowHandles;
 
 export namespace Core {

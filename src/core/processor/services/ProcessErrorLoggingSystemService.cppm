@@ -1,11 +1,10 @@
-
 export module Core.ProcessErrorLoggingSystemService;
 
-import kangaru;
+export import Core.ProcessErrorLoggingSystem;
+
 import Core.EnTTRegistryService;
 import Core.SchedulerService;
-
-export import Core.ProcessErrorLoggingSystem;
+import kangaru;
 
 export namespace Core {
 

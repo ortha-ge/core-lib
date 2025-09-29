@@ -3,11 +3,10 @@ module;
 #include <memory>
 #include <string>
 
-#include <entt/fwd.hpp>
-
 export module Core.ResourceHandle;
 
 import Core.Resource;
+import entt;
 
 export namespace Core {
 

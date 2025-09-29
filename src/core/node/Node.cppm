@@ -16,8 +16,8 @@ export namespace Core {
 		using WeakPtr = std::weak_ptr<Node>;
 
 		Node();
-		Node(std::string name);
-		virtual ~Node() {}
+		explicit Node(std::string name);
+		virtual ~Node() = default;
 
 		virtual void destroy();
 		virtual TypeId getTypeId() const;
@@ -31,7 +31,7 @@ export namespace Core {
 		Ptr getParentNode() const;
 		const std::vector<Ptr>& getChildren() const;
 
-	private:
+	//private:
 		std::string mName;
 		WeakPtr mParent;
 		std::vector<Ptr> mChildren;

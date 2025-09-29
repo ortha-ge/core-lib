@@ -2,6 +2,7 @@ module;
 
 #include <functional>
 #include <map>
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -176,16 +177,17 @@ export namespace Core {
 		}
 	}
 
-	template <typename Tail>
+	template <typename... ValueTypes>
 	void reflectIfValidTypes(ReflectionContext& reflectionContext) {
-
+		if constexpr (sizeof...(ValueTypes) == 1) {
+			_reflectIfValidType<ValueTypes...>(reflectionContext);
+		} else {
+			(reflectIfValidTypes<ValueTypes>(reflectionContext), ...);
+		}
 	}
 
-	template <typename Tail, typename T, typename... ValueTypes>
-	void reflectIfValidTypes(ReflectionContext& reflectionContext) {
-		_reflectIfValidType<T>(reflectionContext);
-		reflectIfValidTypes<Tail, ValueTypes...>(reflectionContext);
-	}
+	template<typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext);
 
 	template <typename ValueType>
 	void reflectIfValidType(ReflectionContext& reflectionContext, const ValueType*) {
@@ -199,18 +201,23 @@ export namespace Core {
 
 	template<typename ValueType>
 	void reflectIfValidType(ReflectionContext& reflectionContext, const std::vector<ValueType>*) {
-		_reflectIfValidType<ValueType>(reflectionContext);
+		reflectIfValidType<ValueType>(reflectionContext);
 	}
 
 	template<typename ValueType>
 	void reflectIfValidType(ReflectionContext& reflectionContext, const std::optional<ValueType>*) {
-		_reflectIfValidType<ValueType>(reflectionContext);
+		reflectIfValidType<ValueType>(reflectionContext);
+	}
+
+	template<typename ValueType>
+	void reflectIfValidType(ReflectionContext& reflectionContext, const std::shared_ptr<ValueType>*) {
+		reflectIfValidType<ValueType>(reflectionContext);
 	}
 
 	template<typename KeyType, typename ValueType>
 	void reflectIfValidType(ReflectionContext& reflectionContext, const std::map<KeyType, ValueType>*) {
-		_reflectIfValidType<KeyType>(reflectionContext);
-		_reflectIfValidType<ValueType>(reflectionContext);
+		reflectIfValidType<KeyType>(reflectionContext);
+		reflectIfValidType<ValueType>(reflectionContext);
 	}
 
 	template<typename ValueType>
@@ -231,15 +238,22 @@ export namespace Core {
 			: ClassReflectionBuilderBase(TypeId::get<T>(), className)
 			, mContext(context) {}
 
-		template<typename Member>
+		template<typename Member, bool AutoReflect = true>
 		ClassReflectionBuilder& property(std::string_view name, Member&& member) {
-			reflectIfValidType(mContext, member);
+			if constexpr (AutoReflect) {
+				reflectIfValidType(mContext, member);
+			}
 
 			const auto offset = memberOffset(member);
 			const auto size = memberSize(member);
 			const auto typeId = TypeId::get(member);
 			ClassReflectionBuilderBase::property(ClassProperty(typeId, name, offset, size));
 			return *this;
+		}
+
+		template<typename Member>
+		ClassReflectionBuilder& propertyNoAutoReflect(std::string_view name, Member&& member) {
+			return property<Member, false>(name, std::forward<Member>(member));
 		}
 
 		template <typename AttributeType>

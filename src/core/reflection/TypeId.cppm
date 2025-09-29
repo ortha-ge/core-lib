@@ -34,6 +34,9 @@ export namespace Core {
 	using OptionalTypeInnerApplyFunc = std::function<void(TypeInstance&, const TypeInstance&)>;
 	using OptionalTypeInnerGetFunc = std::function<TypeInstance(const TypeInstance&)>;
 
+	using SharedPtrTypeInnerApplyFunc = std::function<void(TypeInstance&, const TypeInstance&)>;
+	using SharedPtrTypeInnerGetFunc = std::function<TypeInstance(const TypeInstance&)>;
+
 	using VectorTypeInnerApplyFunc = std::function<void(TypeInstance&, const std::vector<TypeInstance>&)>;
 	using VectorTypeInnerForEachFunc = std::function<void(const TypeInstance&, const std::function<void(const TypeInstance&)>&)>;
 
@@ -54,6 +57,10 @@ namespace Core {
 	std::unique_ptr<TypeInfo> createOptionalTypeInfo(
 		size_t, TypeId, BasicTypeInnerCreateFunc, BasicTypeInnerDestroyFunc, BasicTypeInnerApplyFunc,
 		OptionalTypeInnerApplyFunc, OptionalTypeInnerGetFunc);
+
+	std::unique_ptr<TypeInfo> createSharedPtrTypeInfo(
+		size_t, TypeId, BasicTypeInnerCreateFunc, BasicTypeInnerDestroyFunc, BasicTypeInnerApplyFunc,
+		SharedPtrTypeInnerApplyFunc, SharedPtrTypeInnerGetFunc);
 
 	std::unique_ptr<TypeInfo> createVectorTypeInfo(
 		size_t, TypeId, BasicTypeInnerCreateFunc, BasicTypeInnerDestroyFunc, BasicTypeInnerApplyFunc,
@@ -109,6 +116,9 @@ export namespace Core {
 
 		template<typename ValueType>
 		static TypeId get(const std::optional<ValueType>*);
+
+		template<typename ValueType>
+		static TypeId get(const std::shared_ptr<ValueType>*);
 
 		template<typename... ValueTypes>
 		static TypeId get(const std::variant<ValueTypes...>*);
@@ -280,6 +290,45 @@ export namespace Core {
 		static auto typeInfo{ createOptionalTypeInfo(
 			sizeof(std::optional<ValueType>), TypeId::get<ValueType>(), createFunc, destroyFunc, applyFunc,
 			optionalApplyFunc, optionalGetFunc) };
+
+		return TypeId{ *typeInfo };
+	}
+
+	template<typename ValueType>
+	TypeId TypeId::get(const std::shared_ptr<ValueType>*) {
+		using SharedPtrType = std::shared_ptr<ValueType>;
+		auto [createFunc, destroyFunc, applyFunc] = _getBasicTypeCreateFuncs<SharedPtrType>();
+		auto sharedPtrApplyFunc = [](TypeInstance& sharedPtrInstance, const TypeInstance& wrappedTypeInstance) {
+
+			const bool isSharedPtrTypeValid = sharedPtrInstance.getTypeId() == TypeId::get<SharedPtrType>();
+			const bool isWrappedTypeValid = wrappedTypeInstance.getTypeId() == TypeId::get<ValueType>();
+			assert(isSharedPtrTypeValid && isWrappedTypeValid);
+			if (!isSharedPtrTypeValid || !isWrappedTypeValid) {
+				return;
+			}
+
+			auto& sharedPtr = *static_cast<SharedPtrType*>(sharedPtrInstance.getInstance());
+			auto& wrappedType = *static_cast<const ValueType*>(wrappedTypeInstance.getInstance());
+			*sharedPtr = wrappedType;
+		};
+
+		auto sharedPtrGetFunc = [](const TypeInstance& sharedPtrInstance) -> TypeInstance {
+			const bool isSharedPtrTypeValid = sharedPtrInstance.getTypeId() == TypeId::get<SharedPtrType>();
+			assert(isSharedPtrTypeValid);
+			if (!isSharedPtrTypeValid) {
+				return {};
+			}
+
+			if (auto& sharedPtr = *static_cast<SharedPtrType*>(sharedPtrInstance.getInstance())) {
+				return TypeInstance{ TypeId::get<ValueType>(), sharedPtr.get() };
+			}
+
+			return {};
+		};
+
+		static auto typeInfo{ createSharedPtrTypeInfo(
+			sizeof(std::optional<ValueType>), TypeId::get<ValueType>(), createFunc, destroyFunc, applyFunc,
+			sharedPtrApplyFunc, sharedPtrGetFunc) };
 
 		return TypeId{ *typeInfo };
 	}

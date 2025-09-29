@@ -11,3 +11,5 @@ target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
 target_sources(core-lib PRIVATE
         Reflection.cpp
 )
+
+add_subdirectory(node)

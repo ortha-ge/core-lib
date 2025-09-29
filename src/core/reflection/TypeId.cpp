@@ -12,6 +12,7 @@ import Core.TypeInfoImpl;
 import Core.BasicTypeTraits;
 import Core.MapTypeTraits;
 import Core.OptionalTypeTraits;
+import Core.SharedPtrTypeTraits;
 import Core.VariantTypeTraits;
 import Core.VectorTypeTraits;
 
@@ -38,6 +39,16 @@ namespace Core {
 		return std::make_unique<TypeInfoImpl>(
 			size, OptionalTypeTraits{ std::move(valueType), std::move(createFunc), std::move(destroyFunc),
 									  std::move(applyFunc), std::move(optionalApplyFunc), std::move(optionalGetFunc) });
+	}
+
+	std::unique_ptr<TypeInfo> createSharedPtrTypeInfo(
+		size_t size, TypeId valueType, BasicTypeInnerCreateFunc createFunc, BasicTypeInnerDestroyFunc destroyFunc,
+		BasicTypeInnerApplyFunc applyFunc, SharedPtrTypeInnerApplyFunc sharedPtrApplyFunc,
+		SharedPtrTypeInnerGetFunc sharedPtrGetFunc) {
+
+		return std::make_unique<TypeInfoImpl>(
+			size, SharedPtrTypeTraits{ std::move(valueType), std::move(createFunc), std::move(destroyFunc),
+									  std::move(applyFunc), std::move(sharedPtrApplyFunc), std::move(sharedPtrGetFunc) });
 	}
 
 	std::unique_ptr<TypeInfo> createVectorTypeInfo(

@@ -17,6 +17,7 @@ import Core.Log;
 import Core.MapTypeTraits;
 import Core.OptionalTypeTraits;
 import Core.ReflectionContext;
+import Core.SharedPtrTypeTraits;
 import Core.TypeId;
 import Core.TypeTraits;
 import Core.VariantTypeTraits;
@@ -73,23 +74,20 @@ namespace Core {
 			return true;
 		}
 
-		template<typename Tail>
-		static bool
-		_trySaveAny(Log&, rapidjson::Value&, const Any&, rapidjson::Document::AllocatorType&) {
-			return false;
-		}
-
-		template<typename Tail, typename T, typename... Types>
+		template<typename... Types>
 		static bool
 		_trySaveAny(Log& log, rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
-			return _trySaveAnyAs<T>(log, outputValue, anyValue, allocator) ||
-				   _trySaveAny<Tail, Types...>(log, outputValue, anyValue, allocator);
+			if constexpr (sizeof...(Types) == 1u) {
+				return _trySaveAnyAs<Types...>(log, outputValue, anyValue, allocator);
+			} else {
+				return (_trySaveAny<Types>(log, outputValue, anyValue, allocator) || ...);
+			}
 		}
 
 	public:
 		static bool
 		trySaveAny(Log& log, rapidjson::Value& outputValue, const Any& anyValue, rapidjson::Document::AllocatorType& allocator) {
-			return _trySaveAny<void, AllTypes...>(log, outputValue, anyValue, allocator);
+			return _trySaveAny<AllTypes...>(log, outputValue, anyValue, allocator);
 		}
 	};
 
@@ -142,6 +140,14 @@ namespace Core {
 		rapidjson::Value& outputValue, const Any& anyValue, const OptionalTypeTraits& typeTraits,
 		rapidjson::Document::AllocatorType& allocator) {
 		if (Any innerValue{ typeTraits.optionalGetFunc(anyValue) }; innerValue.getInstance() != nullptr) {
+			save(log, outputValue, innerValue, allocator);
+		}
+	}
+
+	void _save(Log& log,
+		rapidjson::Value& outputValue, const Any& anyValue, const SharedPtrTypeTraits& typeTraits,
+		rapidjson::Document::AllocatorType& allocator) {
+		if (Any innerValue{ typeTraits.sharedPtrGetFunc(anyValue) }; innerValue.getInstance() != nullptr) {
 			save(log, outputValue, innerValue, allocator);
 		}
 	}

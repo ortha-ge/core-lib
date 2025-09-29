@@ -15,6 +15,7 @@ import Core.Log;
 import Core.MapTypeTraits;
 import Core.OptionalTypeTraits;
 import Core.ReflectionContext;
+import Core.SharedPtrTypeTraits;
 import Core.TypeId;
 import Core.TypeTraits;
 import Core.VariantTypeTraits;
@@ -99,19 +100,18 @@ namespace Core {
 			return true;
 		}
 
-		template<typename Tail>
-		static bool _tryLoadAny(Log&, const rapidjson::Value&, Any&) {
-			return false;
-		}
-
-		template<typename Tail, typename T, typename... Types>
+		template<typename... Types>
 		static bool _tryLoadAny(Log& log, const rapidjson::Value& inputValue, Any& anyValue) {
-			return _tryLoadAnyAs<T>(log, inputValue, anyValue) || _tryLoadAny<Tail, Types...>(log, inputValue, anyValue);
+			if constexpr (sizeof...(Types) == 1u) {
+				return _tryLoadAnyAs<Types...>(log, inputValue, anyValue);
+			} else {
+				return (_tryLoadAny<Types>(log, inputValue, anyValue) || ...);
+			}
 		}
 
 	public:
 		static bool tryLoadAny(Log& log, const rapidjson::Value& inputValue, Any& anyValue) {
-			return _tryLoadAny<void, AllTypes...>(log, inputValue, anyValue);
+			return _tryLoadAny<AllTypes...>(log, inputValue, anyValue);
 		}
 	};
 
@@ -187,6 +187,15 @@ namespace Core {
 	bool _loadJSON(Log& log,
 		const ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Any& anyValue,
 		const OptionalTypeTraits& typeTraits) {
+		Any wrappedTypeAny(typeTraits.elementType);
+		bool result = loadJSON(log, reflectionContext, inputKey, inputValue, wrappedTypeAny);
+		anyValue = wrappedTypeAny;
+		return result;
+	}
+
+	bool _loadJSON(Log& log,
+		const ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Any& anyValue,
+		const SharedPtrTypeTraits& typeTraits) {
 		Any wrappedTypeAny(typeTraits.elementType);
 		bool result = loadJSON(log, reflectionContext, inputKey, inputValue, wrappedTypeAny);
 		anyValue = wrappedTypeAny;

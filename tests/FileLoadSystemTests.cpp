@@ -1,11 +1,11 @@
 
 #include <catch2/catch_test_macros.hpp>
-#include <entt/entt.hpp>
 
 import Core.FileDescriptor;
 import Core.FileLoadRequest;
 import Core.FileLoadSystem;
 import Core.RawDataResource;
+import entt;
 
 TEST_CASE("FileDescriptorWithLoadRequest_FileLoadSystemTick_RawDataResourceProduced", "FileLoadSystem") {
 	using namespace Core;

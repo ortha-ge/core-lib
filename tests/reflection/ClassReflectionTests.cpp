@@ -2,7 +2,6 @@
 #include <cstdint>
 
 #include <catch2/catch_test_macros.hpp>
-#include <entt/entt.hpp>
 
 import Core.ClassReflection;
 import Core.FileDescriptor;
@@ -11,6 +10,7 @@ import Core.FileLoadSystem;
 import Core.RawDataResource;
 import Core.ReflectionContext;
 import Core.TypeId;
+import entt;
 
 namespace ClassReflectionTests {
 

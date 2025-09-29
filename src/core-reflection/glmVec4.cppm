@@ -1,10 +1,7 @@
-module;
-
-#include <glm/vec4.hpp>
-
 export module Glm.Reflection.Vec4;
 
 import Core.ReflectionContext;
+import glm;
 
 template<>
 void Core::reflect<glm::vec4>(ReflectionContext& reflectionContext) {

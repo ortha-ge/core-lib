@@ -47,9 +47,13 @@ namespace Core {
 			return entt::null;
 		}
 
+		return createChildEnTTNode(registry, parentNodeHandle->getNode(), std::move(name));
+	}
+
+	const entt::entity createChildEnTTNode(entt::registry& registry, const Node::Ptr& parentNode, std::string name) {
 		const entt::entity childEntity = createEnTTNode(registry, std::move(name));
 		const auto& childNodeHandle{ registry.get<NodeHandle>(childEntity) };
-		parentNodeHandle->getNode()->addChild(childNodeHandle.getNode());
+		parentNode->addChild(childNodeHandle.getNode());
 		return childEntity;
 	}
 

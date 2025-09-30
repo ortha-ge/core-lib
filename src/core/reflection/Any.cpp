@@ -14,6 +14,7 @@ import Core.TypeTraits;
 import Core.BasicTypeTraits;
 import Core.MapTypeTraits;
 import Core.OptionalTypeTraits;
+import Core.SharedPtrTypeTraits;
 import Core.VariantTypeTraits;
 import Core.VectorTypeTraits;
 
@@ -124,6 +125,13 @@ namespace Core {
 		// }
 		//
 		// optionalTraits->mApply(getInstance(), other.getInstance());
+	}
+
+	void
+	_assign(Any& lhs, const SharedPtrTypeTraits& lhsTypeTraits, const Any& rhs, const BasicTypeTraits& rhsTypeTraits) {
+		assert(lhsTypeTraits.elementType == rhs.getTypeId());
+
+		lhsTypeTraits.sharedPtrApplyFunc(lhs, rhs);
 	}
 
 	void

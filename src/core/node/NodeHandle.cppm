@@ -12,6 +12,9 @@ export namespace Core {
 
 	class NodeHandle final {
 	public:
+
+		NodeHandle(Node::Ptr node);
+
 		static NodeHandle create(std::string);
 
 		template<class T, typename... Args>
@@ -24,7 +27,6 @@ export namespace Core {
 		const Node* operator->() const;
 
 	private:
-		NodeHandle(Node::Ptr node);
 
 		Node::Ptr mNode;
 	};

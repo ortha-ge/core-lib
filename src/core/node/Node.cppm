@@ -25,6 +25,7 @@ export namespace Core {
 		void addChild(Ptr child);
 		void removeChild(const Ptr& child);
 
+		void setName(std::string name);
 		void setParent(Ptr parentNode);
 
 		const std::string& getName() const;

@@ -309,7 +309,7 @@ export namespace Core {
 
 			auto& sharedPtr = *static_cast<SharedPtrType*>(sharedPtrInstance.getInstance());
 			auto& wrappedType = *static_cast<const ValueType*>(wrappedTypeInstance.getInstance());
-			*sharedPtr = wrappedType;
+			sharedPtr = std::make_shared<ValueType>(wrappedType);
 		};
 
 		auto sharedPtrGetFunc = [](const TypeInstance& sharedPtrInstance) -> TypeInstance {

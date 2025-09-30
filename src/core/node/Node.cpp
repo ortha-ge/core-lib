@@ -73,6 +73,10 @@ namespace Core {
 		}
 	}
 
+	void Node::setName(std::string name) {
+		mName = std::move(name);
+	}
+
 	void Node::setParent(Ptr parentNode) { mParent = parentNode; }
 
 	const std::string& Node::getName() const { return mName; }

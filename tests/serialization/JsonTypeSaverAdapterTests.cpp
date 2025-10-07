@@ -5,7 +5,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-import Core.Any;
+import Ortha.RTTI.Any;
 import Core.ClassReflection;
 import Core.JsonTypeSaverAdapter;
 import Core.Log;

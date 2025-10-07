@@ -1,16 +1,17 @@
 export module Glm.Reflection.Vec3;
 
-import Core.ReflectionContext;
-import glm;
+export import glm;
+
+import Core.Reflect;
 
 template<>
-void Core::reflect<glm::vec3>(ReflectionContext& reflectionContext) {
+void Core::reflect<glm::vec3>(Ortha::RTTI::ReflectionContext& reflectionContext) {
 	reflectionContext.addClass<glm::vec3>("glm::vec3")
-		.property("x", &glm::vec3::x)
-		.property("y", &glm::vec3::y)
-		.property("z", &glm::vec3::z)
-		.property("r", &glm::vec3::r)
-		.property("g", &glm::vec3::g)
-		.property("b", &glm::vec3::b)
-		.build();
+		.field<&glm::vec3::x>("x")
+		.field<&glm::vec3::y>("y")
+		.field<&glm::vec3::z>("z")
+		.field<&glm::vec3::r>("r")
+		.field<&glm::vec3::g>("g")
+		.field<&glm::vec3::b>("b")
+		;
 }

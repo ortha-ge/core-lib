@@ -4,31 +4,33 @@ module;
 
 export module Core.JsonTypeLoaderAdapter;
 
-import Core.Any;
+import Ortha.RTTI.Any;
+import Ortha.RTTI.ReflectionContext;
+import Ortha.RTTI.ReflectionContextStack;
 import Core.Log;
-import Core.ReflectionContext;
+import Core.Reflect;
 import Core.TypeLoader;
 import entt;
 
 export namespace Core {
 
-	void load(entt::registry&, const ReflectionContext&, std::string_view, Any&);
-	void load(Log&, const ReflectionContext&, std::string_view, Any&);
-	Any load(entt::registry&, const ReflectionContext&, std::string_view);
-	Any load(Log&, const ReflectionContext&, std::string_view);
+	void load(entt::registry&, const Ortha::RTTI::ReflectionContext&, std::string_view, Ortha::RTTI::Any&);
+	void load(Log&, const Ortha::RTTI::ReflectionContext&, std::string_view, Ortha::RTTI::Any&);
+	Ortha::RTTI::Any load(entt::registry&, const Ortha::RTTI::ReflectionContext&, std::string_view);
+	Ortha::RTTI::Any load(Log&, const Ortha::RTTI::ReflectionContext&, std::string_view);
 
 	template<typename T>
 	class JsonTypeLoaderAdapter : public TypeLoaderAdapter {
 	public:
 		T _loadComponent(entt::registry& registry, entt::entity entity, std::string_view jsonInput) {
-			auto& reflectionContext{ getCurrentReflectionContext() };
-			Core::reflectIfValidType<T>(reflectionContext);
+			auto& reflectionContext{ static_cast<Ortha::RTTI::ReflectionContext&>(Ortha::RTTI::getCurrentReflectionContext()) };
+			//Core::reflectIfValidType<T>(reflectionContext);
 
 			T instance{};
-			Any any(instance);
+			Ortha::RTTI::Any any(instance);
 			Core::load(registry, reflectionContext, jsonInput, any);
 
-			logEntries(registry, entity, reflectionContext.moveLog());
+			//logEntries(registry, entity, reflectionContext.moveLog());
 
 			return instance;
 		}

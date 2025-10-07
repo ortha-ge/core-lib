@@ -2,13 +2,13 @@ export module Core.Reflection.Node;
 
 export import Core.Node;
 
-import Core.ReflectionContext;
+import Core.Reflect;
 
 template <>
-void Core::reflect<Core::Node>(ReflectionContext& reflectionContext) {
+void Core::reflect<Core::Node>(Ortha::RTTI::ReflectionContext& reflectionContext) {
 	reflectionContext.addClass<Node>("Node")
-		.property("name", &Node::mName)
+		.field<&Node::mName>("name")
 		//TODO: How to auto-reflect recursive things.
-		.propertyNoAutoReflect("children", &Node::mChildren)
-		.build();
+		.field<&Node::mChildren>("children")
+		;
 }

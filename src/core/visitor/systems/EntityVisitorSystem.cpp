@@ -10,13 +10,14 @@ import Core.EntityVisitor;
 import Core.EnTTNode;
 import Core.Node;
 import Core.NodeHandle;
-import Core.TypeId;
+import Ortha.RTTI.TypeHandle;
+import Ortha.RTTI.TypeId;
 import entt;
 
 namespace Core::EntityVisitorSystemInternal {
 
 	void tryVisitAsEnTTNode(const std::vector<EntityVisitorAction>& actions, const Node::Ptr& node) {
-		if (node->getTypeId() != TypeId::get<EnTTNode>()) {
+		if (node->getTypeId() != Ortha::RTTI::TypeHandle::get<EnTTNode>()) {
 			return;
 		}
 

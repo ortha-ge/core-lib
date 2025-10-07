@@ -5,21 +5,21 @@ module;
 
 export module Core.JsonTypeSaverAdapter;
 
-import Core.Any;
+import Ortha.RTTI.Any;
 import Core.Log;
 import Core.TypeSaver;
 import entt;
 
 export namespace Core {
 
-	std::string save(entt::registry&, const Any& anyValue);
-	std::string save(Log&, const Any& anyValue);
+	std::string save(entt::registry&, const Ortha::RTTI::Any& anyValue);
+	std::string save(Log&, const Ortha::RTTI::Any& anyValue);
 
 	template<typename T>
 	class JsonTypeSaverAdapter : public TypeSaverAdapter {
 	public:
 		std::string _save(entt::registry& registry, const T& instance) {
-			Any any(instance);
+			Ortha::RTTI::Any any(instance);
 			return Core::save(registry, any);
 		}
 

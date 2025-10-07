@@ -6,7 +6,7 @@ module;
 
 export module Core.Node;
 
-import Core.TypeId;
+import Ortha.RTTI.TypeId;
 
 export namespace Core {
 
@@ -20,7 +20,7 @@ export namespace Core {
 		virtual ~Node() = default;
 
 		virtual void destroy();
-		virtual TypeId getTypeId() const;
+		virtual Ortha::RTTI::TypeId getTypeId() const;
 
 		void addChild(Ptr child);
 		void removeChild(const Ptr& child);

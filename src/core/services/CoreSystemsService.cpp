@@ -9,7 +9,8 @@ import Core.NodeParentGlobalSpatialUpdateSystemService;
 import Core.ProcessErrorLoggingSystemService;
 import Core.ProcessErrorRetrySystemService;
 import Core.Reflection;
-import Core.ReflectionContext;
+import Ortha.RTTI.ReflectionContext;
+import Ortha.RTTI.ReflectionContextStack;
 import Core.ResourceLoadSystemService;
 import Core.TypeLoaderSystemService;
 import kangaru;
@@ -17,7 +18,7 @@ import kangaru;
 namespace Core {
 
 	void initCoreSubSystems(CoreSystems&, kgr::container& container) {
-		reflectAll(getCurrentReflectionContext());
+		reflectAll(static_cast<Ortha::RTTI::ReflectionContext&>(Ortha::RTTI::getCurrentReflectionContext()));
 
 		// Platform
 		container.emplace<GLFWSystemService>();

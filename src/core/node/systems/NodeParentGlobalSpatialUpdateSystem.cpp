@@ -12,7 +12,7 @@ import Core.GlobalSpatial;
 import Core.Node;
 import Core.NodeHandle;
 import Core.Spatial;
-import Core.TypeId;
+import Ortha.RTTI.TypeId;
 import entt;
 
 namespace Core::NodeParentGlobalSpatialUpdateSystemInternal {
@@ -23,7 +23,7 @@ namespace Core::NodeParentGlobalSpatialUpdateSystemInternal {
 				return;
 			}
 
-			if (node->getTypeId() != TypeId::get<EnTTNode>() || parentNode->getTypeId() != TypeId::get<EnTTNode>()) {
+			if (node->getTypeId() != Ortha::RTTI::TypeId::get<EnTTNode>() || parentNode->getTypeId() != Ortha::RTTI::TypeId::get<EnTTNode>()) {
 				return;
 			}
 

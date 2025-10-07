@@ -5,7 +5,7 @@ module;
 export module Core.EnTTNode;
 
 import Core.Node;
-import Core.TypeId;
+import Ortha.RTTI.TypeId;
 import entt;
 
 export namespace Core {
@@ -17,7 +17,7 @@ export namespace Core {
 		~EnTTNode();
 
 		void destroy() override;
-		TypeId getTypeId() const override;
+		Ortha::RTTI::TypeId getTypeId() const override;
 
 		entt::entity getEntity() const;
 

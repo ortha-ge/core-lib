@@ -26,8 +26,8 @@ namespace Core {
 		}
 	}
 
-	TypeId EnTTNode::getTypeId() const {
-		return TypeId::get<EnTTNode>();
+	Ortha::RTTI::TypeId EnTTNode::getTypeId() const {
+		return Ortha::RTTI::TypeId::get<EnTTNode>();
 	}
 
 	entt::entity EnTTNode::getEntity() const {

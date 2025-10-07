@@ -7,23 +7,23 @@ export module Core.Reflection.Spatial;
 export import Core.Spatial;
 
 import Core.EnTTComponentAttribute;
-import Core.ReflectionContext;
+import Core.Reflect;
 import Glm.Reflection.Vec3;
 
 // TODO: Add inherits from
 export namespace Core {
 	template <class SpatialType>
-	void reflectSpatialType(ReflectionContext& reflectionContext, std::string_view name) {
-		reflectionContext.addClass<SpatialType>(name)
-			.property("position", &SpatialType::position)
-			//.property("rotation", &Spatial::rotation)
-			.property("scale", &SpatialType::scale)
-			.annotate(createEnTTComponentAttribute<SpatialType>())
-			.build();
+	void reflectSpatialType(Ortha::RTTI::ReflectionContext& reflectionContext, std::string_view name) {
+		reflectionContext.addClass<SpatialType>(std::string{ name })
+			// .field<&SpatialType::position>("position")
+			// //.property("rotation", &Spatial::rotation)
+			// .field<&SpatialType::scale>("scale")
+			//.annotate(createEnTTComponentAttribute<SpatialType>())
+			;
 	}
 }
 
 template <>
-void Core::reflect<Core::Spatial>(ReflectionContext& reflectionContext) {
+void Core::reflect<Core::Spatial>(Ortha::RTTI::ReflectionContext& reflectionContext) {
 	reflectSpatialType<Spatial>(reflectionContext, "Spatial");
 }

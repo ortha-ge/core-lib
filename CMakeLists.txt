@@ -51,6 +51,7 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(RapidJSON CONFIG REQUIRED)
 
 set(core-lib-libraries
+        ortha-rtti-lib
         EnTT::EnTT-Library
         glfw
         glm::glm

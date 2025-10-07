@@ -7,6 +7,8 @@ module;
 
 module Core.Node;
 
+import Ortha.RTTI.TypeHandle;
+
 namespace Core {
 
 	Node::Node() = default;
@@ -26,8 +28,8 @@ namespace Core {
 		mChildren.clear();
 	}
 
-	TypeId Node::getTypeId() const {
-		return TypeId::get<Node>();
+	Ortha::RTTI::TypeId Node::getTypeId() const {
+		return Ortha::RTTI::TypeId(Ortha::RTTI::TypeHandle::get<Node>());
 	}
 
 	void Node::addChild(Ptr child) {

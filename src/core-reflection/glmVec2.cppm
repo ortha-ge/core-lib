@@ -1,24 +1,25 @@
 export module Glm.Reflection.Vec2;
 
-import Core.ReflectionContext;
-import glm;
+export import glm;
+
+import Core.Reflect;
 
 template<>
-void Core::reflect<glm::vec2>(ReflectionContext& reflectionContext) {
+void Core::reflect<glm::vec2>(Ortha::RTTI::ReflectionContext& reflectionContext) {
 	reflectionContext.addClass<glm::vec2>("glm::vec2")
-		.property("x", &glm::vec2::x)
-		.property("y", &glm::vec2::y)
-		.property("u", &glm::vec2::x)
-		.property("v", &glm::vec2::y)
-		.build();
+		.field<&glm::vec2::x>("x")
+		.field<&glm::vec2::y>("y")
+		.field<&glm::vec2::x>("u")
+		.field<&glm::vec2::y>("v")
+		;
 }
 
 template<>
-void Core::reflect<glm::ivec2>(ReflectionContext& reflectionContext) {
+void Core::reflect<glm::ivec2>(Ortha::RTTI::ReflectionContext& reflectionContext) {
 	reflectionContext.addClass<glm::ivec2>("glm::ivec2")
-		.property("x", &glm::ivec2::x)
-		.property("y", &glm::ivec2::y)
-		.property("u", &glm::ivec2::x)
-		.property("v", &glm::ivec2::y)
-		.build();
+		.field<&glm::ivec2::x>("x")
+		.field<&glm::ivec2::y>("y")
+		.field<&glm::ivec2::x>("u")
+		.field<&glm::ivec2::y>("v")
+		;
 }

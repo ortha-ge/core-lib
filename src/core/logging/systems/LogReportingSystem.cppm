@@ -1,6 +1,6 @@
-export module Core.LogReportingSystem;
+export module Ortha.Core.LogReportingSystem;
 
-import Core.Scheduler;
+import Ortha.Core.Scheduler;
 import entt;
 
 export namespace Core {

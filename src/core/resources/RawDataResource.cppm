@@ -3,7 +3,7 @@ module;
 #include <cstdint>
 #include <vector>
 
-export module Core.RawDataResource;
+export module Ortha.Core.RawDataResource;
 
 export namespace Core {
 

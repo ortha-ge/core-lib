@@ -8,9 +8,9 @@ module;
 
 export module JsonTypeAdapterTestClasses;
 
-import Core.ClassReflection;
-import Core.EnumReflection;
-import Core.ReflectionContext;
+import Ortha.Core.ClassReflection;
+import Ortha.Core.EnumReflection;
+import Ortha.Core.ReflectionContext;
 
 export namespace JsonTypeAdapterTestClasses {
 	class TestClass {

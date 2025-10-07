@@ -1,8 +1,8 @@
-export module Core.Reflection.Node;
+export module Ortha.Core.Reflection.Node;
 
-export import Core.Node;
+export import Ortha.Core.Node;
 
-import Core.Reflect;
+import Ortha.Core.Reflect;
 
 template <>
 void Core::reflect<Core::Node>(Ortha::RTTI::ReflectionContext& reflectionContext) {

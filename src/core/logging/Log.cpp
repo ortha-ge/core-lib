@@ -3,9 +3,9 @@ module;
 #include <string>
 #include <utility>
 
-module Core.Log;
+module Ortha.Core.Log;
 
-import Core.LogReportedFlag;
+import Ortha.Core.LogReportedFlag;
 import entt;
 
 namespace Core {

@@ -6,7 +6,7 @@ module;
 #include <utility>
 #include <vector>
 
-export module Core.Log;
+export module Ortha.Core.Log;
 
 import entt;
 

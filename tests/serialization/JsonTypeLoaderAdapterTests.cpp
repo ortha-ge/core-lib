@@ -7,11 +7,11 @@
 #include <catch2/catch_test_macros.hpp>
 
 import Ortha.RTTI.Any;
-import Core.ClassReflection;
-import Core.JsonTypeLoaderAdapter;
-import Core.Log;
-import Core.ReflectionContext;
-import Core.TypeId;
+import Ortha.Core.ClassReflection;
+import Ortha.Core.JsonTypeLoaderAdapter;
+import Ortha.Core.Log;
+import Ortha.Core.ReflectionContext;
+import Ortha.Core.TypeId;
 import JsonTypeAdapterTestClasses;
 
 TEST_CASE("JsonInput_LoadReflectedClass_LoadedClassMatchesInput", "JsonTypeLoaderAdapterTests") {

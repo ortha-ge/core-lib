@@ -2,7 +2,7 @@ module;
 
 #include <string>
 
-export module Core.Resource;
+export module Ortha.Core.Resource;
 
 import entt;
 

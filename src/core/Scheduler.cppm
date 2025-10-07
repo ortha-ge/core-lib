@@ -6,7 +6,7 @@ module;
 #include <memory>
 #include <queue>
 
-export module Core.Scheduler;
+export module Ortha.Core.Scheduler;
 
 export namespace Core {
 

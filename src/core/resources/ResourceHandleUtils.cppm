@@ -3,9 +3,9 @@ module;
 #include <memory>
 #include <tuple>
 
-export module Core.ResourceHandleUtils;
+export module Ortha.Core.ResourceHandleUtils;
 
-import Core.ResourceHandle;
+import Ortha.Core.ResourceHandle;
 import entt;
 
 export namespace Core {

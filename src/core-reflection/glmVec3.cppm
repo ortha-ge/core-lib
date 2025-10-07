@@ -2,7 +2,7 @@ export module Glm.Reflection.Vec3;
 
 export import glm;
 
-import Core.Reflect;
+import Ortha.Core.Reflect;
 
 template<>
 void Core::reflect<glm::vec3>(Ortha::RTTI::ReflectionContext& reflectionContext) {

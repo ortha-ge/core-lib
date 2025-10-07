@@ -1,4 +1,4 @@
-export module Core.NativeWindowHandles;
+export module Ortha.Core.NativeWindowHandles;
 
 export namespace Core {
 

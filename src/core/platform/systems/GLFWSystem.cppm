@@ -1,7 +1,7 @@
-export module Core.GLFWSystem;
+export module Ortha.Core.GLFWSystem;
 
-import Core.Scheduler;
-import Core.Window;
+import Ortha.Core.Scheduler;
+import Ortha.Core.Window;
 import entt;
 
 export namespace Core {

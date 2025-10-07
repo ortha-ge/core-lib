@@ -2,7 +2,7 @@ module;
 
 #include <memory>
 
-module Core.ResourceLoadRequest;
+module Ortha.Core.ResourceLoadRequest;
 
 import entt;
 

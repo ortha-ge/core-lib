@@ -2,12 +2,12 @@ module;
 
 #include <string_view>
 
-export module Core.Reflection.Spatial;
+export module Ortha.Core.Reflection.Spatial;
 
-export import Core.Spatial;
+export import Ortha.Core.Spatial;
 
-import Core.EnTTComponentAttribute;
-import Core.Reflect;
+import Ortha.Core.EnTTComponentAttribute;
+import Ortha.Core.Reflect;
 import Glm.Reflection.Vec3;
 
 // TODO: Add inherits from

@@ -1,6 +1,6 @@
-export module Core.SchedulerService;
+export module Ortha.Core.SchedulerService;
 
-export import Core.Scheduler;
+export import Ortha.Core.Scheduler;
 
 import kangaru;
 

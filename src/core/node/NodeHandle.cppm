@@ -4,9 +4,9 @@ module;
 #include <memory>
 #include <string>
 
-export module Core.NodeHandle;
+export module Ortha.Core.NodeHandle;
 
-import Core.Node;
+import Ortha.Core.Node;
 
 export namespace Core {
 

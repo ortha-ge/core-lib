@@ -4,7 +4,7 @@ module;
 #include <chrono>
 #include <utility>
 
-module Core.Timer;
+module Ortha.Core.Timer;
 
 namespace Core::TimerInternal {
 	constexpr uint32_t TimerSamplesMax = 60;

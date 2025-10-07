@@ -1,18 +1,18 @@
-module Core.SystemsService;
+module Ortha.Core.SystemsService;
 
-import Core.EntityVisitorSystemService;
-import Core.FileLoadSystemService;
-import Core.GLFWSystemService;
-import Core.GlobalSpatialUpdateSystemService;
-import Core.LogReportingSystemService;
-import Core.NodeParentGlobalSpatialUpdateSystemService;
-import Core.ProcessErrorLoggingSystemService;
-import Core.ProcessErrorRetrySystemService;
-import Core.Reflection;
+import Ortha.Core.EntityVisitorSystemService;
+import Ortha.Core.FileLoadSystemService;
+import Ortha.Core.GLFWSystemService;
+import Ortha.Core.GlobalSpatialUpdateSystemService;
+import Ortha.Core.LogReportingSystemService;
+import Ortha.Core.NodeParentGlobalSpatialUpdateSystemService;
+import Ortha.Core.ProcessErrorLoggingSystemService;
+import Ortha.Core.ProcessErrorRetrySystemService;
+import Ortha.Core.Reflection;
 import Ortha.RTTI.ReflectionContext;
 import Ortha.RTTI.ReflectionContextStack;
-import Core.ResourceLoadSystemService;
-import Core.TypeLoaderSystemService;
+import Ortha.Core.ResourceLoadSystemService;
+import Ortha.Core.TypeLoaderSystemService;
 import kangaru;
 
 namespace Core {

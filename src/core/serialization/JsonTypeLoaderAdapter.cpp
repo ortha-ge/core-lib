@@ -6,20 +6,20 @@ module;
 
 #include <rapidjson/document.h>
 
-module Core.JsonTypeLoaderAdapter;
+module Ortha.Core.JsonTypeLoaderAdapter;
 
-// import Core.BasicTypeTraits;
-// import Core.ClassReflection;
-// import Core.EnumReflection;
-import Core.Log;
-// import Core.MapTypeTraits;
-// import Core.OptionalTypeTraits;
-// import Core.ReflectionContext;
-// import Core.SharedPtrTypeTraits;
-// import Core.TypeId;
-// import Core.TypeTraits;
-// import Core.VariantTypeTraits;
-// import Core.VectorTypeTraits;
+// import Ortha.Core.BasicTypeTraits;
+// import Ortha.Core.ClassReflection;
+// import Ortha.Core.EnumReflection;
+import Ortha.Core.Log;
+// import Ortha.Core.MapTypeTraits;
+// import Ortha.Core.OptionalTypeTraits;
+// import Ortha.Core.ReflectionContext;
+// import Ortha.Core.SharedPtrTypeTraits;
+// import Ortha.Core.TypeId;
+// import Ortha.Core.TypeTraits;
+// import Ortha.Core.VariantTypeTraits;
+// import Ortha.Core.VectorTypeTraits;
 import Ortha.RTTI.Any;
 import Ortha.RTTI.TypeHandle;
 import Ortha.RTTI.TypeId;

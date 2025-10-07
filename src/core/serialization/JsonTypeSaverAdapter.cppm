@@ -3,11 +3,11 @@ module;
 #include <string>
 #include <string_view>
 
-export module Core.JsonTypeSaverAdapter;
+export module Ortha.Core.JsonTypeSaverAdapter;
 
 import Ortha.RTTI.Any;
-import Core.Log;
-import Core.TypeSaver;
+import Ortha.Core.Log;
+import Ortha.Core.TypeSaver;
 import entt;
 
 export namespace Core {

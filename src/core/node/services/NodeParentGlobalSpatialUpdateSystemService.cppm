@@ -1,9 +1,9 @@
-export module Core.NodeParentGlobalSpatialUpdateSystemService;
+export module Ortha.Core.NodeParentGlobalSpatialUpdateSystemService;
 
-export import Core.NodeParentGlobalSpatialUpdateSystem;
+export import Ortha.Core.NodeParentGlobalSpatialUpdateSystem;
 
-import Core.EnTTRegistryService;
-import Core.SchedulerService;
+import Ortha.Core.EnTTRegistryService;
+import Ortha.Core.SchedulerService;
 import kangaru;
 
 export namespace Core {

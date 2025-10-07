@@ -4,10 +4,10 @@ module;
 
 #include <tracy/Tracy.hpp>
 
-module Core.GlobalSpatialUpdateSystem;
+module Ortha.Core.GlobalSpatialUpdateSystem;
 
-import Core.GlobalSpatial;
-import Core.Spatial;
+import Ortha.Core.GlobalSpatial;
+import Ortha.Core.Spatial;
 import glm;
 
 namespace Core {

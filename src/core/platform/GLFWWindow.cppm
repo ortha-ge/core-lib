@@ -2,7 +2,7 @@ module;
 
 #include <GLFW/glfw3.h>
 
-export module Core.GLFWWindow;
+export module Ortha.Core.GLFWWindow;
 
 export namespace Core {
 

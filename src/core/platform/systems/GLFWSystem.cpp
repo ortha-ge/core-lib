@@ -30,14 +30,14 @@ module;
 #include <GLFW/glfw3native.h>
 #endif
 
-module Core.GLFWSystem;
+module Ortha.Core.GLFWSystem;
 
-import Core.GLFWWindow;
-import Core.Log;
-import Core.NativeWindowHandles;
-import Core.ProcessError;
-import Core.QuitAppRequest;
-import Core.Window;
+import Ortha.Core.GLFWWindow;
+import Ortha.Core.Log;
+import Ortha.Core.NativeWindowHandles;
+import Ortha.Core.ProcessError;
+import Ortha.Core.QuitAppRequest;
+import Ortha.Core.Window;
 import entt;
 
 namespace Core {

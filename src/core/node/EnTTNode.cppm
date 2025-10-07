@@ -2,9 +2,9 @@ module;
 
 #include <string>
 
-export module Core.EnTTNode;
+export module Ortha.Core.EnTTNode;
 
-import Core.Node;
+import Ortha.Core.Node;
 import Ortha.RTTI.TypeId;
 import entt;
 

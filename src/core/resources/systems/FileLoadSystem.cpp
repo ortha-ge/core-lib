@@ -5,13 +5,13 @@ module;
 
 #include <tracy/Tracy.hpp>
 
-module Core.FileLoadSystem;
+module Ortha.Core.FileLoadSystem;
 
-import Core.FileDescriptor;
-import Core.FileLoadRequest;
-import Core.Log;
-import Core.ProcessError;
-import Core.RawDataResource;
+import Ortha.Core.FileDescriptor;
+import Ortha.Core.FileLoadRequest;
+import Ortha.Core.Log;
+import Ortha.Core.ProcessError;
+import Ortha.Core.RawDataResource;
 import entt;
 
 namespace Core {

@@ -1,6 +1,6 @@
-export module Core.TypeLoaderSystem;
+export module Ortha.Core.TypeLoaderSystem;
 
-import Core.Scheduler;
+import Ortha.Core.Scheduler;
 
 import entt;
 

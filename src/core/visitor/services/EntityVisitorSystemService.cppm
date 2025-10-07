@@ -1,11 +1,11 @@
 
-export module Core.EntityVisitorSystemService;
+export module Ortha.Core.EntityVisitorSystemService;
 
-export import Core.EntityVisitorSystem;
+export import Ortha.Core.EntityVisitorSystem;
 
 import kangaru;
-import Core.EnTTRegistryService;
-import Core.SchedulerService;
+import Ortha.Core.EnTTRegistryService;
+import Ortha.Core.SchedulerService;
 
 export namespace Core {
 

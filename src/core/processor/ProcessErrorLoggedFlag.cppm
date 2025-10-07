@@ -1,4 +1,4 @@
-export module Core.ProcessErrorLoggedFlag;
+export module Ortha.Core.ProcessErrorLoggedFlag;
 
 export namespace Core {
 

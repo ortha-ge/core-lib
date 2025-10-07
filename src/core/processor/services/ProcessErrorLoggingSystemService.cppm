@@ -1,9 +1,9 @@
-export module Core.ProcessErrorLoggingSystemService;
+export module Ortha.Core.ProcessErrorLoggingSystemService;
 
-export import Core.ProcessErrorLoggingSystem;
+export import Ortha.Core.ProcessErrorLoggingSystem;
 
-import Core.EnTTRegistryService;
-import Core.SchedulerService;
+import Ortha.Core.EnTTRegistryService;
+import Ortha.Core.SchedulerService;
 import kangaru;
 
 export namespace Core {

@@ -1,7 +1,7 @@
 
-export module Core.GlobalSpatial;
+export module Ortha.Core.GlobalSpatial;
 
-import Core.Spatial;
+import Ortha.Core.Spatial;
 
 export namespace Core {
 

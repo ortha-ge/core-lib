@@ -1,4 +1,4 @@
-export module Core.LogReportedFlag;
+export module Ortha.Core.LogReportedFlag;
 
 export namespace Core {
 

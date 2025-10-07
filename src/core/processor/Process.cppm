@@ -1,4 +1,4 @@
-export module Core.Process;
+export module Ortha.Core.Process;
 
 export namespace Core {
 

@@ -1,4 +1,4 @@
-export module Core.EnTTRegistryService;
+export module Ortha.Core.EnTTRegistryService;
 
 import entt;
 import kangaru;

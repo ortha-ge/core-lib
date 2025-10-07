@@ -2,10 +2,10 @@ module;
 
 #include <string>
 
-module Core.EnTTNode;
+module Ortha.Core.EnTTNode;
 
-import Core.NodeHandle;
-import Core.ProcessError;
+import Ortha.Core.NodeHandle;
+import Ortha.Core.ProcessError;
 import entt;
 
 namespace Core {

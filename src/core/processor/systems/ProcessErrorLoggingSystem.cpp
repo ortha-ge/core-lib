@@ -2,11 +2,11 @@ module;
 
 #include <tracy/Tracy.hpp>
 
-module Core.ProcessErrorLoggingSystem;
+module Ortha.Core.ProcessErrorLoggingSystem;
 
-import Core.Log;
-import Core.ProcessError;
-import Core.ProcessErrorLoggedFlag;
+import Ortha.Core.Log;
+import Ortha.Core.ProcessError;
+import Ortha.Core.ProcessErrorLoggedFlag;
 import entt;
 
 namespace Core {

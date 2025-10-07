@@ -1,9 +1,9 @@
-export module Core.ProcessErrorRetrySystemService;
+export module Ortha.Core.ProcessErrorRetrySystemService;
 
-export import Core.ProcessErrorRetrySystem;
+export import Ortha.Core.ProcessErrorRetrySystem;
 
-import Core.EnTTRegistryService;
-import Core.SchedulerService;
+import Ortha.Core.EnTTRegistryService;
+import Ortha.Core.SchedulerService;
 import kangaru;
 
 

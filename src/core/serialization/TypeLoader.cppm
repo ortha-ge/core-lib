@@ -3,7 +3,7 @@ module;
 #include <memory>
 #include <string_view>
 
-export module Core.TypeLoader;
+export module Ortha.Core.TypeLoader;
 
 import entt;
 

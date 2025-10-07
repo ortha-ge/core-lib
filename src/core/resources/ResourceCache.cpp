@@ -4,10 +4,10 @@ module;
 #include <chrono>
 #include <string>
 
-module Core.ResourceCache;
+module Ortha.Core.ResourceCache;
 
-import Core.Log;
-import Core.Resource;
+import Ortha.Core.Log;
+import Ortha.Core.Resource;
 import entt;
 
 namespace Core {

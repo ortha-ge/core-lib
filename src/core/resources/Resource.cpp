@@ -2,7 +2,7 @@ module;
 
 #include <string>
 
-module Core.Resource;
+module Ortha.Core.Resource;
 import entt;
 
 namespace Core {

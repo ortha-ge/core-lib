@@ -3,7 +3,7 @@ module;
 #include <memory>
 #include <string>
 
-module Core.ResourceHandle;
+module Ortha.Core.ResourceHandle;
 
 import entt;
 

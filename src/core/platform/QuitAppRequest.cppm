@@ -2,7 +2,7 @@ module;
 
 #include <chrono>
 
-export module Core.QuitAppRequest;
+export module Ortha.Core.QuitAppRequest;
 
 export namespace Core {
 

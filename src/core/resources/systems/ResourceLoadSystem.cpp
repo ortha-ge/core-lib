@@ -6,16 +6,16 @@ module;
 
 #include <tracy/Tracy.hpp>
 
-module Core.ResourceLoadSystem;
+module Ortha.Core.ResourceLoadSystem;
 
-import Core.FileDescriptor;
-import Core.FileLoadRequest;
-import Core.Log;
-import Core.ProcessError;
-import Core.Resource;
-import Core.ResourceCache;
-import Core.ResourceHandle;
-import Core.ResourceLoadRequest;
+import Ortha.Core.FileDescriptor;
+import Ortha.Core.FileLoadRequest;
+import Ortha.Core.Log;
+import Ortha.Core.ProcessError;
+import Ortha.Core.Resource;
+import Ortha.Core.ResourceCache;
+import Ortha.Core.ResourceHandle;
+import Ortha.Core.ResourceLoadRequest;
 import entt;
 
 namespace Core {

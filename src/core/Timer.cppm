@@ -3,9 +3,9 @@ module;
 #include <chrono>
 #include <list>
 
-export module Core.Timer;
+export module Ortha.Core.Timer;
 
-import Core.Scheduler;
+import Ortha.Core.Scheduler;
 
 export namespace Core {
 

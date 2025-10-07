@@ -5,10 +5,10 @@ module;
 
 #include <tracy/Tracy.hpp>
 
-module Core.LogReportingSystem;
+module Ortha.Core.LogReportingSystem;
 
-import Core.Log;
-import Core.LogReportedFlag;
+import Ortha.Core.Log;
+import Ortha.Core.LogReportedFlag;
 import entt;
 
 namespace Core {

@@ -1,8 +1,8 @@
-export module Core.TimerService;
+export module Ortha.Core.TimerService;
 
-export import Core.Timer;
+export import Ortha.Core.Timer;
 
-import Core.SchedulerService;
+import Ortha.Core.SchedulerService;
 import kangaru;
 
 export namespace Core {

@@ -1,9 +1,9 @@
-export module Core.GLFWSystemService;
+export module Ortha.Core.GLFWSystemService;
 
-export import Core.GLFWSystem;
+export import Ortha.Core.GLFWSystem;
 
-import Core.EnTTRegistryService;
-import Core.SchedulerService;
+import Ortha.Core.EnTTRegistryService;
+import Ortha.Core.SchedulerService;
 import kangaru;
 
 export namespace Core {

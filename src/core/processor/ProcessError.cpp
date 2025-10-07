@@ -4,7 +4,7 @@ module;
 #include <string>
 #include <variant>
 
-module Core.ProcessError;
+module Ortha.Core.ProcessError;
 
 import entt;
 

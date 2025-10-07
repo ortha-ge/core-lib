@@ -3,7 +3,7 @@ module;
 #include <functional>
 #include <vector>
 
-export module Core.EntityVisitor;
+export module Ortha.Core.EntityVisitor;
 
 import entt;
 

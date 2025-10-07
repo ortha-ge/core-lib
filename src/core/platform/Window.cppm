@@ -3,7 +3,7 @@ module;
 #include <cstdint>
 #include <string>
 
-export module Core.Window;
+export module Ortha.Core.Window;
 
 export namespace Core {
 

@@ -1,9 +1,9 @@
-export module Core.FileLoadSystemService;
+export module Ortha.Core.FileLoadSystemService;
 
-export import Core.FileLoadSystem;
+export import Ortha.Core.FileLoadSystem;
 
-import Core.EnTTRegistryService;
-import Core.SchedulerService;
+import Ortha.Core.EnTTRegistryService;
+import Ortha.Core.SchedulerService;
 import kangaru;
 
 export namespace Core {

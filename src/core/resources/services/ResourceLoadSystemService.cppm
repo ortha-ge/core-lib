@@ -1,9 +1,9 @@
-export module Core.ResourceLoadSystemService;
+export module Ortha.Core.ResourceLoadSystemService;
 
-export import Core.ResourceLoadSystem;
+export import Ortha.Core.ResourceLoadSystem;
 
-import Core.EnTTRegistryService;
-import Core.SchedulerService;
+import Ortha.Core.EnTTRegistryService;
+import Ortha.Core.SchedulerService;
 import kangaru;
 
 export namespace Core {

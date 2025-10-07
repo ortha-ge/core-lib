@@ -6,13 +6,13 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-import Core.TypeId;
-import Core.BasicTypeTraits;
-import Core.MapTypeTraits;
-import Core.OptionalTypeTraits;
-import Core.TypeTraits;
-import Core.VariantTypeTraits;
-import Core.VectorTypeTraits;
+import Ortha.Core.TypeId;
+import Ortha.Core.BasicTypeTraits;
+import Ortha.Core.MapTypeTraits;
+import Ortha.Core.OptionalTypeTraits;
+import Ortha.Core.TypeTraits;
+import Ortha.Core.VariantTypeTraits;
+import Ortha.Core.VectorTypeTraits;
 
 TEST_CASE("TwoTypeIdsFromIdenticalGetCalls_CheckAddressEquality_AddressesMatch", "TypeId") {
 	using namespace Core;

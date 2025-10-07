@@ -3,9 +3,9 @@ module;
 #include <cstdint>
 #include <string>
 
-module Core.Reflection;
+module Ortha.Core.Reflection;
 
-import Core.Reflect;
+import Ortha.Core.Reflect;
 import Ortha.RTTI.TypeInfo;
 
 namespace Core {

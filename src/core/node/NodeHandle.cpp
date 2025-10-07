@@ -4,7 +4,7 @@ module;
 #include <memory>
 #include <string>
 
-module Core.NodeHandle;
+module Ortha.Core.NodeHandle;
 
 namespace Core {
 

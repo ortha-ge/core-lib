@@ -4,12 +4,12 @@ module;
 #include <utility>
 #include <vector>
 
-module Core.EntityVisitorSystem;
+module Ortha.Core.EntityVisitorSystem;
 
-import Core.EntityVisitor;
-import Core.EnTTNode;
-import Core.Node;
-import Core.NodeHandle;
+import Ortha.Core.EntityVisitor;
+import Ortha.Core.EnTTNode;
+import Ortha.Core.Node;
+import Ortha.Core.NodeHandle;
 import Ortha.RTTI.TypeHandle;
 import Ortha.RTTI.TypeId;
 import entt;

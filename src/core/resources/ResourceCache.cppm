@@ -6,9 +6,9 @@ module;
 #include <string>
 #include <unordered_map>
 
-export module Core.ResourceCache;
+export module Ortha.Core.ResourceCache;
 
-import Core.Resource;
+import Ortha.Core.Resource;
 import entt;
 
 export namespace Core {

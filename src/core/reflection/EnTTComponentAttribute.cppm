@@ -5,7 +5,7 @@ module;
 #include <unordered_map>
 #include <vector>
 
-export module Core.EnTTComponentAttribute;
+export module Ortha.Core.EnTTComponentAttribute;
 
 import entt;
 

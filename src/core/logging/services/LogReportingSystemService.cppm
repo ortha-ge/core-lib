@@ -1,9 +1,9 @@
-export module Core.LogReportingSystemService;
+export module Ortha.Core.LogReportingSystemService;
 
-export import Core.LogReportingSystem;
+export import Ortha.Core.LogReportingSystem;
 
-import Core.EnTTRegistryService;
-import Core.SchedulerService;
+import Ortha.Core.EnTTRegistryService;
+import Ortha.Core.SchedulerService;
 import kangaru;
 
 export namespace Core {

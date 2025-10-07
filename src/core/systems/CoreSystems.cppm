@@ -1,5 +1,5 @@
 
-export module Core.Systems;
+export module Ortha.Core.Systems;
 
 export namespace Core {
 

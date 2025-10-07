@@ -1,8 +1,8 @@
 module;
 
-export module Core.EntityVisitorSystem;
+export module Ortha.Core.EntityVisitorSystem;
 
-import Core.Scheduler;
+import Ortha.Core.Scheduler;
 import entt;
 
 export namespace Core {

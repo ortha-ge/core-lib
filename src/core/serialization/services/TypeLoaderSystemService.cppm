@@ -1,9 +1,9 @@
-export module Core.TypeLoaderSystemService;
+export module Ortha.Core.TypeLoaderSystemService;
 
-export import Core.TypeLoaderSystem;
+export import Ortha.Core.TypeLoaderSystem;
 
-import Core.EnTTRegistryService;
-import Core.SchedulerService;
+import Ortha.Core.EnTTRegistryService;
+import Ortha.Core.SchedulerService;
 import kangaru;
 
 export namespace Core {

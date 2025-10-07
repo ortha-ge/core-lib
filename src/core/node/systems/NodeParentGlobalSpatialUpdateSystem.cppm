@@ -1,6 +1,6 @@
-export module Core.NodeParentGlobalSpatialUpdateSystem;
+export module Ortha.Core.NodeParentGlobalSpatialUpdateSystem;
 
-import Core.Scheduler;
+import Ortha.Core.Scheduler;
 import entt;
 
 export namespace Core {

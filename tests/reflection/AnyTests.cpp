@@ -2,7 +2,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 import Ortha.RTTI.Any;
-import Core.TypeId;
+import Ortha.Core.TypeId;
 
 TEST_CASE("AnyConstructDefault_GetTypeInstance_IsVoidTypeIdAndNullInstance", "Any") {
 	using namespace Core;

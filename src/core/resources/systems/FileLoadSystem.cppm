@@ -1,6 +1,6 @@
-export module Core.FileLoadSystem;
+export module Ortha.Core.FileLoadSystem;
 
-import Core.Scheduler;
+import Ortha.Core.Scheduler;
 import entt;
 
 export namespace Core {

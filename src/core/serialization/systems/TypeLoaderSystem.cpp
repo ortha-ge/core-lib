@@ -4,12 +4,12 @@ module;
 
 #include <tracy/Tracy.hpp>
 
-module Core.TypeLoaderSystem;
+module Ortha.Core.TypeLoaderSystem;
 
-import Core.FileLoadRequest;
-import Core.JsonTypeLoaderAdapter;
-import Core.RawDataResource;
-import Core.TypeLoader;
+import Ortha.Core.FileLoadRequest;
+import Ortha.Core.JsonTypeLoaderAdapter;
+import Ortha.Core.RawDataResource;
+import Ortha.Core.TypeLoader;
 import entt;
 
 namespace Core {

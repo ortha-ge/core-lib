@@ -5,10 +5,10 @@ module;
 
 #include <tracy/Tracy.hpp>
 
-module Core.ProcessErrorRetrySystem;
+module Ortha.Core.ProcessErrorRetrySystem;
 
-import Core.ProcessError;
-import Core.ProcessErrorLoggedFlag;
+import Ortha.Core.ProcessError;
+import Ortha.Core.ProcessErrorLoggedFlag;
 import entt;
 
 namespace Core::ProcessErrorRetrySystemInternal {

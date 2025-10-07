@@ -3,13 +3,13 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-import Core.ClassReflection;
-import Core.FileDescriptor;
-import Core.FileLoadRequest;
-import Core.FileLoadSystem;
-import Core.RawDataResource;
-import Core.ReflectionContext;
-import Core.TypeId;
+import Ortha.Core.ClassReflection;
+import Ortha.Core.FileDescriptor;
+import Ortha.Core.FileLoadRequest;
+import Ortha.Core.FileLoadSystem;
+import Ortha.Core.RawDataResource;
+import Ortha.Core.ReflectionContext;
+import Ortha.Core.TypeId;
 import entt;
 
 namespace ClassReflectionTests {

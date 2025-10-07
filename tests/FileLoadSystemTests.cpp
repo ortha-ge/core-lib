@@ -1,10 +1,10 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-import Core.FileDescriptor;
-import Core.FileLoadRequest;
-import Core.FileLoadSystem;
-import Core.RawDataResource;
+import Ortha.Core.FileDescriptor;
+import Ortha.Core.FileLoadRequest;
+import Ortha.Core.FileLoadSystem;
+import Ortha.Core.RawDataResource;
 import entt;
 
 TEST_CASE("FileDescriptorWithLoadRequest_FileLoadSystemTick_RawDataResourceProduced", "FileLoadSystem") {

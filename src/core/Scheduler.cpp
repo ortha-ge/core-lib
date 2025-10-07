@@ -6,7 +6,7 @@ module;
 
 #include <tracy/Tracy.hpp>
 
-module Core.Scheduler;
+module Ortha.Core.Scheduler;
 
 namespace Core {
 

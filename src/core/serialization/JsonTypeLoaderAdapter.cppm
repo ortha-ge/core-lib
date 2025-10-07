@@ -2,14 +2,14 @@ module;
 
 #include <string_view>
 
-export module Core.JsonTypeLoaderAdapter;
+export module Ortha.Core.JsonTypeLoaderAdapter;
 
 import Ortha.RTTI.Any;
 import Ortha.RTTI.ReflectionContext;
 import Ortha.RTTI.ReflectionContextStack;
-import Core.Log;
-import Core.Reflect;
-import Core.TypeLoader;
+import Ortha.Core.Log;
+import Ortha.Core.Reflect;
+import Ortha.Core.TypeLoader;
 import entt;
 
 export namespace Core {

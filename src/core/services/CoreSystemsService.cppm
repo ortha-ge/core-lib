@@ -1,10 +1,10 @@
 
-export module Core.SystemsService;
+export module Ortha.Core.SystemsService;
 
-export import Core.Systems;
+export import Ortha.Core.Systems;
 
-import Core.EnTTRegistryService;
-import Core.SchedulerService;
+import Ortha.Core.EnTTRegistryService;
+import Ortha.Core.SchedulerService;
 import kangaru;
 
 export namespace Core {

@@ -4,7 +4,7 @@ module;
 #include <memory>
 #include <string>
 
-export module Core.Node;
+export module Ortha.Core.Node;
 
 import Ortha.RTTI.TypeId;
 

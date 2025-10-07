@@ -5,7 +5,7 @@ module;
 #include <memory>
 #include <string>
 
-module Core.Node;
+module Ortha.Core.Node;
 
 import Ortha.RTTI.TypeHandle;
 

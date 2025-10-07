@@ -1,5 +1,5 @@
 
-export module Core.FileLoadRequest;
+export module Ortha.Core.FileLoadRequest;
 
 export namespace Core {
 

@@ -2,11 +2,11 @@
 #include <GLFW/glfw3.h>
 #include <catch2/catch_test_macros.hpp>
 
-import Core.GLFWSystem;
-import Core.QuitAppRequest;
-import Core.GLFWWindow;
-import Core.NativeWindowHandles;
-import Core.Window;
+import Ortha.Core.GLFWSystem;
+import Ortha.Core.QuitAppRequest;
+import Ortha.Core.GLFWWindow;
+import Ortha.Core.NativeWindowHandles;
+import Ortha.Core.Window;
 import entt;
 
 // TEST_CASE("Window_GLFWSystemTickCreateWindowView_GLFWWindowProduced", "GLFWSystem") {

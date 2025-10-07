@@ -1,4 +1,4 @@
-export module Core.Spatial;
+export module Ortha.Core.Spatial;
 
 import glm;
 

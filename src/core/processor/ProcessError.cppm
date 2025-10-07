@@ -8,7 +8,7 @@ module;
 #include <string_view>
 #include <variant>
 
-export module Core.ProcessError;
+export module Ortha.Core.ProcessError;
 
 import entt;
 

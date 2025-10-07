@@ -1,9 +1,9 @@
-export module Core.Reflection.GlobalSpatial;
+export module Ortha.Core.Reflection.GlobalSpatial;
 
-export import Core.GlobalSpatial;
+export import Ortha.Core.GlobalSpatial;
 
-import Core.Reflect;
-import Core.Reflection.Spatial;
+import Ortha.Core.Reflect;
+import Ortha.Core.Reflection.Spatial;
 
 template <>
 void Core::reflect<Core::GlobalSpatial>(Ortha::RTTI::ReflectionContext& reflectionContext) {

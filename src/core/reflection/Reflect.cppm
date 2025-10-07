@@ -1,4 +1,4 @@
-export module Core.Reflect;
+export module Ortha.Core.Reflect;
 
 export import Ortha.RTTI.ReflectionContext;
 

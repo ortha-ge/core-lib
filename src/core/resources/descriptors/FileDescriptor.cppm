@@ -2,7 +2,7 @@ module;
 
 #include <string>
 
-export module Core.FileDescriptor;
+export module Ortha.Core.FileDescriptor;
 
 export namespace Core {
 

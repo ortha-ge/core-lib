@@ -5,13 +5,13 @@ module;
 
 #include <tracy/Tracy.hpp>
 
-module Core.NodeParentGlobalSpatialUpdateSystem;
+module Ortha.Core.NodeParentGlobalSpatialUpdateSystem;
 
-import Core.EnTTNode;
-import Core.GlobalSpatial;
-import Core.Node;
-import Core.NodeHandle;
-import Core.Spatial;
+import Ortha.Core.EnTTNode;
+import Ortha.Core.GlobalSpatial;
+import Ortha.Core.Node;
+import Ortha.Core.NodeHandle;
+import Ortha.Core.Spatial;
 import Ortha.RTTI.TypeId;
 import entt;
 

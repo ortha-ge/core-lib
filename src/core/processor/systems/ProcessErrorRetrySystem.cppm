@@ -1,7 +1,7 @@
-export module Core.ProcessErrorRetrySystem;
+export module Ortha.Core.ProcessErrorRetrySystem;
 
-import Core.ProcessError;
-import Core.Scheduler;
+import Ortha.Core.ProcessError;
+import Ortha.Core.Scheduler;
 import entt;
 
 export namespace Core {

@@ -7,6 +7,8 @@ add_compile_definitions(
         GLM_ENABLE_EXPERIMENTAL
 )
 
+set(KANGARU_REVERSE_DESTRUCTION ON)
+
 Include(FetchContent)
 
 # Tracy

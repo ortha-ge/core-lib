@@ -15,7 +15,7 @@ import JsonTypeAdapterTestClasses;
 
 TEST_CASE("ReflectedClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view expectedOutput = R"({
     "TestClass": {
         "stringProperty": "testString",
@@ -37,7 +37,7 @@ TEST_CASE("ReflectedClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterT
 
 TEST_CASE("ReflectedClassWithNestedClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view expectedOutput = R"({
     "TestClass2": {
         "nestedProperty": {
@@ -62,7 +62,7 @@ TEST_CASE("ReflectedClassWithNestedClass_Save_OutputMatchesSourceClass", "JsonTy
 
 TEST_CASE("ReflectedClassWithOptional_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view expectedOutput = R"({
     "TestClass3": {
         "optionalIntProperty": 5
@@ -81,7 +81,7 @@ TEST_CASE("ReflectedClassWithOptional_Save_OutputMatchesSourceClass", "JsonTypeS
 
 TEST_CASE("ReflectedClassWithMissingOptional_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view expectedOutput = R"({
     "TestClass3": {}
 })";
@@ -98,7 +98,7 @@ TEST_CASE("ReflectedClassWithMissingOptional_Save_OutputMatchesSourceClass", "Js
 
 TEST_CASE("ReflectedClassWithOptionalClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view expectedOutput = R"({
     "TestClass4": {
         "optionalClassProperty": {
@@ -123,7 +123,7 @@ TEST_CASE("ReflectedClassWithOptionalClass_Save_OutputMatchesSourceClass", "Json
 
 TEST_CASE("ReflectedClassWithMissingOptionalClass_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view expectedOutput = R"({
     "TestClass4": {}
 })";
@@ -139,7 +139,7 @@ TEST_CASE("ReflectedClassWithMissingOptionalClass_Save_OutputMatchesSourceClass"
 
 TEST_CASE("ReflectedClassWithVector_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view expectedOutput = R"({
     "VectorTestClass": {
         "vectorProperty": [
@@ -162,7 +162,7 @@ TEST_CASE("ReflectedClassWithVector_Save_OutputMatchesSourceClass", "JsonTypeSav
 
 TEST_CASE("ReflectedClassWithMap_Save_OutputMatchesSourceClass", "JsonTypeSaverAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view expectedOutput = R"({
     "MapTestClass": {
         "mapProperty": {

@@ -10,7 +10,7 @@ import Ortha.Core.Log;
 import Ortha.Core.TypeSaver;
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	std::string save(entt::registry&, const Ortha::RTTI::Any& anyValue);
 	std::string save(Log&, const Ortha::RTTI::Any& anyValue);
@@ -33,4 +33,4 @@ export namespace Core {
 		}
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

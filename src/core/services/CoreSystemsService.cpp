@@ -15,7 +15,7 @@ import Ortha.Core.ResourceLoadSystemService;
 import Ortha.Core.TypeLoaderSystemService;
 import kangaru;
 
-namespace Core {
+namespace Ortha::Core {
 
 	void initCoreSubSystems(CoreSystems&, kgr::container& container) {
 		reflectAll(static_cast<Ortha::RTTI::ReflectionContext&>(Ortha::RTTI::getCurrentReflectionContext()));
@@ -43,4 +43,4 @@ namespace Core {
 		container.emplace<LogReportingSystemService>();
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

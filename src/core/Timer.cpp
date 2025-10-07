@@ -6,11 +6,11 @@ module;
 
 module Ortha.Core.Timer;
 
-namespace Core::TimerInternal {
+namespace Ortha::Core::TimerInternal {
 	constexpr uint32_t TimerSamplesMax = 60;
-} // namespace Core::TimerInternal
+} // namespace Ortha::Core::TimerInternal
 
-namespace Core {
+namespace Ortha::Core {
 
 	Timer::Timer(Scheduler& scheduler)
 		: mScheduler{ scheduler } {
@@ -69,4 +69,4 @@ namespace Core {
 		return mIsPaused;
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

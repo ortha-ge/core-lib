@@ -8,7 +8,7 @@ import Ortha.Core.Node;
 import Ortha.RTTI.TypeId;
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class EnTTNode : public Node {
 	public:
@@ -30,4 +30,4 @@ export namespace Core {
 	const entt::entity createChildEnTTNode(entt::registry&, const Node::Ptr&, std::string);
 	void addChildNode(entt::registry&, entt::entity, entt::entity);
 
-} // namespace Core
+} // namespace Ortha::Core

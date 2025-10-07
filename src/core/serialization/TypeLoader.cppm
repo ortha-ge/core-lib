@@ -7,7 +7,7 @@ export module Ortha.Core.TypeLoader;
 
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class TypeLoaderAdapter {
 	public:
@@ -20,4 +20,4 @@ export namespace Core {
 		std::shared_ptr<TypeLoaderAdapter> adapter;
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

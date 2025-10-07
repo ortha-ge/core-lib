@@ -4,7 +4,7 @@ import Ortha.Core.Scheduler;
 
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class TypeLoaderSystem {
 	public:
@@ -19,4 +19,4 @@ export namespace Core {
 		TaskHandle mTickHandle;
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

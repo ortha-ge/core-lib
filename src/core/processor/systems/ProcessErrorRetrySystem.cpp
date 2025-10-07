@@ -11,7 +11,7 @@ import Ortha.Core.ProcessError;
 import Ortha.Core.ProcessErrorLoggedFlag;
 import entt;
 
-namespace Core::ProcessErrorRetrySystemInternal {
+namespace Ortha::Core::ProcessErrorRetrySystemInternal {
 	bool tickProcessError(entt::registry& registry, const entt::entity entity, ProcessError& error, bool shouldRetry) {
 		return shouldRetry;
 	}
@@ -30,7 +30,7 @@ namespace Core::ProcessErrorRetrySystemInternal {
 	}
 } // Core::ProcessErrorRetrySystemInternal
 
-namespace Core {
+namespace Ortha::Core {
 
 	ProcessErrorRetrySystem::ProcessErrorRetrySystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry{ registry }
@@ -65,4 +65,4 @@ namespace Core {
 			});
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

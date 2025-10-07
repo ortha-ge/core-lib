@@ -11,7 +11,7 @@ export module Ortha.Core.ResourceCache;
 import Ortha.Core.Resource;
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class ResourceCache {
 	public:
@@ -39,4 +39,4 @@ export namespace Core {
 		std::chrono::seconds mCleanupTriggerTimeSeconds;
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

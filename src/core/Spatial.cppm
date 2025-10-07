@@ -2,7 +2,7 @@ export module Ortha.Core.Spatial;
 
 import glm;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct SpatialData {
 		glm::vec3 position{};
@@ -12,4 +12,4 @@ export namespace Core {
 
 	struct Spatial : SpatialData {};
 
-} // namespace Core
+} // namespace Ortha::Core

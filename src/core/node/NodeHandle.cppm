@@ -8,7 +8,7 @@ export module Ortha.Core.NodeHandle;
 
 import Ortha.Core.Node;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class NodeHandle final {
 	public:
@@ -34,4 +34,4 @@ export namespace Core {
 	Node::Ptr getRootNode(const NodeHandle&);
 	void visitParentHeirarchy(const NodeHandle&, const std::function<void(const Node::Ptr&, const Node::Ptr&)>&);
 
-} // namespace Core
+} // namespace Ortha::Core

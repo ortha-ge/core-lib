@@ -2,11 +2,11 @@ export module Ortha.Core.Reflect;
 
 export import Ortha.RTTI.ReflectionContext;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	template<typename T>
-	void reflect(Ortha::RTTI::ReflectionContext&) {
+	void reflect(RTTI::ReflectionContext&) {
 		static_assert(false, "Undefined reflect call for type");
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

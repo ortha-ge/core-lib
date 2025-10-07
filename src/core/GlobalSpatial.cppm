@@ -3,10 +3,10 @@ export module Ortha.Core.GlobalSpatial;
 
 import Ortha.Core.Spatial;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct GlobalSpatial : SpatialData {};
 
 	struct ParentGlobalSpatial : SpatialData {};
 
-} // namespace Core
+} // namespace Ortha::Core

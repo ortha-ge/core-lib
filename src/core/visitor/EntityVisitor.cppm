@@ -7,7 +7,7 @@ export module Ortha.Core.EntityVisitor;
 
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	using EntityVisitorAction = std::function<void(entt::entity)>;
 	using EntityVisitCompleteAction = std::function<void()>;
@@ -18,4 +18,4 @@ export namespace Core {
 		std::vector<EntityVisitCompleteAction> visitCompleteActions;
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

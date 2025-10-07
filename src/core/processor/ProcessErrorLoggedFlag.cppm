@@ -1,7 +1,7 @@
 export module Ortha.Core.ProcessErrorLoggedFlag;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct ProcessErrorLoggedFlag {};
 
-} // namespace Core
+} // namespace Ortha::Core

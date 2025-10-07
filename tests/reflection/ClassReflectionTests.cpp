@@ -29,7 +29,7 @@ namespace ClassReflectionTests {
 } // namespace ClassReflectionTests
 
 TEST_CASE("ClassWithProperties_MemberOffset_ReturnsAddressMatchingOffset", "ClassReflection") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	using namespace ClassReflectionTests;
 
 	auto firstOffset = memberOffset(&TestClass::publicProperty);
@@ -40,7 +40,7 @@ TEST_CASE("ClassWithProperties_MemberOffset_ReturnsAddressMatchingOffset", "Clas
 }
 
 TEST_CASE("ClassProperty_ApplyPropertyToInstance_AddressAndValueMatches", "ClassReflection") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	using namespace ClassReflectionTests;
 	const TestClass classInstance{ 5, 10 };
 	auto firstPropertyOffset = memberOffset(&TestClass::publicProperty);
@@ -60,7 +60,7 @@ TEST_CASE("ClassProperty_ApplyPropertyToInstance_AddressAndValueMatches", "Class
 }
 
 TEST_CASE("ClassWithNestedClassProperties_ApplyPropertyToInstance_AddressAndValueMatches", "ClassReflection") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	using namespace ClassReflectionTests;
 	const TestClass2 classInstance{ false, 5, 10 };
 	auto nestedClassOffset = memberOffset(&TestClass2::nestedClassProperty);
@@ -85,7 +85,7 @@ TEST_CASE("ClassWithNestedClassProperties_ApplyPropertyToInstance_AddressAndValu
 }
 
 TEST_CASE("ClassBuilderWithProperties_BuildAndGetProperty_OffsetAndSizesMatch", "ClassReflection") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	using namespace ClassReflectionTests;
 	ReflectionContext reflectionContext;
 	const auto classReflection = reflectionContext.addClass<TestClass>("TestClass")
@@ -104,7 +104,7 @@ TEST_CASE("ClassBuilderWithProperties_BuildAndGetProperty_OffsetAndSizesMatch", 
 }
 
 TEST_CASE("ClassBuilderWithProperties_BuildAndForEachProperties_EnumeratesProperties", "ClassReflection") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	using namespace ClassReflectionTests;
 	ReflectionContext reflectionContext;
 	const auto classReflection = reflectionContext.addClass<TestClass>("TestClass")
@@ -127,7 +127,7 @@ TEST_CASE("ClassBuilderWithProperties_BuildAndForEachProperties_EnumeratesProper
 }
 
 TEST_CASE("ReflectionContext_AddClass_HasMatchingClass", "ClassReflection") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	using namespace ClassReflectionTests;
 	ReflectionContext reflectionContext;
 	reflectionContext.addClass<TestClass>("TestClass")

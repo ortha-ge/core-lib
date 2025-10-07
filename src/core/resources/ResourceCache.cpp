@@ -10,7 +10,7 @@ import Ortha.Core.Log;
 import Ortha.Core.Resource;
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	ResourceCache::ResourceCache()
 		: mCleanupTriggerTimeSeconds(5) {
@@ -68,4 +68,4 @@ namespace Core {
 	}
 
 
-} // namespace Core
+} // namespace Ortha::Core

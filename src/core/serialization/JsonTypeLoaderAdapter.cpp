@@ -27,7 +27,7 @@ import Ortha.RTTI.TypeInfo;
 import Ortha.RTTI.TypeInstance;
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	template<typename... AllTypes>
 	class AnyLoaderMapper {
@@ -75,7 +75,7 @@ namespace Core {
 		}
 
 		static bool _tryLoadAnyAsTypeId(Log& log, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
-			using namespace Ortha::RTTI;
+			using namespace RTTI;
 			const auto& reflectionContex{ static_cast<ReflectionContext&>(getCurrentReflectionContext()) };
 			std::string typeName{ inputValue.GetString() };
 			if (auto typeId = reflectionContex.getTypeInfoByName(typeName)) {
@@ -128,7 +128,7 @@ namespace Core {
 
 	bool loadBasicJSON(Log& log,
 		const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value&, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 
 		const auto& typeInfo{ anyValue.getTypeInfo() };
 
@@ -179,7 +179,7 @@ namespace Core {
 
 	bool loadOptionalJSON(Log& log,
 		const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 
 		const auto& typeInfo{ anyValue.getTypeInfo() };
 		const auto& templateTypeHandle{ typeInfo.getTemplateArgsType(0zu) };
@@ -192,7 +192,7 @@ namespace Core {
 
 	bool loadSharedPtrJSON(Log& log,
 		const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 
 		const auto& typeInfo{ anyValue.getTypeInfo() };
 		const auto& templateTypeHandle{ typeInfo.getTemplateArgsType(0zu) };
@@ -208,7 +208,7 @@ namespace Core {
 	// Load variant with trial and error.
 
 	std::optional<Ortha::RTTI::TypeId> validateTypeNameInVariantTypes(const Ortha::RTTI::ReflectionContext& reflectionContext, const std::string& typeName, const Ortha::RTTI::TypeInfo& variantTypeInfo) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 		if (auto typeInfo = std::static_pointer_cast<TypeInfo>(reflectionContext.getTypeInfoByName(typeName))) {
 			for (size_t i = 0; i < variantTypeInfo.getTemplateArgsCount(); ++i) {
 				if (variantTypeInfo.getTemplateArgsType(i) == *typeInfo) {
@@ -222,7 +222,7 @@ namespace Core {
 
 	bool loadJSONVariantByTypeId(Log& log,
 			const Ortha::RTTI::ReflectionContext& reflectionContext, Ortha::RTTI::TypeId typeId, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 
 		Any variantTypeAny(std::move(typeId));
 		if (loadJSON(log, reflectionContext, inputKey, inputValue, variantTypeAny)) {
@@ -235,7 +235,7 @@ namespace Core {
 
 	bool loadVariantJSON(Log& log,
 			const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 
 		const auto& variantTypeInfo{ anyValue.getTypeInfo() };
 
@@ -278,7 +278,7 @@ namespace Core {
 
 	bool loadVectorJSON(Log& log,
 		const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 
 		if (!inputValue.IsArray()) {
 			logEntry(log, "Not an array.");
@@ -302,7 +302,7 @@ namespace Core {
 
 	bool loadMapJSON(Log& log,
 		const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 
 		if (!inputValue.IsObject()) {
 			logEntry(log, "Not an object.");
@@ -333,7 +333,7 @@ namespace Core {
 	}
 
 	bool loadJSON(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 
 		const auto& typeInfo{ getTypeInfo(anyValue.getTypeId()) };
 		if (typeInfo.getIsTemplate()) {
@@ -371,7 +371,7 @@ namespace Core {
 	std::string validateClassRoot(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Document& doc, const Ortha::RTTI::TypeId& typeId);
 
 	std::string validateBasicClassRoot(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext,  const rapidjson::Document& doc, const Ortha::RTTI::TypeId& typeId) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 		// if (!reflectionContext.hasClass(typeId)) {
 		// 	logEntry(log, "Class not registered.");
 		// 	return {};
@@ -392,7 +392,7 @@ namespace Core {
 	}
 
 	std::string validateVariantClassRoot(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext,  const rapidjson::Document& doc, const Ortha::RTTI::TypeId& typeId) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 		const auto& typeInfo{ getTypeInfo(typeId) };
 		for (size_t i = 0; i < typeInfo.getTemplateArgsCount(); ++i) {
 			const auto& variantTypeHandle{ typeInfo.getTemplateArgsType(i) };
@@ -413,7 +413,7 @@ namespace Core {
 	}
 
 	std::string validateClassRoot(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Document& doc, const Ortha::RTTI::TypeId& typeId) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 		if (getTypeInfo(typeId).getTemplateType() == TypeHandle::get<TemplateTypeTag<std::variant>>()) {
 			return validateVariantClassRoot(log, reflectionContext, doc, typeId);
 		}
@@ -454,7 +454,7 @@ namespace Core {
 	}
 
 	Ortha::RTTI::Any load(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext, std::string_view jsonInput) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 
 		rapidjson::Document doc;
 		doc.Parse(jsonInput.data(), jsonInput.length());
@@ -479,4 +479,4 @@ namespace Core {
 		return instance;
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

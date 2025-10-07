@@ -16,7 +16,7 @@ import JsonTypeAdapterTestClasses;
 
 TEST_CASE("JsonInput_LoadReflectedClass_LoadedClassMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass": {
 	    "stringProperty": "testString",
@@ -43,7 +43,7 @@ TEST_CASE("JsonInput_LoadReflectedClass_LoadedClassMatchesInput", "JsonTypeLoade
 
 TEST_CASE("JsonInput_LoadReflectedClassByName_InstanceIsCorrectType", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass": {
 	    "stringProperty": "testString",
@@ -70,7 +70,7 @@ TEST_CASE("JsonInput_LoadReflectedClassByName_InstanceIsCorrectType", "JsonTypeL
 
 TEST_CASE("JsonInput_LoadReflectedClassWithNestedClass_LoadedClassMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass2": {
 	    "nestedProperty": {
@@ -100,7 +100,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithNestedClass_LoadedClassMatchesInput",
 
 TEST_CASE("JsonInput_LoadReflectedClassWithOptional_LoadedOptionalMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass3": {
 	    "optionalIntProperty": 5
@@ -119,7 +119,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithOptional_LoadedOptionalMatchesInput",
 
 TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptional_LoadedOptionalIsNull", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass3": {}
 })";
@@ -137,7 +137,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptional_LoadedOptionalIsNull"
 
 TEST_CASE("JsonInput_LoadReflectedClassWithOptionalClass_LoadedOptionalMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass4": {
 	    "optionalClassProperty": {
@@ -165,7 +165,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithOptionalClass_LoadedOptionalMatchesIn
 
 TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptionalClass_LoadedOptionalIsNull", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass4": {}
 })";
@@ -182,7 +182,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptionalClass_LoadedOptionalIs
 
 TEST_CASE("JsonInput_LoadReflectedClassWithVariantIntType_LoadedVariantMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view jsonInput = R"({
 	"VariantTestClass": {
 	    "variantProperty": 5
@@ -202,7 +202,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithVariantIntType_LoadedVariantMatchesIn
 
 TEST_CASE("JsonInput_LoadReflectedClassWithVariantStringType_LoadedVariantMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view jsonInput = R"({
 	"VariantTestClass": {
 	    "variantProperty": "test"
@@ -222,7 +222,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithVariantStringType_LoadedVariantMatche
 
 TEST_CASE("JsonInput_LoadReflectedClassWithVector_LoadedVectorMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view jsonInput = R"({
 	"VectorTestClass": {
 	    "vectorProperty": [
@@ -245,7 +245,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithVector_LoadedVectorMatchesInput", "Js
 
 TEST_CASE("JsonInput_LoadReflectedClassWithMap_LoadedMapMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
-	using namespace Core;
+	using namespace Ortha::Core;
 	constexpr std::string_view jsonInput = R"({
 	"MapTestClass": {
 	    "mapProperty": {

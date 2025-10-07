@@ -11,7 +11,7 @@ import Ortha.Core.Reflect;
 import Glm.Reflection.Vec3;
 
 // TODO: Add inherits from
-export namespace Core {
+export namespace Ortha::Core {
 	template <class SpatialType>
 	void reflectSpatialType(Ortha::RTTI::ReflectionContext& reflectionContext, std::string_view name) {
 		reflectionContext.addClass<SpatialType>(std::string{ name })
@@ -23,7 +23,11 @@ export namespace Core {
 	}
 }
 
-template <>
-void Core::reflect<Core::Spatial>(Ortha::RTTI::ReflectionContext& reflectionContext) {
-	reflectSpatialType<Spatial>(reflectionContext, "Spatial");
+namespace Ortha::Core {
+
+	template <>
+	void reflect<Spatial>(RTTI::ReflectionContext& reflectionContext) {
+		reflectSpatialType<Spatial>(reflectionContext, "Spatial");
+	}
+
 }

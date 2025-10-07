@@ -1,7 +1,7 @@
 export module Ortha.Core.LogReportedFlag;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct LogReportedFlag{};
 
-} // namespace Core
+} // namespace Ortha::Core

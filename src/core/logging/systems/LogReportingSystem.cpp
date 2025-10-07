@@ -11,7 +11,7 @@ import Ortha.Core.Log;
 import Ortha.Core.LogReportedFlag;
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	LogReportingSystem::LogReportingSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry{ registry }
@@ -48,4 +48,4 @@ namespace Core {
 			});
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

@@ -1,9 +1,9 @@
 export module Ortha.Core.Process;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct Process {
 
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

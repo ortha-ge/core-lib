@@ -1,8 +1,8 @@
 
 export module Ortha.Core.FileLoadRequest;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct FileLoadRequest {};
 
-} // namespace Core
+} // namespace Ortha::Core

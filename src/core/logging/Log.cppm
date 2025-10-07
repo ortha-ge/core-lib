@@ -10,7 +10,7 @@ export module Ortha.Core.Log;
 
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct LogMessage {
 		std::string message;
@@ -47,4 +47,4 @@ export namespace Core {
 		std::string formattedString = std::vformat(formatString, std::make_format_args(args...));
 		logEntry(registry, entity, std::move(formattedString));
 	}
-} // namespace Core
+} // namespace Ortha::Core

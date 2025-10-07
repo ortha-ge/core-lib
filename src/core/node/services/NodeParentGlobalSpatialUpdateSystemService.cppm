@@ -6,9 +6,9 @@ import Ortha.Core.EnTTRegistryService;
 import Ortha.Core.SchedulerService;
 import kangaru;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct NodeParentGlobalSpatialUpdateSystemService
 		: kgr::single_service<NodeParentGlobalSpatialUpdateSystem, kgr::dependency<EnTTRegistryService, SchedulerService>>{};
 
-} // namespace Core
+} // namespace Ortha::Core

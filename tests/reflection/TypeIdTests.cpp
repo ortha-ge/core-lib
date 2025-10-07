@@ -15,7 +15,7 @@ import Ortha.Core.VariantTypeTraits;
 import Ortha.Core.VectorTypeTraits;
 
 TEST_CASE("TwoTypeIdsFromIdenticalGetCalls_CheckAddressEquality_AddressesMatch", "TypeId") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	const auto typeIdA = TypeId::get<void>();
 	const auto typeIdB = TypeId::get<void>();
 
@@ -25,7 +25,7 @@ TEST_CASE("TwoTypeIdsFromIdenticalGetCalls_CheckAddressEquality_AddressesMatch",
 }
 
 TEST_CASE("TwoTypeIdsFromDifferentGetCalls_CheckAddressEquality_AddressesDoNotMatch", "TypeId") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	const auto typeIdA = TypeId::get<int>();
 	const auto typeIdB = TypeId::get<bool>();
 
@@ -35,7 +35,7 @@ TEST_CASE("TwoTypeIdsFromDifferentGetCalls_CheckAddressEquality_AddressesDoNotMa
 }
 
 TEST_CASE("TypeIdGetVoid_GetTypeTraits_ReturnsVoidTypeTraits", "TypeId") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	const auto typeId = TypeId::get<void>();
 
 	const auto& typeTraits = getTypeTraits(typeId);
@@ -45,7 +45,7 @@ TEST_CASE("TypeIdGetVoid_GetTypeTraits_ReturnsVoidTypeTraits", "TypeId") {
 }
 
 TEST_CASE("TypeIdGetInt_GetTypeTraits_ReturnsBasicTypeTraits", "TypeId") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	const auto typeId = TypeId::get<int>();
 
 	const auto& typeTraits = getTypeTraits(typeId);
@@ -55,7 +55,7 @@ TEST_CASE("TypeIdGetInt_GetTypeTraits_ReturnsBasicTypeTraits", "TypeId") {
 }
 
 TEST_CASE("TypeIdGetMap_GetTypeTraits_ReturnsMapTypeTraits", "TypeId") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	const auto typeId = TypeId::get<std::map<int, int>>();
 
 	const auto& typeTraits = getTypeTraits(typeId);
@@ -65,7 +65,7 @@ TEST_CASE("TypeIdGetMap_GetTypeTraits_ReturnsMapTypeTraits", "TypeId") {
 }
 
 TEST_CASE("TypeIdGetOptional_GetTypeTraits_ReturnsOptionalTypeTraits", "TypeId") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	const auto typeId = TypeId::get<std::optional<int>>();
 
 	const auto& typeTraits = getTypeTraits(typeId);
@@ -75,7 +75,7 @@ TEST_CASE("TypeIdGetOptional_GetTypeTraits_ReturnsOptionalTypeTraits", "TypeId")
 }
 
 TEST_CASE("TypeIdGetVariant_GetTypeTraits_ReturnsVariantTypeTraits", "TypeId") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	const auto typeId = TypeId::get<std::variant<int, bool>>();
 
 	const auto& typeTraits = getTypeTraits(typeId);
@@ -85,7 +85,7 @@ TEST_CASE("TypeIdGetVariant_GetTypeTraits_ReturnsVariantTypeTraits", "TypeId") {
 }
 
 TEST_CASE("TypeIdGetVector_GetTypeTraits_ReturnsVectorTypeTraits", "TypeId") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	const auto typeId = TypeId::get<std::vector<int>>();
 
 	const auto& typeTraits = getTypeTraits(typeId);

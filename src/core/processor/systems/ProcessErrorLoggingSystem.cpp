@@ -9,7 +9,7 @@ import Ortha.Core.ProcessError;
 import Ortha.Core.ProcessErrorLoggedFlag;
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	ProcessErrorLoggingSystem::ProcessErrorLoggingSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry{ registry }
@@ -40,4 +40,4 @@ namespace Core {
 			});
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

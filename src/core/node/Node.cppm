@@ -8,7 +8,7 @@ export module Ortha.Core.Node;
 
 import Ortha.RTTI.TypeId;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class Node : public std::enable_shared_from_this<Node> {
 	public:
@@ -38,4 +38,4 @@ export namespace Core {
 		std::list<Ptr> mChildren;
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

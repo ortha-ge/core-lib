@@ -1,7 +1,7 @@
 
 export module Ortha.Core.Systems;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class CoreSystems {
 	public:
@@ -16,4 +16,4 @@ export namespace Core {
 
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

@@ -9,7 +9,7 @@ export module Ortha.Core.ResourceLoadRequest;
 import Ortha.Core.ResourceHandle;
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class ResourceLoadRequest {
 	public:
@@ -47,4 +47,4 @@ export namespace Core {
 		return resourceHandle;
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

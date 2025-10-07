@@ -1,11 +1,11 @@
 
 module Ortha.Core.Systems;
 
-namespace Core {
+namespace Ortha::Core {
 
 	CoreSystems::CoreSystems() = default;
 
 	CoreSystems::~CoreSystems() {
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

@@ -5,7 +5,7 @@ import Ortha.RTTI.Any;
 import Ortha.Core.TypeId;
 
 TEST_CASE("AnyConstructDefault_GetTypeInstance_IsVoidTypeIdAndNullInstance", "Any") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	Any any;
 
 	const auto typeInstance = any.getTypeInstance();
@@ -15,7 +15,7 @@ TEST_CASE("AnyConstructDefault_GetTypeInstance_IsVoidTypeIdAndNullInstance", "An
 }
 
 TEST_CASE("AnyConstructWithIntTypeId_GetOwnsInstance_ReturnsTrue", "Any") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	Any any(TypeId::get<int>());
 
 	const bool ownsInstance = any.getOwnsInstance();
@@ -24,7 +24,7 @@ TEST_CASE("AnyConstructWithIntTypeId_GetOwnsInstance_ReturnsTrue", "Any") {
 }
 
 TEST_CASE("AnyConstructWithLValue_GetOwnsInstance_ReturnsFalse", "Any") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	int instance{ 0 };
 	Any any(instance);
 
@@ -34,7 +34,7 @@ TEST_CASE("AnyConstructWithLValue_GetOwnsInstance_ReturnsFalse", "Any") {
 }
 
 TEST_CASE("AnyConstructWithInstanceOwnsInstanceTrue_DestroyAny_InstanceIsDestroyed") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	bool isDestroyed = false;
 	class TestClass {
 	public:
@@ -60,7 +60,7 @@ TEST_CASE("AnyConstructWithInstanceOwnsInstanceTrue_DestroyAny_InstanceIsDestroy
 }
 
 TEST_CASE("AnyConstructWithInstanceOwnsInstanceFalse_DestroyAny_InstanceIsNotDestroyed") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	int* instance = new int{ 5 };
 
 	{ Any any(TypeId::get<int>(), instance, false); }
@@ -69,7 +69,7 @@ TEST_CASE("AnyConstructWithInstanceOwnsInstanceFalse_DestroyAny_InstanceIsNotDes
 }
 
 TEST_CASE("AnyConstructWithIntTypeId_GetTypeInstance_IsIntTypeIdAndInstanceIsZero", "Any") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	Any any(TypeId::get<int>());
 
 	const auto typeInstance = any.getTypeInstance();

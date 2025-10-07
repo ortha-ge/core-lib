@@ -8,9 +8,9 @@ module Ortha.Core.Reflection;
 import Ortha.Core.Reflect;
 import Ortha.RTTI.TypeInfo;
 
-namespace Core {
+namespace Ortha::Core {
 	void reflectAll(Ortha::RTTI::ReflectionContext& reflectionContext) {
-		using namespace Ortha::RTTI;
+		using namespace RTTI;
 
 		TypeInfo::getFactory<std::string>().addAlias("std::string");
 		TypeInfo::getFactory<int32_t>().addAlias("int32");

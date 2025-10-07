@@ -24,7 +24,7 @@ import Ortha.Core.Log;
 // import Ortha.Core.VectorTypeTraits;
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	template<typename... AllTypes>
 	class AnySaverMapper {
@@ -226,4 +226,4 @@ namespace Core {
 		return buffer.GetString();
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

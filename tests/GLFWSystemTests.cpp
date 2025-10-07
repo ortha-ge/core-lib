@@ -10,7 +10,7 @@ import Ortha.Core.Window;
 import entt;
 
 // TEST_CASE("Window_GLFWSystemTickCreateWindowView_GLFWWindowProduced", "GLFWSystem") {
-// 	using namespace Core;
+// 	using namespace Ortha::Core;
 // 	const std::string_view expectedWindowTitle = "Test Window";
 // 	const uint32_t expectedWindowWidth = 640;
 // 	const uint32_t expectedWindowHeight = 480;
@@ -36,7 +36,7 @@ import entt;
 // }
 //
 // TEST_CASE("WindowInternal_GLFWSystemTickCloseWindowView_QuitAppRequestProduced", "GLFWSystem") {
-// 	using namespace Core;
+// 	using namespace Ortha::Core;
 // 	const bool isInitialized = glfwInit();
 // 	REQUIRE(isInitialized == GLFW_TRUE);
 // 	entt::registry registry{};

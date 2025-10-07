@@ -3,7 +3,7 @@ export module Ortha.Core.ResourceLoadSystem;
 import Ortha.Core.Scheduler;
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class ResourceLoadSystem {
 	public:
@@ -20,4 +20,4 @@ export namespace Core {
 		entt::entity mResourceCacheEntity{ entt::null };
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

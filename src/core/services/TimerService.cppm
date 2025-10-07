@@ -5,8 +5,8 @@ export import Ortha.Core.Timer;
 import Ortha.Core.SchedulerService;
 import kangaru;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class TimerService : public kgr::single_service<Timer, kgr::dependency<SchedulerService>> {};
 
-} // namespace Core
+} // namespace Ortha::Core

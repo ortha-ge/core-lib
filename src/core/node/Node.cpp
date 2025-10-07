@@ -9,7 +9,7 @@ module Ortha.Core.Node;
 
 import Ortha.RTTI.TypeHandle;
 
-namespace Core {
+namespace Ortha::Core {
 
 	Node::Node() = default;
 
@@ -89,4 +89,4 @@ namespace Core {
 
 	const std::list<Node::Ptr>& Node::getChildren() const { return mChildren; }
 
-} // namespace Core
+} // namespace Ortha::Core

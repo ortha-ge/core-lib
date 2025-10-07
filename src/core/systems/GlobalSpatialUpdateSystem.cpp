@@ -10,7 +10,7 @@ import Ortha.Core.GlobalSpatial;
 import Ortha.Core.Spatial;
 import glm;
 
-namespace Core {
+namespace Ortha::Core {
 
 	GlobalSpatialUpdateSystem::GlobalSpatialUpdateSystem(entt::registry& registry, Scheduler& scheduler)
 			: mRegistry(registry)
@@ -45,4 +45,4 @@ namespace Core {
 			});
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

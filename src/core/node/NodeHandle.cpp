@@ -6,7 +6,7 @@ module;
 
 module Ortha.Core.NodeHandle;
 
-namespace Core {
+namespace Ortha::Core {
 
 	NodeHandle NodeHandle::create(std::string name) { return NodeHandle(std::make_shared<Node>(name)); }
 
@@ -50,4 +50,4 @@ namespace Core {
 		_visitParentHeirarchy(node.getNode(), visitor);
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

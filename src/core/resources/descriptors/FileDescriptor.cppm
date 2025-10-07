@@ -4,10 +4,10 @@ module;
 
 export module Ortha.Core.FileDescriptor;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct FileDescriptor {
 		std::string filePath;
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

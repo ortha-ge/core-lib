@@ -6,7 +6,7 @@ module Ortha.Core.ResourceLoadRequest;
 
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	ResourceLoadRequest::ResourceLoadRequest(std::shared_ptr<ResourceHandle> resourceHandle, TypeLoaderFunction typeLoaderFunc)
 		: mResourceHandle(resourceHandle)
@@ -23,4 +23,4 @@ namespace Core {
 		return resourceEntity;
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

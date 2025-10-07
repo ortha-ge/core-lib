@@ -3,7 +3,7 @@ export module Ortha.Core.FileLoadSystem;
 import Ortha.Core.Scheduler;
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class FileLoadSystem {
 	public:
@@ -21,4 +21,4 @@ export namespace Core {
 
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

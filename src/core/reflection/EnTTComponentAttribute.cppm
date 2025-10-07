@@ -9,7 +9,7 @@ export module Ortha.Core.EnTTComponentAttribute;
 
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct EnTTComponentAttribute {
 		std::function<void*(entt::registry&, const entt::entity)> getComponent;
@@ -30,4 +30,4 @@ export namespace Core {
 		return annotation;
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

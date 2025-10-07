@@ -15,7 +15,7 @@ import Ortha.Core.Spatial;
 import Ortha.RTTI.TypeId;
 import entt;
 
-namespace Core::NodeParentGlobalSpatialUpdateSystemInternal {
+namespace Ortha::Core::NodeParentGlobalSpatialUpdateSystemInternal {
 
 	void createParentGlobalSpatial(entt::registry& registry, const entt::entity entity, const NodeHandle& nodeHandle) {
 		auto visitor = [&registry](const Node::Ptr& parentNode, const Node::Ptr& node) {
@@ -53,7 +53,7 @@ namespace Core::NodeParentGlobalSpatialUpdateSystemInternal {
 	}
 }
 
-namespace Core {
+namespace Ortha::Core {
 
 	NodeParentGlobalSpatialUpdateSystem::NodeParentGlobalSpatialUpdateSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry(registry)
@@ -78,4 +78,4 @@ namespace Core {
 			});
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

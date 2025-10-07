@@ -7,7 +7,7 @@ import Ortha.Core.EnTTRegistryService;
 import Ortha.Core.SchedulerService;
 import kangaru;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	void initCoreSubSystems(CoreSystems&, kgr::container&);
 
@@ -15,4 +15,4 @@ export namespace Core {
 		: kgr::single_service<CoreSystems>
 		, kgr::autocall<kgr::invoke_method<initCoreSubSystems>>{};
 
-} // namespace Core
+} // namespace Ortha::Core

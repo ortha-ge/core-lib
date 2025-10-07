@@ -4,10 +4,10 @@ module;
 
 export module Ortha.Core.GLFWWindow;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct GLFWWindow {
 		::GLFWwindow* window{};
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

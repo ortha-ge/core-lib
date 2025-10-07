@@ -8,7 +8,7 @@ module;
 
 module Ortha.Core.Scheduler;
 
-namespace Core {
+namespace Ortha::Core {
 
 	Task::Task(std::function<void()> onTick, uint8_t priority)
 		: mOnTick{ std::move(onTick) }
@@ -89,4 +89,4 @@ namespace Core {
 
 	void Scheduler::unschedule(TaskHandle taskHandle) { mSchedule->unschedule(taskHandle.getTask()); }
 
-} // namespace Core
+} // namespace Ortha::Core

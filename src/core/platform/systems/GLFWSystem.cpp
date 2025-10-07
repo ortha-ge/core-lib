@@ -40,7 +40,7 @@ import Ortha.Core.QuitAppRequest;
 import Ortha.Core.Window;
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	void* glfwNativeWindowHandle(GLFWwindow* _window) {
 #if defined(__linux__)
@@ -165,4 +165,4 @@ namespace Core {
 		registry.emplace<NativeWindowHandles>(entity, nativeWindowHandles);
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

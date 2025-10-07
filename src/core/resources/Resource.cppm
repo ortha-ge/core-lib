@@ -6,7 +6,7 @@ export module Ortha.Core.Resource;
 
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class Resource {
 	public:
@@ -23,4 +23,4 @@ export namespace Core {
 
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

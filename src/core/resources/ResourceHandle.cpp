@@ -7,7 +7,7 @@ module Ortha.Core.ResourceHandle;
 
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	ResourceHandle::ResourceHandle() = default;
 	ResourceHandle::ResourceHandle(std::shared_ptr<Resource> resource)
@@ -36,4 +36,4 @@ namespace Core {
 		return mResource ? mResource->getResourceEntity() : entt::null;
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

@@ -7,7 +7,7 @@ export module Ortha.Core.TypeSaver;
 
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class TypeSaverAdapter {
 	public:
@@ -20,4 +20,4 @@ export namespace Core {
 		std::unique_ptr<TypeSaverAdapter> adapter;
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

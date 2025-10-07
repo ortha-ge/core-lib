@@ -4,7 +4,7 @@ import Ortha.Core.Scheduler;
 import Ortha.Core.Window;
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 	class GLFWSystem {
 	public:
 
@@ -27,4 +27,4 @@ export namespace Core {
 		TaskHandle mTickHandle;
 
 	};
-} // namespace Core
+} // namespace Ortha::Core

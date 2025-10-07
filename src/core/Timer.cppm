@@ -7,7 +7,7 @@ export module Ortha.Core.Timer;
 
 import Ortha.Core.Scheduler;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class Timer {
 	public:
@@ -33,4 +33,4 @@ export namespace Core {
 
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

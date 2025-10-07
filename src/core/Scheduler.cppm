@@ -8,7 +8,7 @@ module;
 
 export module Ortha.Core.Scheduler;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class Task {
 	public:
@@ -73,4 +73,4 @@ export namespace Core {
 		std::shared_ptr<Schedule> mSchedule;
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

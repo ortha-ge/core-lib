@@ -5,7 +5,7 @@ module;
 module Ortha.Core.Resource;
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	Resource::Resource(std::string filePath, const entt::entity resourceEntity)
 		: mFilePath{ std::move(filePath) }
@@ -20,4 +20,4 @@ namespace Core {
 		return mResourceEntity;
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

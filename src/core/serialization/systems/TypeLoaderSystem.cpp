@@ -12,7 +12,7 @@ import Ortha.Core.RawDataResource;
 import Ortha.Core.TypeLoader;
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	TypeLoaderSystem::TypeLoaderSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry{ registry }
@@ -38,4 +38,4 @@ namespace Core {
 			});
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

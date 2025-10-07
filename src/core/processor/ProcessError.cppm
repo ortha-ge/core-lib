@@ -12,7 +12,7 @@ export module Ortha.Core.ProcessError;
 
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct ProcessError {
 		using RetryTimepoint = std::chrono::steady_clock::time_point;
@@ -38,4 +38,4 @@ export namespace Core {
 		addProcessError(registry, entity, retry, std::move(formattedString));
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

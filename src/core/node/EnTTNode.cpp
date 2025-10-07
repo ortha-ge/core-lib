@@ -8,7 +8,7 @@ import Ortha.Core.NodeHandle;
 import Ortha.Core.ProcessError;
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	EnTTNode::EnTTNode() = default;
 
@@ -68,4 +68,4 @@ namespace Core {
 		parentNodeHandle->getNode()->addChild(childNodeHandle->getNode());
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

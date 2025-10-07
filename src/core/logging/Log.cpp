@@ -8,7 +8,7 @@ module Ortha.Core.Log;
 import Ortha.Core.LogReportedFlag;
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	void logEntry(Log& log, std::string message) {
 		log.messages.emplace_back(std::move(message));
@@ -43,4 +43,4 @@ namespace Core {
 		);
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

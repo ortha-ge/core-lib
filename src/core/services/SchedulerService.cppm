@@ -4,8 +4,8 @@ export import Ortha.Core.Scheduler;
 
 import kangaru;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class SchedulerService : public kgr::single_service<Scheduler> {};
 
-} // namespace Core
+} // namespace Ortha::Core

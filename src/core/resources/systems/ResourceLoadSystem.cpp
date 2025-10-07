@@ -18,7 +18,7 @@ import Ortha.Core.ResourceHandle;
 import Ortha.Core.ResourceLoadRequest;
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	ResourceLoadSystem::ResourceLoadSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry{ registry }
@@ -71,4 +71,4 @@ namespace Core {
 		}
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

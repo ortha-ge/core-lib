@@ -12,7 +12,7 @@ import Ortha.Core.Reflect;
 import Ortha.Core.TypeLoader;
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	void load(entt::registry&, const Ortha::RTTI::ReflectionContext&, std::string_view, Ortha::RTTI::Any&);
 	void load(Log&, const Ortha::RTTI::ReflectionContext&, std::string_view, Ortha::RTTI::Any&);
@@ -45,4 +45,4 @@ export namespace Core {
 		}
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

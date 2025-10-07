@@ -8,7 +8,7 @@ import Ortha.Core.RawDataResource;
 import entt;
 
 TEST_CASE("FileDescriptorWithLoadRequest_FileLoadSystemTick_RawDataResourceProduced", "FileLoadSystem") {
-	using namespace Core;
+	using namespace Ortha::Core;
 	entt::registry registry{};
 	entt::entity fileResourceEntity = registry.create();
 	registry.emplace<FileDescriptor>(fileResourceEntity, "./assets/TestFileResource.txt");

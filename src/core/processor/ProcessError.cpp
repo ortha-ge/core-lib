@@ -8,7 +8,7 @@ module Ortha.Core.ProcessError;
 
 import entt;
 
-namespace Core {
+namespace Ortha::Core {
 
 	void addProcessError(entt::registry& registry, const entt::entity entity, ProcessError::RetryTypes retry) {
 		registry.emplace<ProcessError>(entity, std::nullopt, std::move(retry));
@@ -31,4 +31,4 @@ namespace Core {
 		return !std::get<bool>(processError.retry);
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

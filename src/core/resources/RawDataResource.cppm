@@ -5,11 +5,11 @@ module;
 
 export module Ortha.Core.RawDataResource;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct RawDataResource {
 		std::vector<uint8_t> rawData;
 		uintmax_t size{};
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

@@ -4,11 +4,15 @@ export import Ortha.Core.Node;
 
 import Ortha.Core.Reflect;
 
-template <>
-void Core::reflect<Core::Node>(Ortha::RTTI::ReflectionContext& reflectionContext) {
-	reflectionContext.addClass<Node>("Node")
-		.field<&Node::mName>("name")
-		//TODO: How to auto-reflect recursive things.
-		.field<&Node::mChildren>("children")
-		;
+namespace Ortha::Core {
+
+	template <>
+	void reflect<Node>(RTTI::ReflectionContext& reflectionContext) {
+		reflectionContext.addClass<Node>("Node")
+			.field<&Node::mName>("name")
+			//TODO: How to auto-reflect recursive things.
+			.field<&Node::mChildren>("children")
+			;
+	}
+
 }

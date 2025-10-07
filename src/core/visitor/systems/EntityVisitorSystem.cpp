@@ -14,7 +14,7 @@ import Ortha.RTTI.TypeHandle;
 import Ortha.RTTI.TypeId;
 import entt;
 
-namespace Core::EntityVisitorSystemInternal {
+namespace Ortha::Core::EntityVisitorSystemInternal {
 
 	void tryVisitAsEnTTNode(const std::vector<EntityVisitorAction>& actions, const Node::Ptr& node) {
 		if (node->getTypeId() != Ortha::RTTI::TypeHandle::get<EnTTNode>()) {
@@ -46,9 +46,9 @@ namespace Core::EntityVisitorSystemInternal {
 		}
 	}
 
-} // namespace Core::EntityVisitorSystemInternal
+} // namespace Ortha::Core::EntityVisitorSystemInternal
 
-namespace Core {
+namespace Ortha::Core {
 
 	EntityVisitorSystem::EntityVisitorSystem(entt::registry& registry, Scheduler& scheduler)
 		: mRegistry(registry)
@@ -87,4 +87,4 @@ namespace Core {
 			});
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

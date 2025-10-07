@@ -5,7 +5,7 @@ module;
 
 export module Ortha.Core.Window;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct Window {
 		std::string title{ "empty" };
@@ -13,4 +13,4 @@ export namespace Core {
 		int32_t height{ 480 };
 	};
 
-} // namespace Core
+} // namespace Ortha::Core

@@ -8,7 +8,7 @@ export module Ortha.Core.ResourceHandle;
 import Ortha.Core.Resource;
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	class ResourceHandle {
 	public:
@@ -37,4 +37,4 @@ export namespace Core {
 
 	using ResourceHandlePtr = std::shared_ptr<ResourceHandle>;
 
-} // namespace Core
+} // namespace Ortha::Core

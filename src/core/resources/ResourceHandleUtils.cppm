@@ -8,7 +8,7 @@ export module Ortha.Core.ResourceHandleUtils;
 import Ortha.Core.ResourceHandle;
 import entt;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	template <typename T>
 		std::tuple<entt::entity, T*> getResourceAndEntity(entt::registry& registry, const std::shared_ptr<ResourceHandle>& resourceHandle) {
@@ -29,4 +29,4 @@ export namespace Core {
 		return std::get<1>(getResourceAndEntity<T>(registry, resourceHandle));
 	}
 
-} // namespace Core
+} // namespace Ortha::Core

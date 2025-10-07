@@ -9,7 +9,7 @@ export import Glm.Reflection.Vec4;
 
 import Ortha.RTTI.ReflectionContext;
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	void reflectAll(Ortha::RTTI::ReflectionContext&);
 

@@ -7,9 +7,9 @@ import Ortha.Core.SchedulerService;
 import kangaru;
 
 
-export namespace Core {
+export namespace Ortha::Core {
 
 	struct ProcessErrorRetrySystemService
 		: kgr::single_service<ProcessErrorRetrySystem, kgr::dependency<EnTTRegistryService, SchedulerService>>{};
 
-} // namespace Core
+} // namespace Ortha::Core

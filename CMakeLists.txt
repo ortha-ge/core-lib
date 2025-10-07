@@ -7,7 +7,7 @@ add_compile_definitions(
         GLM_ENABLE_EXPERIMENTAL
 )
 
-set(KANGARU_REVERSE_DESTRUCTION ON)
+set(KANGARU_REVERSE_DESTRUCTION true CACHE "STRING" INTERNAL FORCE)
 
 Include(FetchContent)
 

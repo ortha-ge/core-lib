@@ -1,5 +1,5 @@
 
-target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
+target_sources(ortha-core PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
         GlobalSpatial.cppm
         Reflection.cppm
         Spatial.cppm
@@ -8,7 +8,7 @@ target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
         glmVec4.cppm
 )
 
-target_sources(core-lib PRIVATE
+target_sources(ortha-core PRIVATE
         Reflection.cpp
 )
 

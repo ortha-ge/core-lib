@@ -50,8 +50,8 @@ find_package(bgfx CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(RapidJSON CONFIG REQUIRED)
 
-set(core-lib-libraries
-        ortha-rtti-lib
+set(ortha-core-libraries
+        ortha-rtti
         EnTT::EnTT-Library
         glfw
         glm::glm
@@ -64,18 +64,18 @@ set(core-lib-libraries
 
 if (EMSCRIPTEN_BUILD)
 find_package(SDL2 CONFIG REQUIRED)
-set(core-lib-libraries ${core-lib-libraries} SDL2::SDL2)
+set(ortha-core-libraries ${ortha-core-libraries} SDL2::SDL2)
 endif()
 
-add_library(core-lib STATIC)
+add_library(ortha-core STATIC)
 
-target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES BASE_DIRS src)
-target_compile_features(core-lib PUBLIC cxx_std_23)
-target_link_libraries(core-lib PUBLIC ${core-lib-libraries})
-target_include_directories(core-lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_sources(ortha-core PUBLIC FILE_SET modules TYPE CXX_MODULES BASE_DIRS src)
+target_compile_features(ortha-core PUBLIC cxx_std_23)
+target_link_libraries(ortha-core PUBLIC ${ortha-core-libraries})
+target_include_directories(ortha-core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 if (EMSCRIPTEN_BUILD)
-#target_compile_options(core-lib PUBLIC -pthread)
+#target_compile_options(ortha-core PUBLIC -pthread)
 endif()
 
 add_subdirectory(src)

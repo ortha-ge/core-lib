@@ -1,5 +1,5 @@
 
-target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
+target_sources(ortha-core PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
         FileLoadRequest.cppm
         RawDataResource.cppm
         Resource.cppm
@@ -9,7 +9,7 @@ target_sources(core-lib PUBLIC FILE_SET modules TYPE CXX_MODULES FILES
         ResourceLoadRequest.cppm
 )
 
-target_sources(core-lib PRIVATE
+target_sources(ortha-core PRIVATE
         Resource.cpp
         ResourceCache.cpp
         ResourceHandle.cpp

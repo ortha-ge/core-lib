@@ -1,9 +1,9 @@
 module;
 
 #include <algorithm>
+#include <list>
 #include <memory>
 #include <string>
-#include <vector>
 
 module Core.Node;
 
@@ -21,8 +21,10 @@ namespace Core {
 			parentNode->removeChild(shared_from_this());
 		}
 
-		for (auto&& child : mChildren) {
-			child->destroy();
+
+		for (auto it = mChildren.begin(); it != mChildren.end();) {
+			auto currentIt = it++;
+			(*currentIt)->destroy();
 		}
 
 		mChildren.clear();
@@ -85,6 +87,6 @@ namespace Core {
 
 	Node::Ptr Node::getParentNode() const { return mParent.lock(); }
 
-	const std::vector<Node::Ptr>& Node::getChildren() const { return mChildren; }
+	const std::list<Node::Ptr>& Node::getChildren() const { return mChildren; }
 
 } // namespace Core

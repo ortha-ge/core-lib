@@ -1,8 +1,8 @@
 module;
 
+#include <list>
 #include <memory>
 #include <string>
-#include <vector>
 
 export module Core.Node;
 
@@ -30,12 +30,12 @@ export namespace Core {
 
 		const std::string& getName() const;
 		Ptr getParentNode() const;
-		const std::vector<Ptr>& getChildren() const;
+		const std::list<Ptr>& getChildren() const;
 
 	//private:
 		std::string mName;
 		WeakPtr mParent;
-		std::vector<Ptr> mChildren;
+		std::list<Ptr> mChildren;
 	};
 
 } // namespace Core

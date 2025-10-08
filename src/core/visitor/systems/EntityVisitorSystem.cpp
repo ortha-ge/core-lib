@@ -17,7 +17,8 @@ import entt;
 namespace Ortha::Core::EntityVisitorSystemInternal {
 
 	void tryVisitAsEnTTNode(const std::vector<EntityVisitorAction>& actions, const Node::Ptr& node) {
-		if (node->getTypeId() != Ortha::RTTI::TypeHandle::get<EnTTNode>()) {
+		using namespace RTTI;
+		if (node->getTypeId() != TypeId::get<EnTTNode>()) {
 			return;
 		}
 

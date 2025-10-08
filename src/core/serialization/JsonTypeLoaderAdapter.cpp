@@ -33,7 +33,7 @@ namespace Ortha::Core {
 	class AnyLoaderMapper {
 
 		template<typename T>
-		static bool _tryLoadAnyAsIntegral(Log& log, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+		static bool _tryLoadAnyAsIntegral(Log& log, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 			if (!inputValue.IsNumber()) {
 				return false;
 			}
@@ -64,7 +64,7 @@ namespace Ortha::Core {
 			return true;
 		}
 
-		static bool _tryLoadAnyAsString(Log& log, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+		static bool _tryLoadAnyAsString(Log& log, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 			if (!inputValue.IsString()) {
 				return false;
 			}
@@ -74,21 +74,21 @@ namespace Ortha::Core {
 			return true;
 		}
 
-		static bool _tryLoadAnyAsTypeId(Log& log, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+		static bool _tryLoadAnyAsTypeId(Log& log, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 			using namespace RTTI;
-			const auto& reflectionContex{ static_cast<ReflectionContext&>(getCurrentReflectionContext()) };
+			const auto& reflectionContext{ ReflectionContextStack::getCurrentContext() };
 			std::string typeName{ inputValue.GetString() };
-			if (auto typeId = reflectionContex.getTypeInfoByName(typeName)) {
+			if (auto typeId = reflectionContext.getTypeInfoByName(typeName)) {
 				TypeId& typeIdValue{ *static_cast<TypeId*>(anyValue.getTypeInstance().getInstance()) };
-				typeIdValue = TypeId(*typeId);
+				typeIdValue = typeId->getTypeId();
 			}
 
 			return true;
 		}
 
 		template<typename T>
-		static bool _tryLoadAnyAs(Log& log, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
-			if (anyValue.getTypeId() != Ortha::RTTI::TypeId::get<T>()) {
+		static bool _tryLoadAnyAs(Log& log, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
+			if (anyValue.getTypeId() != RTTI::TypeId::get<T>()) {
 				return false;
 			}
 
@@ -96,7 +96,7 @@ namespace Ortha::Core {
 				return _tryLoadAnyAsIntegral<T>(log, inputValue, anyValue);
 			} else if constexpr (std::is_same_v<T, std::string>) {
 				return _tryLoadAnyAsString(log, inputValue, anyValue);
-			} else if constexpr (std::is_same_v<T, Ortha::RTTI::TypeId>) {
+			} else if constexpr (std::is_same_v<T, RTTI::TypeId>) {
 				return _tryLoadAnyAsTypeId(log, inputValue, anyValue);
 			} else {
 				T& value{ *static_cast<T*>(anyValue.getTypeInstance().getInstance()) };
@@ -107,7 +107,7 @@ namespace Ortha::Core {
 		}
 
 		template<typename... Types>
-		static bool _tryLoadAny(Log& log, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+		static bool _tryLoadAny(Log& log, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 			if constexpr (sizeof...(Types) == 1u) {
 				return _tryLoadAnyAs<Types...>(log, inputValue, anyValue);
 			} else {
@@ -116,18 +116,18 @@ namespace Ortha::Core {
 		}
 
 	public:
-		static bool tryLoadAny(Log& log, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+		static bool tryLoadAny(Log& log, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 			return _tryLoadAny<AllTypes...>(log, inputValue, anyValue);
 		}
 	};
 
 	using AnyLoaderMapperTypes = AnyLoaderMapper<
-		Ortha::RTTI::TypeId, std::string, int8_t, uint8_t, int16_t, uint16_t, int32_t, uint32_t, double, float, bool>;
+		RTTI::TypeId, std::string, int8_t, uint8_t, int16_t, uint16_t, int32_t, uint32_t, double, float, bool>;
 
-	bool loadJSON(Log&, const Ortha::RTTI::ReflectionContext&, const rapidjson::Value&, const rapidjson::Value&, Ortha::RTTI::Any&);
+	bool loadJSON(Log&, const RTTI::ReflectionContext&, const rapidjson::Value&, const rapidjson::Value&, RTTI::Any&);
 
 	bool loadBasicJSON(Log& log,
-		const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value&, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+		const RTTI::ReflectionContext& reflectionContext, const rapidjson::Value&, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 		using namespace RTTI;
 
 		const auto& typeInfo{ anyValue.getTypeInfo() };
@@ -136,7 +136,7 @@ namespace Ortha::Core {
 			for (const auto& [propertyName, property] : typeInfo.getFields()) {
 				const auto& propertyTypeInfo{ getTypeInfo(property.getTypeId()) };
 				const bool isOptionalProperty = propertyTypeInfo.getIsTemplate()
-					&& propertyTypeInfo.getTemplateType() == TypeHandle::get<TemplateTypeTag<std::optional>>();
+					&& propertyTypeInfo.getTemplateType() == TypeId::get<TemplateTypeTag<std::optional>>();
 
 				auto it = inputValue.FindMember(propertyName.c_str());
 				if (it == inputValue.MemberEnd()) {
@@ -155,8 +155,8 @@ namespace Ortha::Core {
 		}
 
 		// TODO: A way to identify enums
-		if (typeInfo != TypeHandle::get<std::string>() &&
-			typeInfo != TypeHandle::get<TypeId>() &&
+		if (typeInfo.getTypeId() != TypeId::get<std::string>() &&
+			typeInfo.getTypeId() != TypeId::get<TypeId>() &&
 			inputValue.IsString()) {
 			const char* enumString = inputValue.GetString();
 			if (!typeInfo.hasConstant(enumString)) {
@@ -178,7 +178,7 @@ namespace Ortha::Core {
 	}
 
 	bool loadOptionalJSON(Log& log,
-		const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+		const RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 		using namespace RTTI;
 
 		const auto& typeInfo{ anyValue.getTypeInfo() };
@@ -191,7 +191,7 @@ namespace Ortha::Core {
 	}
 
 	bool loadSharedPtrJSON(Log& log,
-		const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+		const RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 		using namespace RTTI;
 
 		const auto& typeInfo{ anyValue.getTypeInfo() };
@@ -207,12 +207,13 @@ namespace Ortha::Core {
 	// Load variant from Object JSON that has 'variant' string type.
 	// Load variant with trial and error.
 
-	std::optional<Ortha::RTTI::TypeId> validateTypeNameInVariantTypes(const Ortha::RTTI::ReflectionContext& reflectionContext, const std::string& typeName, const Ortha::RTTI::TypeInfo& variantTypeInfo) {
+	std::optional<RTTI::TypeId> validateTypeNameInVariantTypes(const RTTI::ReflectionContext& reflectionContext, const std::string& typeName, const RTTI::TypeInfo& variantTypeInfo) {
 		using namespace RTTI;
 		if (auto typeInfo = std::static_pointer_cast<TypeInfo>(reflectionContext.getTypeInfoByName(typeName))) {
+			const auto& typeId = typeInfo->getTypeId();
 			for (size_t i = 0; i < variantTypeInfo.getTemplateArgsCount(); ++i) {
-				if (variantTypeInfo.getTemplateArgsType(i) == *typeInfo) {
-					return TypeId(typeInfo->getTypeHandle());
+				if (variantTypeInfo.getTemplateArgsType(i) == typeId) {
+					return typeId;
 				}
 			}
 		}
@@ -221,7 +222,7 @@ namespace Ortha::Core {
 	}
 
 	bool loadJSONVariantByTypeId(Log& log,
-			const Ortha::RTTI::ReflectionContext& reflectionContext, Ortha::RTTI::TypeId typeId, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+			const RTTI::ReflectionContext& reflectionContext, RTTI::TypeId typeId, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 		using namespace RTTI;
 
 		Any variantTypeAny(std::move(typeId));
@@ -234,7 +235,7 @@ namespace Ortha::Core {
 	}
 
 	bool loadVariantJSON(Log& log,
-			const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+			const RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 		using namespace RTTI;
 
 		const auto& variantTypeInfo{ anyValue.getTypeInfo() };
@@ -277,7 +278,7 @@ namespace Ortha::Core {
 	}
 
 	bool loadVectorJSON(Log& log,
-		const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+		const RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 		using namespace RTTI;
 
 		if (!inputValue.IsArray()) {
@@ -301,7 +302,7 @@ namespace Ortha::Core {
 	}
 
 	bool loadMapJSON(Log& log,
-		const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+		const RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 		using namespace RTTI;
 
 		if (!inputValue.IsObject()) {
@@ -332,33 +333,33 @@ namespace Ortha::Core {
 		return true;
 	}
 
-	bool loadJSON(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, Ortha::RTTI::Any& anyValue) {
+	bool loadJSON(Log& log, const RTTI::ReflectionContext& reflectionContext, const rapidjson::Value& inputKey, const rapidjson::Value& inputValue, RTTI::Any& anyValue) {
 		using namespace RTTI;
 
 		const auto& typeInfo{ getTypeInfo(anyValue.getTypeId()) };
 		if (typeInfo.getIsTemplate()) {
 			const auto& templateTypeHandle{ typeInfo.getTemplateType() };
-			if (templateTypeHandle == TypeHandle::get<TemplateTypeTag<std::map>>()) {
+			if (templateTypeHandle == TypeId::get<TemplateTypeTag<std::map>>()) {
 				return loadMapJSON(log, reflectionContext, inputKey, inputValue, anyValue);
 			}
 
-			if (templateTypeHandle == TypeHandle::get<TemplateTypeTag<std::optional>>()) {
+			if (templateTypeHandle == TypeId::get<TemplateTypeTag<std::optional>>()) {
 				return loadOptionalJSON(log, reflectionContext, inputKey, inputValue, anyValue);
 			}
 
-			if (templateTypeHandle == TypeHandle::get<TemplateTypeTag<std::shared_ptr>>()) {
+			if (templateTypeHandle == TypeId::get<TemplateTypeTag<std::shared_ptr>>()) {
 				return loadSharedPtrJSON(log, reflectionContext, inputKey, inputValue, anyValue);
 			}
 
-			if (templateTypeHandle == TypeHandle::get<TemplateTypeTag<std::variant>>()) {
+			if (templateTypeHandle == TypeId::get<TemplateTypeTag<std::variant>>()) {
 				return loadVariantJSON(log, reflectionContext, inputKey, inputValue, anyValue);
 			}
 
-			if (templateTypeHandle == TypeHandle::get<TemplateTypeTag<std::vector>>()) {
+			if (templateTypeHandle == TypeId::get<TemplateTypeTag<std::vector>>()) {
 				return loadVectorJSON(log, reflectionContext, inputKey, inputValue, anyValue);
 			}
 
-			if (templateTypeHandle == TypeHandle::get<TemplateTypeTag<std::basic_string>>()) {
+			if (templateTypeHandle == TypeId::get<TemplateTypeTag<std::basic_string>>()) {
 				return loadBasicJSON(log, reflectionContext, inputKey, inputValue, anyValue);
 			}
 		}
@@ -368,16 +369,16 @@ namespace Ortha::Core {
 
 
 
-	std::string validateClassRoot(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Document& doc, const Ortha::RTTI::TypeId& typeId);
+	std::string validateClassRoot(Log& log, const RTTI::ReflectionContext& reflectionContext, const rapidjson::Document& doc, const RTTI::TypeId& typeId);
 
-	std::string validateBasicClassRoot(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext,  const rapidjson::Document& doc, const Ortha::RTTI::TypeId& typeId) {
+	std::string validateBasicClassRoot(Log& log, const RTTI::ReflectionContext& reflectionContext,  const rapidjson::Document& doc, const RTTI::TypeId& typeId) {
 		using namespace RTTI;
 		// if (!reflectionContext.hasClass(typeId)) {
 		// 	logEntry(log, "Class not registered.");
 		// 	return {};
 		// }
 
-		const auto& classReflection{ std::static_pointer_cast<TypeInfo>(reflectionContext.getTypeInfo(*typeId.getTypeHandle())) };
+		const auto& classReflection{ reflectionContext.getTypeInfo(typeId) };
 		const auto& className{ classReflection->getAlias() };
 		if (!className) {
 			return {};
@@ -391,18 +392,18 @@ namespace Ortha::Core {
 		return *className;
 	}
 
-	std::string validateVariantClassRoot(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext,  const rapidjson::Document& doc, const Ortha::RTTI::TypeId& typeId) {
+	std::string validateVariantClassRoot(Log& log, const RTTI::ReflectionContext& reflectionContext,  const rapidjson::Document& doc, const RTTI::TypeId& typeId) {
 		using namespace RTTI;
 		const auto& typeInfo{ getTypeInfo(typeId) };
 		for (size_t i = 0; i < typeInfo.getTemplateArgsCount(); ++i) {
-			const auto& variantTypeHandle{ typeInfo.getTemplateArgsType(i) };
-			auto variantTypeInfo = std::static_pointer_cast<TypeInfo>(reflectionContext.getTypeInfo(variantTypeHandle));
+			const auto& variantTypeId{ typeInfo.getTemplateArgsType(i) };
+			auto variantTypeInfo = reflectionContext.getTypeInfo(variantTypeId);
 			if (!variantTypeInfo) {
 				continue;
 			}
 
 			if (auto alias = variantTypeInfo->getAlias()) {
-				std::string validatedName = validateClassRoot(log, reflectionContext, doc, TypeId(variantTypeHandle));
+				std::string validatedName = validateClassRoot(log, reflectionContext, doc, variantTypeId);
 				if (!validatedName.empty()) {
 					return validatedName;
 				}
@@ -412,26 +413,26 @@ namespace Ortha::Core {
 		return {};
 	}
 
-	std::string validateClassRoot(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Document& doc, const Ortha::RTTI::TypeId& typeId) {
+	std::string validateClassRoot(Log& log, const RTTI::ReflectionContext& reflectionContext, const rapidjson::Document& doc, const RTTI::TypeId& typeId) {
 		using namespace RTTI;
-		if (getTypeInfo(typeId).getTemplateType() == TypeHandle::get<TemplateTypeTag<std::variant>>()) {
+		if (getTypeInfo(typeId).getTemplateType() == TypeId::get<TemplateTypeTag<std::variant>>()) {
 			return validateVariantClassRoot(log, reflectionContext, doc, typeId);
 		}
 
 		return validateBasicClassRoot(log, reflectionContext, doc, typeId);
 	}
 
-	std::string validateClassRoot(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext, const rapidjson::Document& doc, Ortha::RTTI::Any& anyValue) {
+	std::string validateClassRoot(Log& log, const RTTI::ReflectionContext& reflectionContext, const rapidjson::Document& doc, RTTI::Any& anyValue) {
 		return validateClassRoot(log, reflectionContext, doc, anyValue.getTypeId());
 	}
 
-	void load(entt::registry& registry, const Ortha::RTTI::ReflectionContext& reflectionContext, std::string_view jsonInput, Ortha::RTTI::Any& anyValue) {
+	void load(entt::registry& registry, const RTTI::ReflectionContext& reflectionContext, std::string_view jsonInput, RTTI::Any& anyValue) {
 		Log log;
 		load(log, reflectionContext, jsonInput, anyValue);
 		logEntries(registry, std::move(log));
 	}
 
-	void load(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext, std::string_view jsonInput, Ortha::RTTI::Any& anyValue) {
+	void load(Log& log, const RTTI::ReflectionContext& reflectionContext, std::string_view jsonInput, RTTI::Any& anyValue) {
 		rapidjson::Document doc;
 		doc.Parse(jsonInput.data(), jsonInput.length());
 
@@ -446,14 +447,14 @@ namespace Ortha::Core {
 		loadJSON(log, reflectionContext, classRootObjectIt->name, classRootObjectIt->value, anyValue);
 	}
 
-	Ortha::RTTI::Any load(entt::registry& registry, const Ortha::RTTI::ReflectionContext& reflectionContext, std::string_view jsonInput) {
+	RTTI::Any load(entt::registry& registry, const RTTI::ReflectionContext& reflectionContext, std::string_view jsonInput) {
 		Log log;
-		Ortha::RTTI::Any result = load(log, reflectionContext, jsonInput);
+		RTTI::Any result = load(log, reflectionContext, jsonInput);
 		logEntries(registry, std::move(log));
 		return result;
 	}
 
-	Ortha::RTTI::Any load(Log& log, const Ortha::RTTI::ReflectionContext& reflectionContext, std::string_view jsonInput) {
+	RTTI::Any load(Log& log, const RTTI::ReflectionContext& reflectionContext, std::string_view jsonInput) {
 		using namespace RTTI;
 
 		rapidjson::Document doc;
@@ -474,7 +475,7 @@ namespace Ortha::Core {
 			return {};
 		}
 
-		Any instance{ TypeId(*typeInfo) };
+		Any instance{ typeInfo->getTypeId() };
 		loadJSON(log, reflectionContext, rootClassObjectIt->name, rootClassObjectIt->value, instance);
 		return instance;
 	}

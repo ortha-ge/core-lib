@@ -14,16 +14,17 @@ import entt;
 
 export namespace Ortha::Core {
 
-	void load(entt::registry&, const Ortha::RTTI::ReflectionContext&, std::string_view, Ortha::RTTI::Any&);
-	void load(Log&, const Ortha::RTTI::ReflectionContext&, std::string_view, Ortha::RTTI::Any&);
-	Ortha::RTTI::Any load(entt::registry&, const Ortha::RTTI::ReflectionContext&, std::string_view);
-	Ortha::RTTI::Any load(Log&, const Ortha::RTTI::ReflectionContext&, std::string_view);
+	void load(entt::registry&, const RTTI::ReflectionContext&, std::string_view, RTTI::Any&);
+	void load(Log&, const RTTI::ReflectionContext&, std::string_view, RTTI::Any&);
+	RTTI::Any load(entt::registry&, const RTTI::ReflectionContext&, std::string_view);
+	RTTI::Any load(Log&, const RTTI::ReflectionContext&, std::string_view);
 
 	template<typename T>
 	class JsonTypeLoaderAdapter : public TypeLoaderAdapter {
 	public:
 		T _loadComponent(entt::registry& registry, entt::entity entity, std::string_view jsonInput) {
-			auto& reflectionContext{ static_cast<Ortha::RTTI::ReflectionContext&>(Ortha::RTTI::getCurrentReflectionContext()) };
+			using namespace Ortha::RTTI;
+			auto& reflectionContext{ ReflectionContextStack::getCurrentContext() };
 			//Core::reflectIfValidType<T>(reflectionContext);
 
 			T instance{};

@@ -18,7 +18,9 @@ import kangaru;
 namespace Ortha::Core {
 
 	void initCoreSubSystems(CoreSystems&, kgr::container& container) {
-		reflectAll(static_cast<Ortha::RTTI::ReflectionContext&>(Ortha::RTTI::getCurrentReflectionContext()));
+		using namespace RTTI;
+
+		reflectAll(ReflectionContextStack::getCurrentContext());
 
 		// Platform
 		container.emplace<GLFWSystemService>();

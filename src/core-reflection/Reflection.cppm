@@ -1,5 +1,6 @@
 export module Ortha.Core.Reflection;
 
+export import Ortha.Core.Reflection.EnTTNode;
 export import Ortha.Core.Reflection.GlobalSpatial;
 export import Ortha.Core.Reflection.Node;
 export import Ortha.Core.Reflection.Spatial;
@@ -11,6 +12,6 @@ import Ortha.RTTI.ReflectionContext;
 
 export namespace Ortha::Core {
 
-	void reflectAll(Ortha::RTTI::ReflectionContext&);
+	void reflectAll(RTTI::ReflectionContext&);
 
 }

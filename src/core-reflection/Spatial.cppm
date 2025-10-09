@@ -13,11 +13,13 @@ import Glm.Reflection.Vec3;
 // TODO: Add inherits from
 export namespace Ortha::Core {
 	template <class SpatialType>
-	void reflectSpatialType(Ortha::RTTI::ReflectionContext& reflectionContext, std::string_view name) {
-		reflectionContext.addClass<SpatialType>(std::string{ name })
-			// .field<&SpatialType::position>("position")
-			// //.property("rotation", &Spatial::rotation)
-			// .field<&SpatialType::scale>("scale")
+	void reflectSpatialType(RTTI::ReflectionContext& reflectionContext, std::string_view name) {
+		reflectionContext.addClass<SpatialType>(name)
+			.template field<&SpatialType::position>("position")
+			// TODO: Properties that can convert from different types
+			// TODO: read quaternion from euler angles in data
+			//.property("rotation", &Spatial::rotation)
+			.template field<&SpatialType::scale>("scale")
 			//.annotate(createEnTTComponentAttribute<SpatialType>())
 			;
 	}

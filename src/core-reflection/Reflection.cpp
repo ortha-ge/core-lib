@@ -9,7 +9,7 @@ import Ortha.Core.Reflect;
 import Ortha.RTTI.TypeInfo;
 
 namespace Ortha::Core {
-	void reflectAll(Ortha::RTTI::ReflectionContext& reflectionContext) {
+	void reflectAll(RTTI::ReflectionContext& reflectionContext) {
 		using namespace RTTI;
 
 		TypeInfo::getFactory<std::string>().addAlias("std::string");
@@ -23,6 +23,7 @@ namespace Ortha::Core {
 		reflect<glm::ivec2>(reflectionContext);
 		reflect<glm::vec3>(reflectionContext);
 		reflect<glm::vec4>(reflectionContext);
+		reflect<EnTTNode>(reflectionContext);
 		reflect<GlobalSpatial>(reflectionContext);
 		reflect<Node>(reflectionContext);
 		reflect<Spatial>(reflectionContext);

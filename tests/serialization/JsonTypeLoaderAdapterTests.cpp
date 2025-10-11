@@ -7,16 +7,18 @@
 #include <catch2/catch_test_macros.hpp>
 
 import Ortha.RTTI.Any;
-import Ortha.Core.ClassReflection;
 import Ortha.Core.JsonTypeLoaderAdapter;
 import Ortha.Core.Log;
-import Ortha.Core.ReflectionContext;
-import Ortha.Core.TypeId;
+import Ortha.RTTI.Reflect;
+import Ortha.RTTI.ReflectionContext;
+import Ortha.RTTI.ReflectionContextStack;
+import Ortha.RTTI.TypeId;
 import JsonTypeAdapterTestClasses;
 
 TEST_CASE("JsonInput_LoadReflectedClass_LoadedClassMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
 	using namespace Ortha::Core;
+	using namespace Ortha::RTTI;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass": {
 	    "stringProperty": "testString",
@@ -27,6 +29,7 @@ TEST_CASE("JsonInput_LoadReflectedClass_LoadedClassMatchesInput", "JsonTypeLoade
 	}
 })";
 	ReflectionContext reflectionContext{};
+	auto scopedContext = ReflectionContextStack::pushContext(&reflectionContext);
 	reflect<TestClass>(reflectionContext);
 	TestClass testClass{};
 	Any anyValue(testClass);
@@ -44,6 +47,7 @@ TEST_CASE("JsonInput_LoadReflectedClass_LoadedClassMatchesInput", "JsonTypeLoade
 TEST_CASE("JsonInput_LoadReflectedClassByName_InstanceIsCorrectType", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
 	using namespace Ortha::Core;
+	using namespace Ortha::RTTI;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass": {
 	    "stringProperty": "testString",
@@ -54,13 +58,14 @@ TEST_CASE("JsonInput_LoadReflectedClassByName_InstanceIsCorrectType", "JsonTypeL
 	}
 })";
 	ReflectionContext reflectionContext{};
+	auto scopedContext = ReflectionContextStack::pushContext(&reflectionContext);
 	reflect<TestClass>(reflectionContext);
 	Log log;
 
 	Any anyValue = load(log, reflectionContext, jsonInput);
 
 	REQUIRE(TypeId::get<TestClass>() == anyValue.getTypeId());
-	TestClass* testClass = static_cast<TestClass*>(anyValue.getInstance());
+	auto* testClass = static_cast<TestClass*>(anyValue.getTypeInstance().getInstance());
 	REQUIRE(testClass->stringProperty == "testString");
 	REQUIRE(testClass->intProperty == 5);
 	REQUIRE(testClass->doubleProperty == 10.0);
@@ -71,6 +76,7 @@ TEST_CASE("JsonInput_LoadReflectedClassByName_InstanceIsCorrectType", "JsonTypeL
 TEST_CASE("JsonInput_LoadReflectedClassWithNestedClass_LoadedClassMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
 	using namespace Ortha::Core;
+	using namespace Ortha::RTTI;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass2": {
 	    "nestedProperty": {
@@ -83,6 +89,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithNestedClass_LoadedClassMatchesInput",
 	}
 })";
 	ReflectionContext reflectionContext{};
+	auto scopedContext = ReflectionContextStack::pushContext(&reflectionContext);
 	reflect<TestClass>(reflectionContext);
 	reflect<TestClass2>(reflectionContext);
 	TestClass2 testClass{};
@@ -101,12 +108,14 @@ TEST_CASE("JsonInput_LoadReflectedClassWithNestedClass_LoadedClassMatchesInput",
 TEST_CASE("JsonInput_LoadReflectedClassWithOptional_LoadedOptionalMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
 	using namespace Ortha::Core;
+	using namespace Ortha::RTTI;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass3": {
 	    "optionalIntProperty": 5
 	}
 })";
 	ReflectionContext reflectionContext{};
+	auto scopedContext = ReflectionContextStack::pushContext(&reflectionContext);
 	reflect<TestClass3>(reflectionContext);
 	TestClass3 testClass{};
 	Any anyValue(testClass);
@@ -120,10 +129,12 @@ TEST_CASE("JsonInput_LoadReflectedClassWithOptional_LoadedOptionalMatchesInput",
 TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptional_LoadedOptionalIsNull", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
 	using namespace Ortha::Core;
+	using namespace Ortha::RTTI;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass3": {}
 })";
 	ReflectionContext reflectionContext{};
+	auto scopedContext = ReflectionContextStack::pushContext(&reflectionContext);
 	reflect<TestClass3>(reflectionContext);
 	TestClass3 testClass{};
 	Any anyValue(testClass);
@@ -138,6 +149,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptional_LoadedOptionalIsNull"
 TEST_CASE("JsonInput_LoadReflectedClassWithOptionalClass_LoadedOptionalMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
 	using namespace Ortha::Core;
+	using namespace Ortha::RTTI;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass4": {
 	    "optionalClassProperty": {
@@ -150,6 +162,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithOptionalClass_LoadedOptionalMatchesIn
 	}
 })";
 	ReflectionContext reflectionContext{};
+	auto scopedContext = ReflectionContextStack::pushContext(&reflectionContext);
 	reflect<TestClass>(reflectionContext);
 	reflect<TestClass4>(reflectionContext);
 	TestClass4 testClass{};
@@ -166,10 +179,12 @@ TEST_CASE("JsonInput_LoadReflectedClassWithOptionalClass_LoadedOptionalMatchesIn
 TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptionalClass_LoadedOptionalIsNull", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
 	using namespace Ortha::Core;
+	using namespace Ortha::RTTI;
 	constexpr std::string_view jsonInput = R"({
 	"TestClass4": {}
 })";
 	ReflectionContext reflectionContext{};
+	auto scopedContext = ReflectionContextStack::pushContext(&reflectionContext);
 	reflect<TestClass4>(reflectionContext);
 	TestClass4 testClass{};
 	Any anyValue(testClass);
@@ -183,12 +198,14 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMissingOptionalClass_LoadedOptionalIs
 TEST_CASE("JsonInput_LoadReflectedClassWithVariantIntType_LoadedVariantMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
 	using namespace Ortha::Core;
+	using namespace Ortha::RTTI;
 	constexpr std::string_view jsonInput = R"({
 	"VariantTestClass": {
 	    "variantProperty": 5
 	}
 })";
 	ReflectionContext reflectionContext{};
+	auto scopedContext = ReflectionContextStack::pushContext(&reflectionContext);
 	reflect<VariantTestClass>(reflectionContext);
 	VariantTestClass testClass{};
 	Any anyValue(testClass);
@@ -203,12 +220,14 @@ TEST_CASE("JsonInput_LoadReflectedClassWithVariantIntType_LoadedVariantMatchesIn
 TEST_CASE("JsonInput_LoadReflectedClassWithVariantStringType_LoadedVariantMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
 	using namespace Ortha::Core;
+	using namespace Ortha::RTTI;
 	constexpr std::string_view jsonInput = R"({
 	"VariantTestClass": {
 	    "variantProperty": "test"
 	}
 })";
 	ReflectionContext reflectionContext{};
+	auto scopedContext = ReflectionContextStack::pushContext(&reflectionContext);
 	reflect<VariantTestClass>(reflectionContext);
 	VariantTestClass testClass{};
 	Any anyValue(testClass);
@@ -223,6 +242,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithVariantStringType_LoadedVariantMatche
 TEST_CASE("JsonInput_LoadReflectedClassWithVector_LoadedVectorMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
 	using namespace Ortha::Core;
+	using namespace Ortha::RTTI;
 	constexpr std::string_view jsonInput = R"({
 	"VectorTestClass": {
 	    "vectorProperty": [
@@ -233,6 +253,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithVector_LoadedVectorMatchesInput", "Js
 	}
 })";
 	ReflectionContext reflectionContext{};
+	auto scopedContext = ReflectionContextStack::pushContext(&reflectionContext);
 	reflect<VectorTestClass>(reflectionContext);
 	VectorTestClass testClass{};
 	Any anyValue(testClass);
@@ -246,6 +267,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithVector_LoadedVectorMatchesInput", "Js
 TEST_CASE("JsonInput_LoadReflectedClassWithMap_LoadedMapMatchesInput", "JsonTypeLoaderAdapterTests") {
 	using namespace JsonTypeAdapterTestClasses;
 	using namespace Ortha::Core;
+	using namespace Ortha::RTTI;
 	constexpr std::string_view jsonInput = R"({
 	"MapTestClass": {
 	    "mapProperty": {
@@ -256,6 +278,7 @@ TEST_CASE("JsonInput_LoadReflectedClassWithMap_LoadedMapMatchesInput", "JsonType
 	}
 })";
 	ReflectionContext reflectionContext{};
+	auto scopedContext = ReflectionContextStack::pushContext(&reflectionContext);
 	reflect<MapTestClass>(reflectionContext);
 	MapTestClass testClass{};
 	Any anyValue(testClass);

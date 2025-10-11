@@ -2,14 +2,17 @@ export module Ortha.Core.Reflection.GlobalSpatial;
 
 export import Ortha.Core.GlobalSpatial;
 
-import Ortha.Core.Reflect;
 import Ortha.Core.Reflection.Spatial;
+import Ortha.RTTI.ReflectionContext;
 
-namespace Ortha::Core {
+namespace Ortha::RTTI {
 
 	template <>
-	void reflect<GlobalSpatial>(RTTI::ReflectionContext& reflectionContext) {
-		reflectSpatialType<GlobalSpatial>(reflectionContext, "GlobalSpatial");
+	void reflect<Core::GlobalSpatial>(ReflectionContext& reflectionContext) {
+		using namespace Core;
+
+		reflectionContext.addClass<GlobalSpatial>("GlobalSpatial")
+			.base<SpatialData>();
 	}
 
 }

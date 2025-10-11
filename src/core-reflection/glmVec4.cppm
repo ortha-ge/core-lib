@@ -2,12 +2,12 @@ export module Glm.Reflection.Vec4;
 
 export import glm;
 
-import Ortha.Core.Reflect;
+import Ortha.RTTI.ReflectionContext;
 
-namespace Ortha::Core {
+namespace Ortha::RTTI {
 
 	template<>
-	void reflect<glm::vec4>(RTTI::ReflectionContext& reflectionContext) {
+	void reflect<glm::vec4>(ReflectionContext& reflectionContext) {
 		reflectionContext.addClass<glm::vec4>("glm::vec4")
 			.field<&glm::vec4::x>("x")
 			.field<&glm::vec4::y>("y")

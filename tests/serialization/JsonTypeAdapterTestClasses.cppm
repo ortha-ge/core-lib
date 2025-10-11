@@ -8,9 +8,8 @@ module;
 
 export module JsonTypeAdapterTestClasses;
 
-import Ortha.Core.ClassReflection;
-import Ortha.Core.EnumReflection;
-import Ortha.Core.ReflectionContext;
+import Ortha.RTTI.Reflect;
+import Ortha.RTTI.ReflectionContext;
 
 export namespace JsonTypeAdapterTestClasses {
 	class TestClass {
@@ -57,61 +56,54 @@ export namespace JsonTypeAdapterTestClasses {
 } // namespace JsonTypeAdapterTestClasses
 
 template<>
-void Core::reflect<JsonTypeAdapterTestClasses::TestClass>(ReflectionContext& reflectionContext) {
+void Ortha::Core::reflect<JsonTypeAdapterTestClasses::TestClass>(RTTI::ReflectionContext& reflectionContext) {
 	using namespace JsonTypeAdapterTestClasses;
 	reflectionContext.addClass<TestClass>("TestClass")
-		.property("stringProperty", &TestClass::stringProperty)
-		.property("intProperty", &TestClass::intProperty)
-		.property("doubleProperty", &TestClass::doubleProperty)
-		.property("floatProperty", &TestClass::floatProperty)
-		.property("boolProperty", &TestClass::boolProperty)
-		.build();
+		.field<&TestClass::stringProperty>("stringProperty")
+		.field<&TestClass::intProperty>("intProperty")
+		.field<&TestClass::doubleProperty>("doubleProperty")
+		.field<&TestClass::floatProperty>("floatProperty")
+		.field<&TestClass::boolProperty>("boolProperty");
 }
 
 template<>
-void Core::reflect<JsonTypeAdapterTestClasses::TestClass2>(ReflectionContext& reflectionContext) {
+void Ortha::Core::reflect<JsonTypeAdapterTestClasses::TestClass2>(RTTI::ReflectionContext& reflectionContext) {
 	using namespace JsonTypeAdapterTestClasses;
 	reflectionContext.addClass<TestClass2>("TestClass2")
-		.property("nestedProperty", &TestClass2::nestedProperty)
-		.build();
+		.field<&TestClass2::nestedProperty>("nestedProperty");
 }
 
 template<>
-void Core::reflect<JsonTypeAdapterTestClasses::TestClass3>(ReflectionContext& reflectionContext) {
+void Ortha::Core::reflect<JsonTypeAdapterTestClasses::TestClass3>(RTTI::ReflectionContext& reflectionContext) {
 	using namespace JsonTypeAdapterTestClasses;
 	reflectionContext.addClass<TestClass3>("TestClass3")
-		.property("optionalIntProperty", &TestClass3::optionalIntProperty)
-		.build();
+		.field<&TestClass3::optionalIntProperty>("optionalIntProperty");
 }
 
 template<>
-void Core::reflect<JsonTypeAdapterTestClasses::TestClass4>(ReflectionContext& reflectionContext) {
+void Ortha::Core::reflect<JsonTypeAdapterTestClasses::TestClass4>(RTTI::ReflectionContext& reflectionContext) {
 	using namespace JsonTypeAdapterTestClasses;
 	reflectionContext.addClass<TestClass4>("TestClass4")
-		.property("optionalClassProperty", &TestClass4::optionalClassProperty)
-		.build();
+		.field<&TestClass4::optionalClassProperty>("optionalClassProperty");
 }
 
 template <>
-void Core::reflect<JsonTypeAdapterTestClasses::VariantTestClass>(ReflectionContext& reflectionContext) {
+void Ortha::Core::reflect<JsonTypeAdapterTestClasses::VariantTestClass>(RTTI::ReflectionContext& reflectionContext) {
 	using namespace JsonTypeAdapterTestClasses;
 	reflectionContext.addClass<VariantTestClass>("VariantTestClass")
-		.property("variantProperty", &VariantTestClass::variantProperty)
-		.build();
+		.field<&VariantTestClass::variantProperty>("variantProperty");
 }
 
 template<>
-void Core::reflect<JsonTypeAdapterTestClasses::VectorTestClass>(ReflectionContext& reflectionContext) {
+void Ortha::Core::reflect<JsonTypeAdapterTestClasses::VectorTestClass>(RTTI::ReflectionContext& reflectionContext) {
 	using namespace JsonTypeAdapterTestClasses;
 	reflectionContext.addClass<VectorTestClass>("VectorTestClass")
-		.property("vectorProperty", &VectorTestClass::vectorProperty)
-		.build();
+		.field<&VectorTestClass::vectorProperty>("vectorProperty");
 }
 
 template<>
-void Core::reflect<JsonTypeAdapterTestClasses::MapTestClass>(ReflectionContext& reflectionContext) {
+void Ortha::Core::reflect<JsonTypeAdapterTestClasses::MapTestClass>(RTTI::ReflectionContext& reflectionContext) {
 	using namespace JsonTypeAdapterTestClasses;
 	reflectionContext.addClass<MapTestClass>("MapTestClass")
-		.property("mapProperty", &MapTestClass::mapProperty)
-		.build();
+		.field<&MapTestClass::mapProperty>("mapProperty");
 }

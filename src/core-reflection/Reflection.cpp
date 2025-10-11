@@ -5,7 +5,7 @@ module;
 
 module Ortha.Core.Reflection;
 
-import Ortha.Core.Reflect;
+import Ortha.RTTI.Reflect;
 import Ortha.RTTI.TypeInfo;
 
 namespace Ortha::Core {
@@ -19,13 +19,9 @@ namespace Ortha::Core {
 		TypeInfo::getFactory<float>().addAlias("float");
 		TypeInfo::getFactory<bool>().addAlias("bool");
 
-		reflect<glm::vec2>(reflectionContext);
-		reflect<glm::ivec2>(reflectionContext);
-		reflect<glm::vec3>(reflectionContext);
-		reflect<glm::vec4>(reflectionContext);
-		reflect<EnTTNode>(reflectionContext);
-		reflect<GlobalSpatial>(reflectionContext);
-		reflect<Node>(reflectionContext);
-		reflect<Spatial>(reflectionContext);
+		ensureReflected<EnTTNode>(reflectionContext);
+		ensureReflected<GlobalSpatial>(reflectionContext);
+		ensureReflected<Node>(reflectionContext);
+		ensureReflected<Spatial>(reflectionContext);
 	}
 }

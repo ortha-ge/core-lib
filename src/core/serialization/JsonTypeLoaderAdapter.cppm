@@ -8,7 +8,7 @@ import Ortha.RTTI.Any;
 import Ortha.RTTI.ReflectionContext;
 import Ortha.RTTI.ReflectionContextStack;
 import Ortha.Core.Log;
-import Ortha.Core.Reflect;
+import Ortha.RTTI.Reflect;
 import Ortha.Core.TypeLoader;
 import entt;
 
@@ -25,10 +25,10 @@ export namespace Ortha::Core {
 		T _loadComponent(entt::registry& registry, entt::entity entity, std::string_view jsonInput) {
 			using namespace Ortha::RTTI;
 			auto& reflectionContext{ ReflectionContextStack::getCurrentContext() };
-			//Core::reflectIfValidType<T>(reflectionContext);
+			ensureReflected<T>(reflectionContext);
 
 			T instance{};
-			Ortha::RTTI::Any any(instance);
+			Any any(instance);
 			Core::load(registry, reflectionContext, jsonInput, any);
 
 			//logEntries(registry, entity, reflectionContext.moveLog());

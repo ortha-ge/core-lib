@@ -2,16 +2,16 @@ export module Ortha.Core.Reflection.EnTTNode;
 
 export import Ortha.Core.EnTTNode;
 
-import Ortha.Core.Node;
-import Ortha.Core.Reflect;
+import Ortha.Core.Reflection.Node;
+import Ortha.RTTI.ReflectionContext;
 
-namespace Ortha::Core {
+namespace Ortha::RTTI {
 
 	template <>
-	void reflect<EnTTNode>(RTTI::ReflectionContext& reflectionContext) {
+	void reflect<Core::EnTTNode>(ReflectionContext& reflectionContext) {
+		using namespace Core;
 		reflectionContext.addClass<EnTTNode>("EnTTNode")
-			.base<Node>()
-			;
+			.base<Node>();
 	}
 
 }
